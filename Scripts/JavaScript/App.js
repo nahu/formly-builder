@@ -2,9 +2,9 @@
 
 var Settings = {
 
-    siteAssetURL: "/Scripts/",
-    siteRelativeRoot: "..",
-    siteURL: "../Scripts/",
+    siteAssetURL: "Scripts/",
+    siteRelativeRoot: "",
+    siteURL: "Scripts/",
     PublicScriptURL: "https://spengineeringltd-public.sharepoint.com/SiteAsset/Scripts/"
 };
 
