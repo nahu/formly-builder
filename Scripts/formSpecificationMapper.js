@@ -8,7 +8,7 @@ function mapToFormSpecification(formlySpec , optionsOrignal, builderForms)
       //1input field
       var interactive =   {
         "elementType":"textfield",
-        "mappingKey":"k_textfield",
+        "mappingKey":anFormlyChild["key"],
         "validators":[],
         "interactiveDetails": {
           "length":256,
@@ -29,7 +29,7 @@ function mapToFormSpecification(formlySpec , optionsOrignal, builderForms)
         var interactive =
               {
                 "elementType":"textfield",
-                "mappingKey":"k_textfield",
+                "mappingKey": anInteractive["key"],
                 "validators":[],
                 "interactiveDetails": {
                   "length":256,
@@ -53,7 +53,7 @@ function mapToFormSpecification(formlySpec , optionsOrignal, builderForms)
     var children = [];
     angular.forEach(anFormly,function(anInputObject) {
       var child = {
-        "elementId":"10",
+        "elementId":"1",
         "elementType":"question",
         "description":[],
         "interactives": getInteractives(anInputObject)

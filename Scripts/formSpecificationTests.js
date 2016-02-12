@@ -25,9 +25,60 @@ function getTests()
 
       var expected = {"id":0,"type":"form","metadata":[],"description":[],"children":[]};
 
-      var res = mapToFormSpecification({},null,null);
+      var res = mapToFormSpecification([],null,null);
 
       return {success:angular.equals(res, expected), info:"map empty form", expected:expected,given:res};
+    },
+
+
+    function(){
+
+      var expected =
+
+      {
+        "id": 0,
+        "type": "form",
+        "metadata": [],
+        "description": [],
+        "children": [
+          {
+            "elementId": "1",
+            "elementType": "question",
+            "description": [],
+            "interactives": [
+              {
+                "elementType": "textfield",
+                "mappingKey": "testKey1",
+                "validators": [],
+                "interactiveDetails": {
+                  "length": 256,
+                  "label": "Input Test",
+                  "placeholder": "placeholder",
+                  "textfieldType": "text"
+                }
+              }
+            ]
+          }
+        ]
+      }
+
+      var res = mapToFormSpecification([
+        {
+          "key": "testKey1",
+          "templateOptions": {
+            "required": false,
+            "label": "Text Input",
+            "placeholder": "placeholder"
+          },
+          "type": "input"
+        }
+      ],
+                                       null,
+                                       null);
+
+      return {success:angular.equals(res, expected), info:"map one textfield", expected:expected,given:res};
+
+
     }
 
   ];
