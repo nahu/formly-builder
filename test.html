@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="Scripts/CSS/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="Scripts/JavaScript/Vendor/AngularFormbuilder/angular-form-builder.css" />
+    <link type="text/css" rel="stylesheet" href="Scripts/CSS/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="Scripts/CSS/form.css" />
+
+    <script type="text/javascript" src="Scripts/JavaScript/Vendor/jquery.min.js"></script>
+    <script type="text/javascript" src="Scripts/JavaScript/Vendor/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Scripts/JavaScript/Vendor/angular.js"></script>
+    <script type="text/javascript" src="Scripts/JavaScript/Vendor/angular-route.js"></script>
+
+    <script type="text/javascript" src="Scripts/formSpecificationMapper.js"></script>
+    <script type="text/javascript" src="Scripts/formSpecificationTests.js"></script>
+    <script>
+
+      $( document ).ready(function() {
+        var tests = getTests();
+        tests.run();
+      });
+    </script>
+</head>
+<body>
+tests here
+<p class="tests"></p>
+</body>
+</html>
