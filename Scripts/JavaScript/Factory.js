@@ -31,6 +31,7 @@ app.constant('deepMerge', (function () {
         return proto === objectPrototype || proto === arrayPrototype;
     }
 })());
+
 /*
    * This is where the magic of OIM comes into play, we generate the field
    * config based on the values in the model. You would write this function
@@ -38,34 +39,134 @@ app.constant('deepMerge', (function () {
    * meta data.
    */
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
-    function getOIMConfig(optionsOrignal, builderForms) {
-        optionsCopy=angular.copy(optionsOrignal);
-        options = optionsCopy || {}; 
-        var fields = [];
-        angular.forEach(options, function (field, index, options) {
-           // var field = angular.copy(fieldOriginal);
-            if (!field.noFormControl)
-            {
-                var content = {                
-                    template: field.templateOptions.htmlContent == undefined ? " " : field.templateOptions.htmlContent
+
+
+
+  function getFormSpecification(formlySpec , optionsOrignal, builderForms)
+  {
+
+    getInteractives = function(anFormlyChild) {
+      var interactives = [];
+      if(anFormlyChild.type == "input")
+      {
+        //1input field
+        var interactive =   {
+                "elementType":"textfield",
+                "mappingKey":"k_textfield",
+                "validators":[],
+                "interactiveDetails": {
+                  "length":256,
+                  "label":"Input Test",
+                  "placeholder": anFormlyChild["templateOptions"]["placeholder"],
+                  "textfieldType":"text"
+                }
+              };
+
+        interactives.push(interactive);
+
+      } 
+      else 
+      {
+        angular.forEach(anFormlyChild, function(anInteractive){
+          console.log(anInteractive);
+
+          var interactive = 
+                {
+                  "elementType":"textfield",
+                  "mappingKey":"k_textfield",
+                  "validators":[],
+                  "interactiveDetails": {
+                    "length":256,
+                    "label":"Input Test",
+                    "placeholder":"Placeholder",
+                    "textfieldType":"text"
+                  }
                 };
-                fields.push(content);
-            }
-            else{
-                var key;
-                if (field.key)
-                    key = field.key;
-                else if (field.id)
-                    key = field.id;
-                var value = "";
-                fields.push(getOptionsFromValue(value, key, field, builderForms));
-            }
+
+          interactives.push(interactive);
         });
-        return fields;
-     };
-     return {
-         getOIMConfig: getOIMConfig
-     }
+
+        
+
+}
+      return interactives;
+
+    };
+
+    getChildren = function(anFormly)
+    {
+      var children = [];
+      angular.forEach(anFormly,function(anInputObject) {
+        var child = {
+          "elementId":"10",
+          "elementType":"question",
+          "description":[],
+          "interactives": getInteractives(anInputObject)
+
+        };
+        children.push(child);
+      });
+      return children;
+    };
+
+    getForm = function(anFormly)
+    {
+      return {
+        "id":0,
+        "type":"form",
+        "metadata":[],
+        "description":[],
+        "children": getChildren(anFormly)
+      };
+    };
+
+/*
+    Form: {
+      "id":#ID#,
+      "type":"form",
+      "metadata":[],//Zusatzinfos wie submit URLs, etc
+      "description":[Description,Description,...],
+      "children":[Group/Question,Group/Question,...]
+    }
+*/
+
+    return getForm(formlySpec);
+
+
+  };
+
+
+  function getOIMConfig(optionsOrignal, builderForms) {
+    optionsCopy=angular.copy(optionsOrignal);
+    options = optionsCopy || {}; 
+    var fields = [];
+    angular.forEach(options, function (field, index, options) {
+      // var field = angular.copy(fieldOriginal);
+      if (!field.noFormControl)
+      {
+        var content = {                
+          template: field.templateOptions.htmlContent == undefined ? " " : field.templateOptions.htmlContent
+        };
+        fields.push(content);
+      }
+      else{
+        var key;
+        if (field.key)
+          key = field.key;
+        else if (field.id)
+          key = field.id;
+        var value = "";
+        fields.push(getOptionsFromValue(value, key, field, builderForms));
+      }
+    });
+    return fields;
+  };
+
+  return {
+    getOIMConfig: getOIMConfig,
+    getFormSpecification: getFormSpecification
+
+  }
 
      function getNestedFields(builderForms, propMetaData) {
          var _fields;

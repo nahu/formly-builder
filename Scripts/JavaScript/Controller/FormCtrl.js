@@ -1,15 +1,13 @@
 app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder', '$validator', '$timeout','$location', 'constantData', function MainCtrl(formlyVersion, getOIMConfig, $scope,  $builder, $validator, $timeout, $location, constantData) {
     var listName = constantData.appFormDesignListName;
-  
 
     var vm = this;
 
-
     vm.exampleTitle = 'Formly Form Live!'; // add this
-
+  $scope.isFormlyShowScope = true;
     vm.RawFieldCode = function () {
-        $scope.isFormlyShowScope = true;
-        $scope.rawFieldCode=getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms);
+        $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms);
+      $scope.formSpecification = getOIMConfig.getFormSpecification($scope.rawFieldCode, $scope.forms["default"], $builder.forms);
     }
     vm.StartScratch = function () {
         clearForms($scope.forms);
@@ -115,6 +113,8 @@ app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder
         //});
       
     };
+
+
     var inProcess = false;
     init = function () {
         //clear all forms first for back navigation button
@@ -122,26 +122,27 @@ app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder
         $scope.forms = $builder.forms;
       
         itemData = new Array();
-               loadFormData(itemData);
-               $scope.$watch('forms', function (newValue, oldValue) {
+//      loadFormData(itemData);
+      $scope.$watch('forms', function (newValue, oldValue) {
 
-                   if (!inProcess) {
-                       inProcess = true;
-                       $timeout(function () {
-                           try {
-                               vm.CopyForm();
-                           }
-                           catch (e) {
-                               console.log(e);
-                           }
-                           inProcess = false;
-                       }, 1000);
-                   }
+        if (!inProcess) {
+          inProcess = true;
+          $timeout(function () {
+            try {
+              vm.CopyForm();
+              vm.RawFieldCode();
+            }
+            catch (e) {
+              console.log(e);
+            }
+            inProcess = false;
+          }, 1000);
+        }
 
-               }, true);
+      }, true);
       
-        
-        
+      
+      
     }
 
 
