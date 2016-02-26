@@ -4,22 +4,16 @@ var Settings = {
 
     siteAssetURL: "Scripts/",
     siteRelativeRoot: "",
-    siteURL: "Scripts/",
-    PublicScriptURL: "https://spengineeringltd-public.sharepoint.com/SiteAsset/Scripts/"
+    siteURL: "app/"
+  //,PublicScriptURL: "https://spengineeringltd-public.sharepoint.com/SiteAsset/Scripts/"
 };
 
 var app = angular.module('formlyExample', ['formly', 'formlyBootstrap', 'angularFileUpload', 'builder', 'builder.components', 'validator.rules', 'ngRoute']);
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
-       //when('/FormPublish', {
-       //    templateUrl: Settings.siteURL + 'View/FormPublish.html',
-       //    controller: 'PublishCtrl',
-       //    controllerAs: 'vm'
-
-       //}).
        when('/FormDesign', {
-           templateUrl: Settings.siteURL + 'View/FormDesign.html',
+           templateUrl: Settings.siteURL + 'view/FormDesign.html',
            controller: 'FormCtrl',
            controllerAs: 'vm'
 
