@@ -1,4 +1,4 @@
-﻿
+
 <div class="container-fluid">
     <div class="row">
 
@@ -6,7 +6,7 @@
 
         <div class="col-md-6">
             <p>
-                <button type="button" class="btn btn-primary" ng-click="vm.StartScratch()">Start From Scratch</button>
+                <button type="button" class="btn btn-primary" ng-click="vm.StartScratch()">Start From Scratch</button>                
             </p>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -33,12 +33,15 @@
     </div>
 
 </div>
+<div>
+<button type="button" class="btn btn-primary" ng-click="vm.upload()">Upload</button>
+</div>
 
 
 
 
 
-<div style="z-index:1;background-color:white;position:relative">
+<div style="z-index:-1;background-color:white;position:relative">
     <a href="{{vm.SwitchView.link}}">{{vm.SwitchView.text}}</a>
     <h1>{{vm.exampleTitle}}</h1>
 

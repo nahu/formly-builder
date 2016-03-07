@@ -322,6 +322,13 @@
                                   //drag an element from component area
                                 //  if ($(draggable.element).find(".DropableDesign").length > 0)
                                  //     app.isMirrorDrop = true;
+
+
+                                 console.log("dropping object");
+                                 console.log(scope.formName)
+                                 console.log(draggable.object)
+                                 console.log("----------");
+
                                   $builder.insertFormObject(scope.formName, $(element).find('.empty').index(), {
                                       component: draggable.object.componentName
                                   });
@@ -1230,16 +1237,28 @@
             return result;
         };
         this.convertFormObject = function (name, formObject) {
+               console.log("converting form object:")
+               console.log(name)
+               console.log(formObject) 
             var component, result, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, _ref12;
           
             if (formObject == null) {
                 formObject = {};
             }
+            
+            console.log("this.components:")
+            console.log(this.components);
             component = this.components[formObject.component];
+
             if (component == null) {
                 throw "The component " + formObject.component + " was not registered.";
             }
             var _newId=name.concat("-" + formObject.component).concat("-" + Math.floor(Math.random() * 9999));
+            console.log("generating new id: " + _newId);
+            console.log(name);
+            console.log(formObject)
+            console.log(this.components)
+            
             result = {
                 key: formObject.key,
                 component: formObject.component,
@@ -1351,6 +1370,8 @@
                     popoverTemplate: {string} html template
                     popoverTemplateUrl: {string} The url of the popover template.
                  */
+                 console.log("registering component")
+                
                 if (_this.components[name] == null) {
                     newComponent = _this.convertComponent(name, component);
                     _this.components[name] = newComponent;
@@ -1381,12 +1402,18 @@
                 return _this.insertFormObject(name, _this.forms[name].length, formObject);
             };
         })(this);
+
         this.insertFormObject = (function (_this) {
             return function (name, index, formObject) {
                 var _base;
                 if (formObject == null) {
                     formObject = {};
                 }
+                console.log("inserting");
+                console.log(name);
+                console.log(index);
+                console.log(formObject);
+
 
                 /*
                 Insert the form object into the form at {index}.
@@ -1418,6 +1445,7 @@
                 return _this.forms[name][index];
             };
         })(this);
+
         this.removeFormObject = (function (_this) {
             return function (name, index) {
 

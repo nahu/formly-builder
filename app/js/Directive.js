@@ -1,4 +1,4 @@
-﻿app.directive('jqdatepicker', function () {
+app.directive('jqdatepicker', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -243,6 +243,7 @@ app.directive('manualInstruction', function () {
     };
 });
 
+/*
 try {
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
@@ -256,4 +257,4 @@ try {
 }
 catch (e)
 { console.log(e);};
-
+*/

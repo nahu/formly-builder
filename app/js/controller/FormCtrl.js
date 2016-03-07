@@ -1,4 +1,6 @@
-app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder', '$validator', '$timeout','$location', 'constantData', function MainCtrl(formlyVersion, getOIMConfig, $scope,  $builder, $validator, $timeout, $location, constantData) {
+app.controller('FormCtrl', ['$http','formlyVersion', 'getOIMConfig', '$scope', '$builder', '$validator', '$timeout','$location', 'constantData', 
+function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $validator, $timeout, $location, constantData) 
+{
     var listName = constantData.appFormDesignListName;
 
     var vm = this;
@@ -6,18 +8,21 @@ app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder
     vm.exampleTitle = 'Formly Form Live!'; // add this
   $scope.isFormlyShowScope = true;
     vm.RawFieldCode = function () {
-        $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms);
-      $scope.formSpecification = getOIMConfig.getFormSpecification($scope.rawFieldCode, $scope.forms["default"], $builder.forms);
+
+       $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
+      $scope.formSpecification = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).idpSpec
+      //getOIMConfig.getFormSpecification($scope.rawFieldCode, $scope.forms["default"], $builder.forms);
     }
     vm.StartScratch = function () {
         clearForms($scope.forms);
 
     }
     vm.CopyForm = function () {
-       
-        vm.fields = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms);
+       var mapping = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms); 
+
+        vm.fields = mapping.anSpec;
         vm.model = getModel($scope.forms["default"]);
-   
+        vm.idpSpec = mapping.idpSpec
     };
     saveForm = function (FormsValuePairs,successFunc)
     {
@@ -71,9 +76,28 @@ app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder
 
     }
    
+    vm.upload = function() {
+        //alert("uploading");
+        console.log(vm.idpSpec);
+    var backendURL = 'http://localhost:8080/IDPBackend/rest/form';
+        $http({
+		 	method: 'POST',
+		 	url: backendURL,
+		 	data:vm.idpSpec
+		}).then(function (response, status) {
+			console.log("form spec saved");
+			console.log(response.data);
+			console.log("");
+			alert("saved spec, id:" + response.data);
+		},function (error){
+			console.log("Error saving form spec: ");
+			console.log(error);
+			console.log("");
+			alert("error: " + error);
+		});
 
-  
-   
+    }
+
     getDesignForm=function()
     {
       
@@ -99,9 +123,6 @@ app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder
                     $builder.insertFormObject(formName, component.index, component);
                 });
             });
-           
-        
-       
        
     }
     clearForm = function (formName) {
@@ -113,6 +134,8 @@ app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder
         //});
       
     };
+
+
 
 
     var inProcess = false;
@@ -141,12 +164,7 @@ app.controller('FormCtrl', ['formlyVersion', 'getOIMConfig', '$scope', '$builder
 
       }, true);
       
-      
-      
     }
-
-
-
 
     init();
 

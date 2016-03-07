@@ -1,3 +1,4 @@
+
 app.constant('deepMerge', (function () {
     var objectPrototype = Object.getPrototypeOf({});
     var arrayPrototype = Object.getPrototypeOf([]);
@@ -38,21 +39,24 @@ app.constant('deepMerge', (function () {
    * to generate the config based on the config format of your server's model
    * meta data.
    */
-app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
+app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
   function getOIMConfig(optionsOrignal, builderForms) {
     optionsCopy=angular.copy(optionsOrignal);
     options = optionsCopy || {}; 
+    var form = {};
     var fields = [];
+    
     angular.forEach(options, function (field, index, options) {
+     
       // var field = angular.copy(fieldOriginal);
       if (!field.noFormControl)
       {
         var content = {                
           template: field.templateOptions.htmlContent == undefined ? " " : field.templateOptions.htmlContent
         };
-        fields.push(content);
+        fields.push(content);        
       }
       else{
         var key;
@@ -64,7 +68,17 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         fields.push(getOptionsFromValue(value, key, field, builderForms));
       }
     });
-    return fields;
+
+    form.element_id = "0";
+    form.element_type = "form";
+    form.metadata = [];
+    form.descriptions = [];
+    form.children = fields;
+    
+    return {
+            anSpec:angularFromIDPSpec(form),
+            idpSpec:form
+                };
   };
 
   return {
@@ -72,6 +86,11 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     getFormSpecification: mapToFormSpecification
 
   }
+
+
+
+
+
 
      function getNestedFields(builderForms, propMetaData) {
          var _fields;
@@ -81,6 +100,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
               _fields = [];
           return _fields;
      }
+     //Build element
      function getOptionsFromValue(value, key, propMetaData, builderForms) {
         //get label
         var label, placeholder;
@@ -91,34 +111,39 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
         //get placeholder
        
+
         if (propMetaData.placeholder!="")
             placeholder = propMetaData.placeholder;
 
         var commonOptions = {
-            key: key,
-            templateOptions: {}
+            //key: key,
+            //templateOptions: {},
+            element_id:"0",
+            element_type:"question",
+            descriptions:[],
+            interactives:[]
             
         };
 
         if (propMetaData.hasOwnProperty('expressionProperties') && propMetaData.expressionProperties) {
             commonOptions.expressionProperties = angular.fromJson("{"+propMetaData.expressionProperties+"}");
         }
-        if (propMetaData.hasOwnProperty('templateOptions')) {
-            commonOptions.templateOptions = propMetaData.templateOptions;
-        }
-        if (propMetaData.hasOwnProperty('required')) {
-            commonOptions.templateOptions.required = propMetaData.required;
-        }
+//         if (propMetaData.hasOwnProperty('templateOptions')) {
+//             commonOptions.templateOptions = propMetaData.templateOptions;
+//         }
+//         if (propMetaData.hasOwnProperty('required')) {
+//             commonOptions.templateOptions.required = propMetaData.required;
+//         }
         
-        if (!commonOptions.templateOptions.label)
-            commonOptions.templateOptions.label = label;
+//         if (!commonOptions.templateOptions.label)
+//             commonOptions.templateOptions.label = label;
 
-        commonOptions.templateOptions.placeholder= placeholder;
+//         commonOptions.templateOptions.placeholder= placeholder;
         
-       
 
         var typeOf = propMetaData.component || typeof value;
         var typeOptions = {};
+           
         switch (typeOf) {
             //case 'htmlContent': {
 
@@ -128,6 +153,22 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             //    return typeOptions;
             //    break;
             //}
+            case 'textInput': {
+                var interactive = {
+                    element_id : "1",
+                    interactive_type: "input",
+                    mapping_key:"mappingKey-1",
+                    validators:[propMetaData.validation],
+                    interactive_details:
+                    {
+                        label: propMetaData.label,
+                        placeholder : propMetaData.placeholder
+                    }
+                };
+                commonOptions.interactives.push(interactive);
+            }
+            break;
+
             case 'currentUser': {
 
                 typeOptions = {
@@ -347,6 +388,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                 };
                 break;
             }
+
             case 'datePicker': {
                 typeOptions = {
                     type: 'date'
@@ -395,7 +437,9 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                 var type = (value && value.length) > 80 ? 'textarea' : 'input';
                 typeOptions = { type: type };
         }
-        return deepMerge(commonOptions, typeOptions, propMetaData.formlyOptions);
+        var o = deepMerge(commonOptions, typeOptions, propMetaData.formlyOptions); 
+        
+        return o;
     }
 
     function makeHumanReadable(key) {
@@ -410,4 +454,6 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     function capitalize(word) {
         return word.charAt(0).toUpperCase() + word.substring(1);
     }
-}]);
+}
+
+]);

@@ -1,6 +1,8 @@
 (function() {
     var builderapp=app.run([
-      '$builder', function ($builder) { 
+      '$builder', function ($builder) {
+
+      	/* 
 		  $builder.registerComponent('radioFlat', {
               group: 'Default',
               label: 'radio inline',
@@ -44,6 +46,9 @@
 		         
 		      }
 		  });
+
+
+
 		  $builder.registerComponent('htmlContent', {
 		      group: 'Default',
 		      template: '<label for="0" class="control-label">   HTML Content </label><br/><div>{{templateOptions.htmlContent}}</div>',
@@ -51,7 +56,15 @@
 		      popoverTemplate:"<form>\r\n    <div class=\"form-group\">\r\n        <label class=\'control-label\'>HTML Content<\/label>\r\n        <textarea ng-model=\"templateOptions.htmlContent\" class=\'form-control\' \/>\r\n    <\/div>\r\n\r\n    \r\n<\/form>",
 		      noFormControl:false
 		  });
-		 
+
+	$builder.registerComponent('idptest', {
+	  group: 'IDP',
+	  template: '<label for="0" class="control-label">   HTML Content </label><br/><div>{{templateOptions.htmlContent}}</div>',
+	  
+	  popoverTemplate:"<form>abcs\r\n    <div class=\"form-group\">\r\n        <label class=\'control-label\'>HTML Content<\/label>\r\n        <textarea ng-model=\"templateOptions.htmlContent\" class=\'form-control\' \/>\r\n    <\/div>\r\n\r\n    \r\n<\/form>",
+	  noFormControl:false
+	});
+		*/ 
       }
     ]);
     
