@@ -168,6 +168,33 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                 commonOptions.interactives.push(interactive);
             }
             break;
+             case 'radio':
+                {
+                    var radioOptions = [];
+                    for (var k in propMetaData.options)
+                    {
+                        var value = propMetaData.options[k];
+                        radioOptions.push(
+                        {
+                            label : value
+                        });
+                    }
+                    var interactive = {
+                    element_id : "1",
+                    interactive_type: "radio",
+                    mapping_key:"mappingKey-1",
+                    validators:[propMetaData.validation],
+                    interactive_details:
+                    {
+                        label: propMetaData.label,
+                        placeholder : propMetaData.placeholder,
+                        options : radioOptions
+                    }
+                };
+                commonOptions.interactives.push(interactive);
+                }
+                break;
+
 
             case 'currentUser': {
 
@@ -244,24 +271,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                     };
                     break;
                 }
-            case 'radio':
-                {
-                    typeOptions = {
-                        type: 'radio',
-                        templateOptions: {
-                            valueProp: 'value',
-                            keyProp: 'name',
-                            options: propMetaData.options.map(function (option) {
-                                return {
-                                    name: makeHumanReadable(option),
-                                    value: option
-                                };
-                            })
-                        }
-                    };
-                    break;
-                }
-
+           
             case 'enum': {
                 var totalOptions = propMetaData.options.length;
                 var type = 'radio';

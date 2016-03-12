@@ -1,12 +1,46 @@
-app.controller('FormCtrl', ['$http','formlyVersion', 'getOIMConfig', '$scope', '$builder', '$validator', '$timeout','$location', 'constantData', 
-function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $validator, $timeout, $location, constantData) 
-{
-    var listName = constantData.appFormDesignListName;
 
+
+
+app.controller('FormCtrl', ['$http','formlyVersion', 'getOIMConfig', 
+'$scope', '$builder', '$validator', '$timeout','$location', 'constantData', 'editorconnector',
+function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $validator, $timeout, $location, constantData, editorconnector) 
+{
+	var backendURL = 'http://localhost:8080/IDPBackend/rest/form';
     var vm = this;
 
+    vm.editorFields = [{
+  			"key": "selectedField",
+  			"type": "select",
+  			"templateOptions": {
+    		"label": "Load Form",
+    		"valueProp": "name",
+    		"options": []}}
+
+				];
+
+	
+	editorconnector.loadIDs(function(response, status){
+
+			var ids = response.ids;
+			var fields = [];
+			for(var k in ids)
+			{
+				fields.push({"name":ids[k]});
+			}
+			vm.editorFields[0].templateOptions.options = fields;
+	
+	});
+
+	vm.loadForm = function(idToLoad) {
+		editorconnector.loadForm(idToLoad, function(result){
+
+			//form loaded here
+		});
+		};
+
+    	
     vm.exampleTitle = 'Formly Form Live!'; // add this
-  $scope.isFormlyShowScope = true;
+  	$scope.isFormlyShowScope = true;
     vm.RawFieldCode = function () {
 
        $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
@@ -35,6 +69,13 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
     vm.SaveForm = function () {
 
     }
+
+
+
+
+	
+
+	
     function getModel(form) {
         var obj_model = {};
         var modelName;
@@ -76,11 +117,13 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
 
     }
    
+   
     vm.upload = function() {
         //alert("uploading");
         console.log(vm.idpSpec);
-    var backendURL = 'http://localhost:8080/IDPBackend/rest/form';
-        $http({
+    
+    
+    	$http({
 		 	method: 'POST',
 		 	url: backendURL,
 		 	data:vm.idpSpec
@@ -88,7 +131,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
 			console.log("form spec saved");
 			console.log(response.data);
 			console.log("");
-			alert("saved spec, id:" + response.data);
+			alert("saved spec, id:" + response.data.identifier);
 		},function (error){
 			console.log("Error saving form spec: ");
 			console.log(error);
@@ -98,6 +141,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
 
     }
 
+   
     getDesignForm=function()
     {
       
