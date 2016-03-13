@@ -1236,6 +1236,7 @@
             }
             return result;
         };
+        
         this.convertFormObject = function (name, formObject) {
                console.log("converting form object:")
                console.log(name)
@@ -1280,6 +1281,7 @@
             };
             return result;
         };
+
         this.reindexFormObject = (function (_this) {
             return function (name) {
                 var formObjects, index, _i, _ref;
@@ -1294,6 +1296,7 @@
                 }
             };
         })(this);
+
         this.setupProviders = (function (_this) {
             return function (injector) {
                 $injector = injector;
@@ -1301,6 +1304,7 @@
                 return $templateCache = $injector.get('$templateCache');
             };
         })(this);
+
         this.loadTemplate = function (component) {
 
             /*
@@ -1328,6 +1332,8 @@
             }
             
         };
+
+
        loadPopoverSharedElements = function (component)
        {
            var originalHTML = component.popoverTemplate;
@@ -1344,6 +1350,8 @@
             return component.popoverTemplate = newHTML;
            
         };
+
+
         this.registerComponent = (function (_this) {
             return function (name, component) {
                 var newComponent, _ref;
@@ -1386,6 +1394,7 @@
                 }
             };
         })(this);
+
         this.addFormObject = (function (_this) {
             return function (name, formObject) {
                 var _base;

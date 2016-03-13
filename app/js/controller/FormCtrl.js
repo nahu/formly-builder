@@ -126,7 +126,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
         console.log(vm.idpSpec);
     	if(vm.editor.selectedField == -1)
     	{
-    		alert("creating");
     		$http({
 		 	method: 'POST',
 		 	url: backendURL,

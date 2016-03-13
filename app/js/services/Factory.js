@@ -366,20 +366,13 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
             }
             case 'textareaReadonly': {
-
-
-
                 typeOptions = {
                     type: 'textareaReadonly'
                 };
                 break;
-
             }
 
             case 'checkbox': {
-
-
-
                 typeOptions = {
                     type: 'checkBoxList',
                     templateOptions:{
@@ -387,7 +380,6 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                     }
                 };
                 break;
-
             }
 
             case 'linkDropDown': {
