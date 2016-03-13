@@ -35,40 +35,10 @@ app.constant('deepMerge', (function () {
 
 
 app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
-    
-    /*
-Object {default: Array[1]}
-default: Array[1]
-0: Object
-$$hashKey: "object:33"
-component: "textInput"
-description: "description"
-editable: true
-expressionProperties: ""
-id: "default-textInput-4428"
-index: 0
-isContainer: false
-key: undefined
-label: "Text Input"
-noFormControl: true
-options: Array[0]
-length: 0
-__proto__: Array[0]
-placeholder: "placeholder"
-required: false
-templateOptions: Object
-validation: ""
-__proto__: Object
-length: 1
-__proto__: Array[0]
-__proto__: Object
-    */
-    function mapIdpSpecToIM(spec)
+    function mapIdpSpecToIM(spec,$builder)
     {
         var c = 0;
-
-
-                var def = [];
+        var def = [];
 
         var children = spec.children;
          for(var k in children)
@@ -84,52 +54,40 @@ __proto__: Object
                 "description":"description",
                 "required":false,
                 "validation":"/.",
-                //"id":"default-radio-8729",
                 "isContainer":false,
                 "templateOptions":{},
                 "expressionProperties":"",
                 "noFormControl":true,
                 "$$hashKey":"object:33"
                 };
+
+                var detail = interactive.interactive_details
+                q.label = detail.label;
+                q.placeholder = detail.placeholder
+                q.options = [];
+                
                 if(interactive.interactive_type == "radio")
                 {
                     q.component = "radio";
-                    q.label = "Radio";
-                    q.options = [];
-
-                    var detail = interactive.interactive_details
-                    q.label = detail.label;
-                    q.placeholder = detail.placeholder
-                    q.id = "default-radio-"+ Math.floor(Math.random() * 9999);
                         for(var l in detail.options)
                         {
                             var option = detail.options[l]
                             q.options.push(option.label);
                         }
-//var _newId=name.concat("-" + formObject.component).concat("-" + Math.floor(Math.random() * 9999));
                     
                 }
+                else if(interactive.interactive_type == "input")
+                {
+                    q.component = "textInput";
+                }
 
+                q.id = "default-" + q.component + "-" + Math.floor(Math.random() * 9999);
                 def.push(q);
                 c++;
             }
-
           }
 
-
-
-        /*
-        var im = {
-            "default":[
-            {
-                
-                }]
-                }
-
-*/
- var im = {
-            "default":def
-                };
+         var im = { "default":def };                
         return im;
     }
 

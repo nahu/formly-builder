@@ -32,7 +32,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 
 	vm.loadForm = function(idToLoad) {
 		editorconnector.loadForm(idToLoad, function(result){
-			var imSpec = getEditorConfig.mapIdpSpecToIM(result);
+			var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
 			loadFormData(imSpec);
 		});
 		};
