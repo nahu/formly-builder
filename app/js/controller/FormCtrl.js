@@ -1,9 +1,9 @@
 
 
 
-app.controller('FormCtrl', ['$http','formlyVersion', 'getOIMConfig', 
+app.controller('FormCtrl', ['$http','formlyVersion', 'getOIMConfig', 'getEditorConfig',
 '$scope', '$builder', '$validator', '$timeout','$location', 'constantData', 'editorconnector',
-function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $validator, $timeout, $location, constantData, editorconnector) 
+function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $builder, $validator, $timeout, $location, constantData, editorconnector) 
 {
 	var backendURL = 'http://localhost:8080/IDPBackend/rest/form';
     var vm = this;
@@ -15,7 +15,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
     		"label": "Load Form",
     		"valueProp": "name",
     		"options": []}}
-
 				];
 
 	
@@ -33,8 +32,8 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
 
 	vm.loadForm = function(idToLoad) {
 		editorconnector.loadForm(idToLoad, function(result){
-
-			//form loaded here
+			var imSpec = getEditorConfig.mapIdpSpecToIM(result);
+			loadFormData(imSpec);
 		});
 		};
 
@@ -42,7 +41,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
     vm.exampleTitle = 'Formly Form Live!'; // add this
   	$scope.isFormlyShowScope = true;
     vm.RawFieldCode = function () {
-
+       
        $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
       $scope.formSpecification = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).idpSpec
       //getOIMConfig.getFormSpecification($scope.rawFieldCode, $scope.forms["default"], $builder.forms);
@@ -155,10 +154,10 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
         });
     }
     loadFormData = function (itemData) {
-        var forms;
+        var forms = itemData;
        
             //no design found, load default form design
-             forms = constantData.defaultFormDesign;
+        //     forms = constantData.defaultFormDesign;
         
         angular.forEach(forms, function (form, formName, obj) {
             //clear out existing form components
@@ -169,6 +168,9 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
             });
        
     }
+
+
+
     clearForm = function (formName) {
         if ($builder.forms[formName])
         $builder.forms[formName].length=0;
@@ -188,8 +190,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig, $scope,  $builder, $valida
         //$builder.forms = {};
         $scope.forms = $builder.forms;
       
-        itemData = new Array();
-//      loadFormData(itemData);
+
       $scope.$watch('forms', function (newValue, oldValue) {
 
         if (!inProcess) {
