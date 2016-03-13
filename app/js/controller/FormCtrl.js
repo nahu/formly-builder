@@ -7,6 +7,8 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 {
 	var backendURL = 'http://localhost:8080/IDPBackend/rest/form';
     var vm = this;
+    vm.editor = vm.editor || {};
+	vm.editor.selectedField = -1;
 
     vm.editorFields = [{
   			"key": "selectedField",
@@ -31,6 +33,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 	});
 
 	vm.loadForm = function(idToLoad) {
+		vm.editor.loaded = idToLoad;
 		editorconnector.loadForm(idToLoad, function(result){
 			var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
 			loadFormData(imSpec);
@@ -47,6 +50,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
       //getOIMConfig.getFormSpecification($scope.rawFieldCode, $scope.forms["default"], $builder.forms);
     }
     vm.StartScratch = function () {
+    	vm.editor.selectedField = -1;
         clearForms($scope.forms);
 
     }
@@ -120,9 +124,10 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     vm.upload = function() {
         //alert("uploading");
         console.log(vm.idpSpec);
-    
-    
-    	$http({
+    	if(vm.editor.selectedField == -1)
+    	{
+    		alert("creating");
+    		$http({
 		 	method: 'POST',
 		 	url: backendURL,
 		 	data:vm.idpSpec
@@ -130,6 +135,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 			console.log("form spec saved");
 			console.log(response.data);
 			console.log("");
+			vm.editor.selectedField = parseInt(response.data.identifier);
 			alert("saved spec, id:" + response.data.identifier);
 		},function (error){
 			console.log("Error saving form spec: ");
@@ -137,6 +143,26 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 			console.log("");
 			alert("error: " + error);
 		});
+    	}
+    	else
+    	{
+    		$http({
+			 	method: 'PUT',
+			 	url: backendURL + "/" + vm.editor.selectedField,
+		 		data:vm.idpSpec
+			}).then(function (response, status) {
+				console.log(response.data);
+				console.log("");
+				//alert("updated spec, id:" + vm.editor.selectedField);
+			},function (error){
+				console.log("Error updating form spec: ");
+				console.log(error);
+				console.log("");
+				alert("error: " + error);
+			});
+    	}
+    
+    	
 
     }
 
