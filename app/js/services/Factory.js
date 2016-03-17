@@ -43,10 +43,10 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         var children = spec.children;
          for(var k in children)
          {
-            var question = children[k];
-            for(var i in question.interactives)
+            var container = children[k];
+            for(var i in container.interactives)
             {
-                var interactive = question.interactives[i];
+                var interactive = container.interactives[i];
 
                 var q = {
                 "editable":true,
@@ -132,7 +132,6 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     form.element_id = "0";
     form.element_type = "form";
     form.metadata = [];
-    form.descriptions = [];
     form.children = fields;
     
     return {
@@ -179,8 +178,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             //key: key,
             //templateOptions: {},
             element_id:"0",
-            element_type:"question",
-            descriptions:[],
+            element_type:"container",
             interactives:[]
             
         };
