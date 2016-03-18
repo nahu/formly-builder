@@ -44,9 +44,9 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
          for(var k in children)
          {
             var container = children[k];
-            for(var i in container.interactives)
+            for(var i in container.children)
             {
-                var interactive = container.interactives[i];
+                var interactivechild = container.children[i];
 
                 var q = {
                 "editable":true,
@@ -61,12 +61,12 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
                 "$$hashKey":"object:33"
                 };
 
-                var detail = interactive.interactive_details
+                var detail = interactivechild.interactive_details
                 q.label = detail.label;
                 q.placeholder = detail.placeholder
                 q.options = [];
                 
-                if(interactive.interactive_type == "radio")
+                if(interactivechild.interactive_type == "radio")
                 {
                     q.component = "radio";
                         for(var l in detail.options)
@@ -76,7 +76,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
                         }
                     
                 }
-                else if(interactive.interactive_type == "input")
+                else if(interactivechild.interactive_type == "input")
                 {
                     q.component = "textInput";
                 }
@@ -179,7 +179,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             //templateOptions: {},
             element_id:"0",
             element_type:"container",
-            interactives:[]
+            children:[]
             
         };
 
@@ -216,6 +216,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                     element_id : "1",
                     interactive_type: "input",
                     mapping_key:"mappingKey-1",
+                    element_type: "interactive",
                     validators:[propMetaData.validation],
                     interactive_details:
                     {
@@ -223,7 +224,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                         placeholder : propMetaData.placeholder
                     }
                 };
-                commonOptions.interactives.push(interactive);
+                commonOptions.children.push(interactive);
             }
             break;
              case 'radio':
@@ -241,6 +242,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                     element_id : "1",
                     interactive_type: "radio",
                     mapping_key:"mappingKey-1",
+                    element_type: "interactive",
                     validators:[propMetaData.validation],
                     interactive_details:
                     {
@@ -249,7 +251,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                         options : radioOptions
                     }
                 };
-                commonOptions.interactives.push(interactive);
+                commonOptions.children.push(interactive);
                 }
                 break;
 
