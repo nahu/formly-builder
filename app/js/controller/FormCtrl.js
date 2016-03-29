@@ -22,11 +22,15 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 	
 	editorconnector.loadIDs(function(response, status){
 
-			var ids = response.ids;
+			var ids = response.formList;
 			var fields = [];
 			for(var k in ids)
 			{
-				fields.push({"name":ids[k]});
+				fields.push({
+					//"name":"Formular " + ids[k].label,
+					"name":ids[k].label,
+					"value":ids[k].id
+					});
 			}
 			vm.editorFields[0].templateOptions.options = fields;
 	
