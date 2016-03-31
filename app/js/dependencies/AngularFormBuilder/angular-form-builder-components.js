@@ -40,7 +40,16 @@
         popoverTemplate: "<form>\n    <div class=\"form-group\">\n        <label class='control-label'>Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n        <div class=\"form-group\">\n        <label class='control-label'>Options</label>\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>\n    </div>\n\n    </form>"
       });
       
-
+      $builderProvider.registerComponent('select', {
+        group: 'IDP',
+        label: 'Select',
+        description: 'description',
+        placeholder: 'placeholder',
+        required: false,
+        options: ['value one', 'value two'],
+        template: "<div>\n  <label for=\"0\" class=\"control-label\">\n    {{label}}\n    {{fb-required ? '*' : ''}}\n  </label>\n<select ng-options=\"value for value in options\" id=\"{{formName+index}}\" class=\"form-control\"\n            ng-model=\"inputText\" ng-init=\"inputText = options[0]\"/>\n</div>\n",
+        popoverTemplate: "<form>\n    <div class=\"form-group\">\n        <label class='control-label'>Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n    <div class=\"form-group\">\n        <label class='control-label'>Options</label>\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>\n    </div>\n\n   <div class=\"checkbox\"><label><input type='checkbox' ng-model=\"required\" />Required</label></div>  </form>"
+      });
 
       return $builderProvider.registerComponent('textArea', {
         group: 'Default',
@@ -51,6 +60,7 @@
         template: "<div>\n  <label for=\"0\" class=\"control-label\">\n    {{label}}\n    {{fb-required ? '*' : ''}}\n  </label>\n  <textarea class=\"form-control\" ng-model=\"inputText\" ng-attr-placeholder=\"{{placeholder}}\"></textarea>\n</div>\n",
         popoverTemplate: "<form>\n    <div class=\"form-group\">\n        <label class='control-label'>Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n        <div class=\"form-group\">\n        <label class='control-label'>Placeholder</label>\n        <input type='text' ng-model=\"placeholder\" class='form-control'/>\n    </div>\n    <div class=\"checkbox\">\n        <label>\n            <input type='checkbox' ng-model=\"required\" />\n            Required</label>\n    </div>\n\n    </form>"
       });
+      
       $builderProvider.registerComponent('checkbox', {
         group: 'Default',
         label: 'Checkbox',
@@ -63,16 +73,7 @@
         popoverTemplate: "<form>\n    <div class=\"form-group\">\n        <label class='control-label'>Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n        <div class=\"form-group\">\n        <label class='control-label'>Options</label>\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>\n    </div>\n    <div class=\"checkbox\">\n        <label>\n            <input type='checkbox' ng-model=\"required\" />\n            Required\n        </label>\n    </div>\n\n    </form>"
       });
       
-      $builderProvider.registerComponent('select', {
-        group: 'Default',
-        label: 'Select',
-        description: 'description',
-        placeholder: 'placeholder',
-        required: false,
-        options: ['value one', 'value two'],
-        template: "<div>\n  <label for=\"0\" class=\"control-label\">\n    {{label}}\n    {{fb-required ? '*' : ''}}\n  </label>\n<select ng-options=\"value for value in options\" id=\"{{formName+index}}\" class=\"form-control\"\n            ng-model=\"inputText\" ng-init=\"inputText = options[0]\"/>\n</div>\n",
-        popoverTemplate: "<form>\n    <div class=\"form-group\">\n        <label class='control-label'>Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n    <div class=\"form-group\">\n        <label class='control-label'>Options</label>\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>\n    </div>\n\n   <div class=\"checkbox\"><label><input type='checkbox' ng-model=\"required\" />Required</label></div>  </form>"
-      });
+      
     }
   ]);
 
