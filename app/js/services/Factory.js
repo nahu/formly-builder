@@ -175,6 +175,8 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
   function getID() { baseID++; return baseID + ""; }
   
+
+
   //Build element
   function getOptionsFromValue(value, key, propMetaData, builderForms) {
     //get label
@@ -188,57 +190,31 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     if (propMetaData.placeholder!="")
       placeholder = propMetaData.placeholder;
 
-    var commonOptions = {
-      //key: key,
-      //templateOptions: {},
-      element_id:getID(),
-      element_type:"container",
-      children:[]
-      
-    };
+    var element = {};
+
 
     if (propMetaData.hasOwnProperty('expressionProperties') && propMetaData.expressionProperties) {
       commonOptions.expressionProperties = angular.fromJson("{"+propMetaData.expressionProperties+"}");
     }
-    //         if (propMetaData.hasOwnProperty('templateOptions')) {
-    //             commonOptions.templateOptions = propMetaData.templateOptions;
-    //         }
-    //         if (propMetaData.hasOwnProperty('required')) {
-    //             commonOptions.templateOptions.required = propMetaData.required;
-    //         }
-    
-    //         if (!commonOptions.templateOptions.label)
-    //             commonOptions.templateOptions.label = label;
-
-    //         commonOptions.templateOptions.placeholder= placeholder;
-    
 
     var typeOf = propMetaData.component || typeof value;
     var typeOptions = {};
-    
-    switch (typeOf) {
-      //case 'htmlContent': {
 
-      //    typeOptions = {
-      //        template: propMetaData.templateOptions.htmlContent
-      //    };
-      //    return typeOptions;
-      //    break;
-      //}
+
+
+
+
+    commonOptions.element_id = getID();
+    commonOptions.mapping_key="mappingKey-1";
+    commonOptions.element_type = "interactive";
+    commonOptions.validators = [propMetaData.validation];
+    commonOptions.interactive_details =  { label: propMetaData.label, placeholder : propMetaData.placeholder }
+
+
+    switch (typeOf) 
+    {
     case 'textInput': {
-      var interactive = {
-        element_id : getID(),
-        interactive_type: "input",
-        mapping_key:"mappingKey-1",
-        element_type: "interactive",
-        validators:[propMetaData.validation],
-        interactive_details:
-        {
-          label: propMetaData.label,
-          placeholder : propMetaData.placeholder
-        }
-      };
-      commonOptions.children.push(interactive);
+        commonOptions.interactive_type = "input";
     }
       break;
     case 'radio':
@@ -252,41 +228,21 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
               label : value
             });
         }
-        var interactive = {
-          element_id : getID(),
-          interactive_type: "radio",
-          mapping_key:"mappingKey-1",
-          element_type: "interactive",
-          validators:[propMetaData.validation],
-          interactive_details:
-          {
-            label: propMetaData.label,
-            placeholder : propMetaData.placeholder,
-            options : radioOptions
-          }
-        };
-        commonOptions.children.push(interactive);
+
+        commonOptions.interactive_type = "radio";
+       commonOptions.interactive_details.options = radioOptions;
       }
       break;
 
     case "select":
       {
-        var interactive = {
-          element_id : getID(),
-          element_type: "interactive",
 
-          interactive_type: "dropdown",
-          mapping_key:"mappingKey-1",
+
+commonOptions.interactive_type = "dropdown";
+commonOptions.interactive_details.options=[];
+commonOptions.interactive_details.defaultOption=1;
+        
           
-          validators:[propMetaData.validation],
-
-          interactive_details:
-          {
-            defaultOption:1,
-            label:propMetaData.label,
-            options:[]
-          }
-        };
         var selectOptions = [];
         for (var k in propMetaData.options)
         {
@@ -296,74 +252,30 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             "element_id"  : getID(),
             "label" : value
           };
-          selectOptions.push(so);
+          commonOptions.interactive_details.options.push(so);
         }
 
-
-        interactive.interactive_details.options = selectOptions;
-        commonOptions.children.push(interactive);
 
       }
       break;
       case "description":
       {
-        var descriptionEl = {
-          element_id : getID(),
-          element_type: "description",
-          description_type:"text",
-          text:propMetaData.customModel.descriptionModel
-        }
-        commonOptions.children.push(descriptionEl);
-
+        commonOptions.interactive_type = "description";
+        commonOptions.description_type = "text";
+        commonOptions.text =customModel.descriptionModel; 
+        
       }
       break;
 
-      /*
-       {
-       "element_id": "1",
-       "element_type": "form",
-       "metadata": [],
-       "children": [
-       {
-       "element_id": "11",
-       "element_type": "interactive",
-       "interactive_type": "dropdown",
-       "interactive_details": {
-       "defaultOption": 1,
-       "label": "Dropdown Test",
-       "options": [
-       {
-       "element_id": "111",
-       "label": "First option"
-       },
-       {
-       "element_id": "112",
-       "label": "Second option"
-       },
-       {
-       "element_id": "113",
-       "label": "Third option"
-       }
-       ]
-       },
-       "mapping_key": "k_dropdown",
-       "validators": []
-       }
-       ]
-       }
-       */
-
-
-    case 'currentUser': {
-
-      typeOptions = {
-        type: 'currentUser'
+      case "container":
+      {
+        commonOptions.interactive_type = "container";
+         
         
-
-      };
-
+      }
       break;
-    }
+     
+     /*
     case 'repeatSection': {
       
       typeOptions = {
@@ -378,42 +290,37 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
       break;
     }
-    case 'multiField': {
+    */
+//     case 'multiField': {
       
-      typeOptions = {
-        type: 'multiField',
-        templateOptions: {
-          fields: getNestedFields(builderForms, propMetaData)
-        }
-      };
+//       typeOptions = {
+//         type: 'multiField',
+//         templateOptions: {
+//           fields: getNestedFields(builderForms, propMetaData)
+//         }
+//       };
 
-      break;
-    }
-    case 'radioFlat': {
-      typeOptions = {
-        type: 'radioFlat',
-        'defaultValue':'Yes',
-        templateOptions: {
-          options: propMetaData.options.map(function (option) {
-            return {
-              name: makeHumanReadable(option),
-              value: option
-            };
-          }),
-          keyProp: name,
-          valueProp:value
-        }
-      };
+//       break;
+//     }
+//     case 'radioFlat': {
+//       typeOptions = {
+//         type: 'radioFlat',
+//         'defaultValue':'Yes',
+//         templateOptions: {
+//           options: propMetaData.options.map(function (option) {
+//             return {
+//               name: makeHumanReadable(option),
+//               value: option
+//             };
+//           }),
+//           keyProp: name,
+//           valueProp:value
+//         }
+//       };
 
-      break;
-    }
-    case 'button': {
-      typeOptions = {
-        type: 'formButton'
-
-      };
-      break;
-    }
+//       break;
+//     }
+   
     case 'select':
       {
         typeOptions = {
@@ -429,174 +336,9 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         };
         break;
       }
+    }
       
-    case 'enum': {
-      var totalOptions = propMetaData.options.length;
-      var type = 'radio';
-      if (totalOptions > 5) {
-        type = 'select';
-      }
-      typeOptions = {
-        type: type,
-        templateOptions: {
-          options: propMetaData.options.map(function (option) {
-            return {
-              name: makeHumanReadable(option),
-              value: option
-            };
-          })
-        }
-      };
-      break;
-    }
-    case 'linkedOptions': {
-      typeOptions = {
-        type: 'linkedSelect'
-      };
-      break;
-
-    }
-    case 'linkDropDownOptions': {
-      typeOptions = {
-        type: 'linkDropDown'
-      };
-      break;
-
-    }
-    case 'textareaReadonly': {
-      typeOptions = {
-        type: 'textareaReadonly'
-      };
-      break;
-    }
-
-    case 'checkbox': {
-      typeOptions = {
-        type: 'checkBoxList',
-        templateOptions:{
-          options: propMetaData.options
-        }
-      };
-      break;
-    }
-
-    case 'linkDropDown': {
-      var parentFieldName = propMetaData.parentFieldName;
-      if (parentFieldName) {
-        var displayFieldName = propMetaData.displayFieldName;
-        var parentFieldModel = propMetaData.parentFieldModel;
-        var totalOptions = propMetaData.options.length;
-        var type = 'radio';
-        if (totalOptions > 5) {
-          type = 'select';
-        }
-        childoptions = [];
-        angular.forEach(propMetaData.options, function (option) {
-          if (option[parentFieldName] == parentFieldModel) {
-            angular.forEach(option[displayFieldName], function (optionvalue) {
-              var obj = { name: makeHumanReadable(optionvalue), value: optionvalue };
-              childoptions.push(obj);
-            }
-
-                           )
-
-          }
-
-
-        });
-
-
-        typeOptions = {
-          type: type,
-          templateOptions: {
-            options: childoptions
-          }
-        };
-      }
-      else {
-        var displayFieldName = propMetaData.displayFieldName;
-        var totalOptions = propMetaData.options.length;
-        var type = 'radio';
-        if (totalOptions > 5) {
-          type = 'select';
-        }
-        typeOptions = {
-          type: type,
-          templateOptions: {
-            options: propMetaData.options.map(function (option) {
-              return {
-                name: makeHumanReadable(option[displayFieldName]),
-                value: option
-              };
-            })
-          }
-        };
-      }
-      break;
-    }
-
-    case 'boolean': {
-      typeOptions = {
-        type: 'checkbox'
-      };
-      break;
-    }
-    case 'number': {
-      typeOptions = {
-        type: 'input',
-        templateOptions: { type: 'number' }
-      };
-      break;
-    }
-
-    case 'datePicker': {
-      typeOptions = {
-        type: 'date'
-      };
-      break;
-    }
-    case 'linkText': {
-      var parentMode = propMetaData.parentMode;
-      var displayField = propMetaData.displayField;
-
-      typeOptions = {
-        type: 'linkText',
-        /*expressionProperties: {
-         'templateOptions.value':'model.'+parentMode
-         },*/
-        templateOptions: {
-          disabled: true
-        }
-
-      };
-
-
-      break;
-    }
-    case 'textArea':
-      {
-        typeOptions = {
-          type: 'textarea'
-        };
-        break;
-      }
-    case 'file':
-      {
-        typeOptions = {
-          type: 'file',
-          templateOptions: {
-
-          }
-        };
-        break;
-
-
-      }
-    case 'string':
-    default:
-      var type = (value && value.length) > 80 ? 'textarea' : 'input';
-      typeOptions = { type: type };
-    }
+    
     var o = deepMerge(commonOptions, typeOptions, propMetaData.formlyOptions); 
     
     return o;
