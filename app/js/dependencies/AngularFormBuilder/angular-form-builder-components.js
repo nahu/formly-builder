@@ -81,6 +81,23 @@
                          </form>"
       });
 
+      $builderProvider.registerComponent('container', {
+		      group: 'IDP',
+		      label: 'Container',
+		   
+		      template: "<div class=\"panel panel-default\">\
+		                      <div class=\"panel-heading\">\
+		                      <h3 class=\"panel-title\">{{label}}<\/h3>\
+		                <\/div>\
+		                <div class=\"DropableDesign \" fb-builder=\"{{id}}\" \/>\
+		                \
+		                <\/div>",
+		
+		      popoverTemplate: "<form>\r\n    <div class=\"form-group\">\r\n        <label class=\'control-label\'>Label<\/label>\r\n        <input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>\r\n    <\/div>\r\n   \r\n    <div class=\"form-group\">\r\n        <label class=\'control-label\'>Options<\/label>\r\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\" \/>\r\n    <\/div>\r\n\r\n    \r\n<\/form>",
+		      isContainer: true
+		     
+		  });
+
       return $builderProvider.registerComponent('textArea', {
         group: 'Default',
         label: 'Text Area',
