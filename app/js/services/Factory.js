@@ -305,7 +305,18 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
       }
       break;
+      case "description":
+      {
+        var descriptionEl = {
+          element_id : getID(),
+          element_type: "description",
+          description_type:"text",
+          text:propMetaData.customModel.descriptionModel
+        }
+        commonOptions.children.push(descriptionEl);
 
+      }
+      break;
 
       /*
        {

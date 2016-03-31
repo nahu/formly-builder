@@ -35,7 +35,7 @@
               var component;
               copyObjectToScope(formObject, $scope);
               $scope.optionsText = formObject.options.join('\n');
-              $scope.$watch('[key,label, description, placeholder, required, options, validation,templateOptions,expressionProperties]', function () {
+              $scope.$watch('[key,label, description, placeholder, required, options, validation,templateOptions,expressionProperties,customModel]', function () {
                   formObject.key = $scope.key;
                   formObject.label = $scope.label;
                   formObject.description = $scope.description;
@@ -44,6 +44,7 @@
                   formObject.options = $scope.options;
                   formObject.templateOptions = $scope.templateOptions;
                   formObject.expressionProperties = $scope.expressionProperties;
+                  formObject.customModel = $scope.customModel;
                   
                   
                   return formObject.validation = $scope.validation;
@@ -76,6 +77,7 @@
                   /*
                   Backup input value.
                    */
+
                   return this.model = {
                       label: $scope.label,
                       description: $scope.description,
@@ -85,7 +87,8 @@
                       validation: $scope.validation,
                       key: $scope.key,
                       templateOptions: $scope.templateOptions,
-                      expressionProperties: $scope.expressionProperties
+                      expressionProperties: $scope.expressionProperties,
+                      customModel: $scope.customModel
                   };
               },
               rollback: function () {
@@ -104,7 +107,7 @@
                   $scope.key = this.model.key;
                   $scope.templateOptions = this.model.templateOptions;
                   $scope.expressionProperties = this.model.expressionProperties;
-                  
+                  $scope.customModel = this.model.customModel;
                   return $scope.validation = this.model.validation;
               }
           };
@@ -1206,7 +1209,7 @@
             "default": []
         };
         this.convertComponent = function (name, component) {
-            var result, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9,_ref10,_ref11,_ref12,_ref13;
+            var result, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9,_ref10,_ref11,_ref12,_ref13,_ref14;
             result = {
                 name: name,
                 group: (_ref = component.group) != null ? _ref : 'Default',
@@ -1226,7 +1229,8 @@
                 isContainer: (_ref10 = component.isContainer) != null ? _ref10 : false,
                 templateOptions: (_ref11 = component.templateOptions) != null ? _ref11 : {},
                 expressionProperties: (_ref12 = component.expressionProperties) != null ? _ref12 : "",
-                noFormControl: (_ref13 = component.noFormControl)!=null?_ref13:true
+                noFormControl: (_ref13 = component.noFormControl)!=null?_ref13:true,
+                customModel:(_ref14 = component.customModel)!= null ? _ref14 : {}
             };
             if (!result.template && !result.templateUrl) {
                 console.error("The template is empty.");
@@ -1241,7 +1245,7 @@
                console.log("converting form object:")
                console.log(name)
                console.log(formObject) 
-            var component, result, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, _ref12;
+            var component, result, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, _ref12,_ref14;
           
             if (formObject == null) {
                 formObject = {};
@@ -1275,9 +1279,8 @@
                 isContainer: (_ref8 = formObject.isContainer) != null ? _ref8 : component.isContainer,
                 templateOptions: (_ref10 = formObject.templateOptions) != null ? _ref10 : component.templateOptions,
                 expressionProperties: (_ref11 = formObject.expressionProperties) != null ? _ref11 : component.expressionProperties,
-                noFormControl: (_ref12 = formObject.noFormControl) != null ? _ref12 : component.noFormControl
-                
-               
+                noFormControl: (_ref12 = formObject.noFormControl) != null ? _ref12 : component.noFormControl,
+                customModel:(_ref14 = formObject.customModel) != null ? _ref14 : component.customModel
             };
             return result;
         };
@@ -1342,7 +1345,7 @@
                {
             $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>Key</label><input type='text' ng-model='key' class='form-control' /></div>");
            }
-           $originalHTML.find("form").children(".form-group").last().after("<div class='form-group'><label class='control-label'>Validation Expression</label><input type='text' ng-model='expressionProperties' class='form-control' /><p class='help-block'>Example:&quot;hide&quot;:&quot;model.myDate===''&quot;</p></div>" + "<div class='form-group'><label class='control-label'>SharePoint List Field Name</label><input type='text' ng-model='templateOptions.listFieldName' class='form-control' /><p class='help-block'>if you want to push this field value to the target SharePoint list, specify the field name here</p></div>");
+           $originalHTML.find("form").children(".form-group").last().after("<div class='form-group'><label class='control-label'>Validation Expression</label><input type='text' ng-model='expressionProperties' class='form-control' /><p class='help-block'>Example:&quot;hide&quot;:&quot;model.myDate===''&quot;</p></div>");
 
            $originalHTML.find("form").children().last().append("<hr /><div class='form-group'><input type='submit' ng-click='popover.save($event)' class='btn btn-primary' value='Save' /><input type='button' ng-click='popover.cancel($event)' class='btn btn-default' value='Cancel' /><input type='button' ng-click='popover.remove($event)' class='btn btn-danger' value='Delete' /></div>");
             
