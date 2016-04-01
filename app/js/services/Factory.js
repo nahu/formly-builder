@@ -142,6 +142,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
       }
     });
 
+//wrap in form
     form.element_id = "0";
     form.element_type = "form";
     form.metadata = [];
@@ -200,11 +201,20 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     var typeOf = propMetaData.component || typeof value;
     var typeOptions = {};
 
+  commonOptions.element_id = getID();
+  if(propMetaData.isContainer)
+  {
+    //recursive
+    commonOptions.element_type = "container";
+    commonOptions.children = [];
+    commonOptions.repeatable = false;
 
+    
 
-
-
-    commonOptions.element_id = getID();
+  }
+  else
+  {
+    
     commonOptions.mapping_key="mappingKey-1";
     commonOptions.element_type = "interactive";
     commonOptions.validators = [propMetaData.validation];
@@ -338,6 +348,13 @@ commonOptions.interactive_details.defaultOption=1;
       }
     }
       
+  }
+
+
+
+
+
+  
     
     var o = deepMerge(commonOptions, typeOptions, propMetaData.formlyOptions); 
     
