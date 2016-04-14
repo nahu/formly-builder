@@ -1,57 +1,59 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-    <link type="text/css" rel="stylesheet" href="app/CSS/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet" href="app/js/dependencies/AngularFormbuilder/angular-form-builder.css" />
-    <link type="text/css" rel="stylesheet" href="app/CSS/jquery-ui.css" />
-    <link type="text/css" rel="stylesheet" href="app/CSS/form.css" />
+    <head>
+        <title>Formular Editor</title>
 
+        <!-- CSS -->
+        <link type="text/css" rel="stylesheet" href="../idp-frontend/shared/css/bootstrap.css" />
 
-    <script type="text/javascript" src="app/js/dependencies/jquery.min.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/bootstrap.min.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/angular.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/angular-route.js"></script>
+        <link type="text/css" rel="stylesheet" href="../idp-frontend/shared/css/idp.css" />
 
-    <script type="text/javascript" src="../idp-frontend/shared/js/transformMethods.js"></script>
+        <link type="text/css" rel="stylesheet" href="app/js/dependencies/AngularFormbuilder/angular-form-builder.css" />
 
-    <script type="text/javascript" src="app/js/services/formSpecificationMapper.js"></script>
-    <!--modified from vendor's code-->
-    <script type="text/javascript" src="app/js/dependencies/AngularFormbuilder/angular-form-builder.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/AngularFormbuilder/angular-form-builder-components.js"></script>
-    <!--end of modified from vendor's code -->
+        <!-- 3RD PARTY DEPENDENCIES -->
+        <script type="text/javascript" src="app/js/dependencies/jquery.min.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/bootstrap.min.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/angular.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/angular-route.js"></script>
 
-    <script type="text/javascript" src="app/js/dependencies/angular-validator.min.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/angular-validator-rules.min.js"></script>
+        <script type="text/javascript" src="../idp-frontend/shared/js/transformMethods.js"></script>
 
-    <script type="text/javascript" src="app/js/dependencies/jquery-ui.js"></script>
+        <script type="text/javascript" src="app/js/services/formSpecificationMapper.js"></script>
+        <!--modified from vendor's code-->
+        <script type="text/javascript" src="app/js/dependencies/AngularFormbuilder/angular-form-builder.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/AngularFormbuilder/angular-form-builder-components.js"></script>
+        <!--end of modified from vendor's code -->
 
-    <script type="text/javascript" src="app/js/dependencies/placeholders.min.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/angular-validator.min.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/angular-validator-rules.min.js"></script>
 
-    <script type="text/javascript" src="app/js/dependencies/apiCheck.min.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/jquery-ui.js"></script>
 
-    <script type="text/javascript" src="app/js/dependencies/formly.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/placeholders.min.js"></script>
 
-    <script type="text/javascript" src="app/js/dependencies/angular-formly-templates-bootstrap.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/angular-file-upload-shim.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/angular-file-upload.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/apiCheck.min.js"></script>
 
-    <!--start from here is custom scripts-->
-    <script type="text/javascript" src="app/js/formEditorApp.js"></script>
-    <script type="text/javascript" src="app/js/formlyCustomTypes.js"></script>
-    <script type="text/javascript" src="app/js/dependencies/AngularFormbuilder/angular-form-customComponents.js"></script>
-    <script type="text/javascript" src="app/js/FormConstant.js"></script>
-    <script type="text/javascript" src="app/js/services/Factory.js"></script>
-    <script type="text/javascript" src="app/js/services/CommonService.js"></script>
-    <script type="text/javascript" src="app/js/Directive.js"></script>
-    <script type="text/javascript" src="app/js/Controller/FormCtrl.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/formly.js"></script>
 
-</head>
-<body>
+        <script type="text/javascript" src="app/js/dependencies/angular-formly-templates-bootstrap.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/angular-file-upload-shim.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/angular-file-upload.js"></script>
 
-    <div ng-app="formlyExample">
-        <div ng-view=""></div>
-    </div>
+        <!-- OUR DEPENDENCIES -->
+        <script type="text/javascript" src="app/js/formEditorApp.js"></script>
+        <script type="text/javascript" src="app/js/formlyCustomTypes.js"></script>
+        <script type="text/javascript" src="app/js/dependencies/AngularFormbuilder/angular-form-customComponents.js"></script>
+        <script type="text/javascript" src="app/js/FormConstant.js"></script>
+        <script type="text/javascript" src="app/js/services/Factory.js"></script>
+        <script type="text/javascript" src="app/js/services/CommonService.js"></script>
+        <script type="text/javascript" src="app/js/Directive.js"></script>
+        <script type="text/javascript" src="app/js/Controller/FormCtrl.js"></script>
+    </head>
+    <body>
 
-</body>
+        <div ng-app="formlyExample">
+            <div ng-view=""></div>
+        </div>
+
+    </body>
 </html>
