@@ -11,15 +11,14 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 	vm.editor.selectedField = -1;
 
     vm.editorFields = [{
-  			"key": "selectedField",
-  			"type": "select",
-  			"templateOptions": {
-    		"label": "Load Form",
-    		"valueProp": "name",
-    		"options": []}}
+  				key: "selectedField",
+  				type: "select",
+  				templateOptions: {
+    				label: "Load Form",
+    				options: []}}
 				];
 
-	
+
 	editorconnector.loadIDs(function(response, status){
 
 			var ids = response.formList;
@@ -132,7 +131,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     	{
     		$http({
 		 	method: 'POST',
-		 	url: backendURL,
+		 	url: backendURL+"/foobar",
 		 	data:vm.idpSpec
 		}).then(function (response, status) {
 			console.log("form spec saved");
@@ -141,10 +140,11 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 			vm.editor.selectedField = parseInt(response.data.identifier);
 			alert("saved spec, id:" + response.data.identifier);
 		},function (error){
+debugger;
 			console.log("Error saving form spec: ");
 			console.log(error);
 			console.log("");
-			alert("error: " + error);
+			alert("error: uploading");
 		});
     	}
     	else

@@ -34,6 +34,7 @@ app.constant('deepMerge', (function () {
 })());
 
 
+//build IM here!
 app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
   function mapIdpSpecToIM(spec,$builder)
   {
@@ -43,22 +44,21 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
     var children = spec.children;
     for(var k in children)
     {
-      var container = children[k];
-      for(var i in container.children)
-      {
-        var interactivechild = container.children[i];
+      var interactive = children[k];
+
+        var interactivechild = interactive;
 
         var q = {
           "editable":true,
           "index":c,
           "description":"description",
           "required":false,
-          "validation":"/.",
+          "validation":"/.*/",
           "isContainer":false,
           "templateOptions":{},
           "expressionProperties":"",
           "noFormControl":true,
-          "$$hashKey":"object:33"
+//          "$$hashKey":"object:33",
         };
 
         var detail = interactivechild.interactive_details
@@ -79,6 +79,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         else if(interactivechild.interactive_type == "input")
         {
           q.component = "textInput";
+          q.customModel = {};
         }
         else if(interactivechild.interactive_type == "dropdown")
         {
@@ -90,10 +91,18 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
           }
         }
 
+      if(interactive.element_id)
+      {
+        q.id = interactive.element_id;
+      }
+      else
+      {
         q.id = "default-" + q.component + "-" + Math.floor(Math.random() * 9999);
+      };
+        
         def.push(q);
         c++;
-      }
+      
     }
 
     var im = { "default":def };                
@@ -113,7 +122,7 @@ var baseID = 1;
 
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
-  function getOIMConfig(optionsOrignal, builderForms) {
+  function getOIMConfig(optionsOrignal, builderForms, recursive = false) {
     baseID = 1;
 
     optionsCopy=angular.copy(optionsOrignal);
@@ -138,19 +147,25 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         else if (field.id)
           key = field.id;
         var value = "";
-        fields.push(getOptionsFromValue(value, key, field, builderForms));
+        fields.push(getOptionsFromValue(value, key, field, builderForms,fields));
       }
     });
-
-//wrap in form
-    form.element_id = "0";
-    form.element_type = "form";
-    form.metadata = [];
-    form.children = fields;
-    
-    return {
-      anSpec:angularFromIDPSpec(form),
-      idpSpec:form
+    if(recursive == false)
+    {
+      //wrap in form
+      form.element_id = "0";
+      form.element_type = "form";
+      form.metadata = [];
+      form.children = fields;
+      
+      return {
+        anSpec:angularFromIDPSpec(form),
+        idpSpec:form
+      };
+    }
+    else
+    {
+      return fields;
     };
   };
 
@@ -161,25 +176,21 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
   }
 
 
-
-
-
-
-  function getNestedFields(builderForms, propMetaData) {
+  function getNestedFields(builderForms, propMetaData, recursive = false) {
     var _fields;
     if (builderForms[propMetaData.id])
-      _fields = getOIMConfig(builderForms[propMetaData.id], builderForms);
+      _fields = getOIMConfig(builderForms[propMetaData.id], builderForms, recursive);
     else
       _fields = [];
     return _fields;
   }
 
+
+
   function getID() { baseID++; return baseID + ""; }
-  
 
-
-  //Build element
-  function getOptionsFromValue(value, key, propMetaData, builderForms) {
+  //Build IM Element
+  function getOptionsFromValue(value, key, propMetaData, builderForms, formSoFar) {
     //get label
     var label, placeholder;
     if (propMetaData.label)
@@ -192,7 +203,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
       placeholder = propMetaData.placeholder;
 
     var element = {};
-
+  var commonOptions = {};
 
     if (propMetaData.hasOwnProperty('expressionProperties') && propMetaData.expressionProperties) {
       commonOptions.expressionProperties = angular.fromJson("{"+propMetaData.expressionProperties+"}");
@@ -202,15 +213,18 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     var typeOptions = {};
 
   commonOptions.element_id = getID();
+  commonOptions.mapping_id = propMetaData.id;
   if(propMetaData.isContainer)
   {
     //recursive
     commonOptions.element_type = "container";
     commonOptions.children = [];
     commonOptions.repeatable = false;
-
-    
-
+    console.log("here");
+    var foo = getNestedFields(builderForms, propMetaData, true);
+    commonOptions.children = foo;
+    console.log(foo);
+//debugger;
   }
   else
   {
@@ -238,7 +252,6 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
               label : value
             });
         }
-
         commonOptions.interactive_type = "radio";
        commonOptions.interactive_details.options = radioOptions;
       }
@@ -357,7 +370,7 @@ commonOptions.interactive_details.defaultOption=1;
   
     
     var o = deepMerge(commonOptions, typeOptions, propMetaData.formlyOptions); 
-    
+    //debugger;
     return o;
   }
 

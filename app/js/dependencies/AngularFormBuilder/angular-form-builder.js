@@ -1381,7 +1381,7 @@
                     popoverTemplate: {string} html template
                     popoverTemplateUrl: {string} The url of the popover template.
                  */
-                 console.log("registering component")
+                 //console.log("registering component")
                 
                 if (_this.components[name] == null) {
                     newComponent = _this.convertComponent(name, component);
