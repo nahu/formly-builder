@@ -5,11 +5,14 @@ app.controller('FormCtrl', ['$http','formlyVersion', 'getOIMConfig', 'getEditorC
 '$scope', '$builder', '$validator', '$timeout','$location', 'constantData', 'editorconnector',
 function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $builder, $validator, $timeout, $location, constantData, editorconnector) 
 {
-  $builder.parrentApp = this;
+
   var backendURL = 'http://localhost:8080/IDPBackend/rest/form';
   var vm = this;
+  $builder.parrentApp = this;
   vm.editor = vm.editor || {};
+  vm.container = vm.container || {};
   vm.editor.selectedField = -1;
+  vm.container.selectedField = -1;
 
   vm.editorFields = [{
     key: "selectedField",
@@ -19,9 +22,20 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
       options: []}}
 		    ];
 
+  vm.containerFields = [{
+    key: "selectedField",
+    type: "select",
+    templateOptions: {
+      label: "Insert In Me:",
+      options: []}}
+		    ];
+
+
+
   vm.getConnector = function(){
     return editorconnector;
   };
+  
   editorconnector.loadIDs(function(response, status){
 
     var ids = response.formList;
@@ -35,38 +49,34 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
       });
     }
     vm.editorFields[0].templateOptions.options = fields;
-    
+    vm.containerFields[0].templateOptions.options = fields;    
   });
-
+  
+  
+  
   vm.insertContainerForm = function(formID, elementIMID){
-    editorconnector.loadForm(formID, function(result){
+//    debugger;
+    editorconnector.loadForm(formID, function(result) {
       var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
-//      console.log(vm.model);
-      console.log($scope.forms);
-      console.log(imSpec);
+      var containerID = elementIMID.id;
+      var newForm = angular.copy($scope.forms);
 
       for(var k in imSpec)
       {
-//        vm.model[k] = imSpec[k];
-        var items = imSpec[k];
+        var items = imSpec[k]; //the firstKey is default, so this is an array
         for(var i in items)
         {
-          debugger;
-          var newID = elementIMID.id+ "-" + items[i].component+"-1234";
+          var newID = elementIMID.id+ "-" + items[i].component+"-" + items[i].id;
           items[i].id = newID;
-          $scope.forms[elementIMID.id].push(items[i]);
+          newForm[elementIMID.id].push(items[i]);
         };
-
-
-//        increase id by containerID
-        
-        
-        //$scope.forms[elementIMID.id] = 
       };
       
 
-      loadFormData($scope.forms);
-      debugger;
+      console.log(JSON.stringify(imSpec));
+      console.log(JSON.stringify(newForm));
+
+      loadFormData(newForm);
     });
 
   };
@@ -127,7 +137,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 
   
   function getModel(form) {
-    debugger;
     var obj_model = {};
     var modelName;
     
@@ -232,7 +241,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     //no design found, load default form design
     //     forms = constantData.defaultFormDesign;
     angular.forEach(forms, function (form, formName, obj) {
-debugger;
       //clear out existing form components
       clearForm(formName);
       angular.forEach(form, function (component) {

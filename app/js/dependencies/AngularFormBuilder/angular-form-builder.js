@@ -506,10 +506,15 @@
                           }
                       },
                     getParrentApp:function() {
-                      $builder.parrentApp.insertContainerForm(11,scope);
+
+                      return $builder.parrentApp;
+//                      $builder.parrentApp.insertContainerForm(11,scope);
+                     
+                      },
+                    getCurrentElementScope:function() {
                       $(element).popover('hide');
-                      
-                      }
+                      return scope;
+                    }
 
                     };
                   $(element).on('show.bs.popover', function (e) {
