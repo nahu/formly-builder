@@ -93,7 +93,17 @@
 		                \
 		                <\/div>",
 		
-		      popoverTemplate: "<form>\r\n    <div class=\"form-group\">\r\n        <label class=\'control-label\'>Label<\/label>\r\n        <input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>\r\n    <\/div>\r\n   \r\n    <div class=\"form-group\">\r\n        <label class=\'control-label\'>Options<\/label>\r\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\" \/>\r\n    <\/div>\r\n\r\n    \r\n<\/form>",
+		      popoverTemplate: "<form>" +
+                                       "<div class=\"form-group\">" + 
+          "<button type=\"button\" class=\"btn btn-primary\" ng-click=\"popover.getParrentApp();\">load</button>"+
+                                          "<label class=\'control-label\'>Label</label>" +
+                                          "<input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>    " +
+                                       "<\/div>" +
+                                       "<div class=\"form-group\">" +
+                                       "<label class=\'control-label\'>Options<\/label>        " +
+                                       "<textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\" \/>    " +
+                                       "<\/div>" +
+                                       "<\/form>",
 		      isContainer: true
 		     
 		  });

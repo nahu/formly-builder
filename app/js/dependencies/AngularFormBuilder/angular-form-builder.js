@@ -504,8 +504,14 @@
                               $event.preventDefault();
                               $(element).popover('hide');
                           }
+                      },
+                    getParrentApp:function() {
+                      $builder.parrentApp.insertContainerForm(11,scope);
+                      $(element).popover('hide');
+                      
                       }
-                  };
+
+                    };
                   $(element).on('show.bs.popover', function (e) {
                       var $popover, elementOrigin, popoverTop;
                       e.stopPropagation();
@@ -1421,11 +1427,12 @@
                 if (formObject == null) {
                     formObject = {};
                 }
+              /*
                 console.log("inserting");
                 console.log(name);
                 console.log(index);
                 console.log(formObject);
-
+               */
 
                 /*
                 Insert the form object into the form at {index}.

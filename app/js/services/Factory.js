@@ -124,7 +124,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
   function getOIMConfig(optionsOrignal, builderForms, recursive = false) {
     baseID = 1;
-
+    //debugger;
     optionsCopy=angular.copy(optionsOrignal);
     options = optionsCopy || {}; 
     var form = {};
@@ -211,7 +211,9 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
     var typeOf = propMetaData.component || typeof value;
     var typeOptions = {};
-
+   
+  commonOptions.customModel = {};
+    commonOptions.customModel.foobar = function(){alert('ere');};
   commonOptions.element_id = getID();
   commonOptions.mapping_id = propMetaData.id;
   if(propMetaData.isContainer)
