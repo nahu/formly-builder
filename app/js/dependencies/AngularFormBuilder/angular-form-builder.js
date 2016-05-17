@@ -506,10 +506,7 @@
                           }
                       },
                     getParrentApp:function() {
-
                       return $builder.parrentApp;
-//                      $builder.parrentApp.insertContainerForm(11,scope);
-                     
                       },
                     getCurrentElementScope:function() {
                       $(element).popover('hide');

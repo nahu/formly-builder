@@ -95,11 +95,11 @@
 		
 		      popoverTemplate: "<form>" +
                                        "<div class=\"form-group\">" + 
+
           "<formly-form model=\"popover.getParrentApp().container\" fields=\"popover.getParrentApp().containerFields\">" + 
-          "<button type=\"submit\" class=\"btn btn-default\" ng-click=\"popover.getParrentApp().insertContainerForm(popover.getParrentApp().container.selectedField,popover.getCurrentElementScope())\">insert</button>" +
+          "<button type=\"submit\" class=\"btn btn-default\" ng-click=\"popover.getParrentApp().insertContainerForm(popover.getParrentApp().container.selectedField, popover.getCurrentElementScope())\">insert</button>" +
          "</formly-form>" +
 
-          // "<button type=\"button\" class=\"btn btn-primary\" ng-click=\"popover.getParrentApp();\">load</button>"+
                                           "<label class=\'control-label\'>Label</label>" +
                                           "<input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>    " +
                                        "<\/div>" +

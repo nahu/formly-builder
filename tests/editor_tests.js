@@ -1,38 +1,4 @@
 
-function getMissing(obj1, obj2) {
-
-  function getClass(obj) {
-    if (typeof obj === "undefined")
-      return "undefined";
-    if (obj === null)
-      return "null";
-    return Object.prototype.toString.call(obj)
-      .match(/^\[object\s(.*)\]$/)[1];
-  }
-
-  function rec(o1, o2, acc, mis) {
-    for (var k in o1) {
-      if(o2.hasOwnProperty(k)) {
-        var c = getClass(o1[k]);
-        if(c === "Object" || c === "Array") {
-          acc[k] = (c === "Object")? {} : [];
-          var r = rec(o1[k],o2[k],acc[k], false);
-          if(r.m == false) {
-            delete acc[k];
-          } else {
-            mis = true
-          };
-        };
-      } else {
-        acc[k] = "--missing--";
-        mis = true;
-      }
-    };
-    return {a:acc,m:mis};
-  };
-  return rec(obj1, obj2,{}, false).a;
-};
-
 console.log(app);
 
 var injector = angular.injector(["ng","formlyExample"]);
@@ -63,8 +29,6 @@ function getTests()
                            + "</p>");
       };
     };
-
-
   };
 
 
@@ -296,10 +260,10 @@ function getTests()
         }
       ];
 
-}
-
-
-
+    },
+function(){
+var idpSpec = {"element_id":"0","element_type":"form","metadata":[],"children":[{"customModel":{},"element_id":"2","mapping_id":"default-container-6018","element_type":"container","children":[{"customModel":{},"element_id":"2","mapping_id":"default-container-6018-textInput-11","mapping_key":"mappingKey-1","element_type":"interactive","validators":["/.*/"],"interactive_details":{"label":"Input Test 1","placeholder":"Placeholder 1"},"interactive_type":"input"},{"customModel":{},"element_id":"3","mapping_id":"default-container-6018-textInput-12","mapping_key":"mappingKey-1","element_type":"interactive","validators":["/.*/"],"interactive_details":{"label":"Input Test 2","placeholder":"Placeholder 2"},"interactive_type":"input"},{"customModel":{},"element_id":"4","mapping_id":"default-container-6018-textInput-13","mapping_key":"mappingKey-1","element_type":"interactive","validators":["/.*/"],"interactive_details":{"label":"Input Test 3","placeholder":"Placeholder 3"},"interactive_type":"input"},{"customModel":{},"element_id":"5","mapping_id":"default-container-6018-textInput-14","mapping_key":"mappingKey-1","element_type":"interactive","validators":["/.*/"],"interactive_details":{"label":"Input Test 4","placeholder":"Placeholder 4"},"interactive_type":"input"},{"customModel":{},"element_id":"6","mapping_id":"default-container-6018-textInput-15","mapping_key":"mappingKey-1","element_type":"interactive","validators":["/.*/"],"interactive_details":{"label":"Input Test 5","placeholder":"Placeholder 5"},"interactive_type":"input"}],"repeatable":false},{"customModel":{},"element_id":"7","mapping_id":"default-radio-9765","mapping_key":"mappingKey-1","element_type":"interactive","validators":["/.*/"],"interactive_details":{"label":"Radio","placeholder":"placeholder","options":[{"label":"value one"},{"label":"value two"}]},"interactive_type":"radio"},{"customModel":{},"element_id":"8","mapping_id":"default-textInput-1900","mapping_key":"mappingKey-1","element_type":"interactive","validators":["/.*/"],"interactive_details":{"label":"Text Input","placeholder":"placeholder"},"interactive_type":"input"}],"label":"container formular für florian"}
+};
 
   ];
 

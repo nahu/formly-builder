@@ -19,8 +19,18 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     type: "select",
     templateOptions: {
       label: "Load Form",
-      options: []}}
+      options: []}},
+                     {
+                       key: 'currentFormName',
+                       type: 'input',
+                       templateOptions: {
+                         label: 'Form Name',
+                         placeholder: 'not loaded'
+                       }
+                     }
 		    ];
+
+  
 
   vm.containerFields = [{
     key: "selectedField",
@@ -43,7 +53,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     for(var k in ids)
     {
       fields.push({
-	//"name":"Formular " + ids[k].label,
 	"name":ids[k].label,
 	"value":ids[k].id
       });
@@ -55,10 +64,11 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   
   vm.insertContainerForm = function(formID, elementIMID){
-//    debugger;
+
     editorconnector.loadForm(formID, function(result) {
       var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
       var containerID = elementIMID.id;
+
       var newForm = angular.copy($scope.forms);
 
       for(var k in imSpec)
@@ -73,8 +83,8 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
       };
       
 
-      console.log(JSON.stringify(imSpec));
-      console.log(JSON.stringify(newForm));
+//      console.log(JSON.stringify(imSpec));
+//      console.log(JSON.stringify(newForm));
 
       loadFormData(newForm);
     });
@@ -82,8 +92,11 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   };
 
   vm.loadForm = function(idToLoad) {
-    vm.editor.loaded = idToLoad;
+
+    vm.editor.loaded = idToLoad; 
+
     editorconnector.loadForm(idToLoad, function(result){
+      vm.editor.currentFormName = result.label;
       var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
       loadFormData(imSpec);
     });
@@ -101,9 +114,9 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     
     $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
     $scope.formSpecification = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).idpSpec
-    //getOIMConfig.getFormSpecification($scope.rawFieldCode, $scope.forms["default"], $builder.forms);
   }
   vm.StartScratch = function () {
+    delete vm.editor.currentFormName;
     vm.editor.selectedField = -1;
     clearForms($scope.forms);
 
@@ -179,24 +192,26 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   
   vm.upload = function() {
-    //alert("uploading");
-    console.log(vm.idpSpec);
+    vm.idpSpec.label = vm.editor.currentFormName;
+//    console.log(vm.idpSpec);
     if(vm.editor.selectedField == -1)
     {
       $http({
 	method: 'POST',
-	url: backendURL+"/foobar",
+	url: backendURL+"/" + vm.idpSpec.label,
 	data:vm.idpSpec
       }).then(function (response, status) {
-	console.log("form spec saved");
-	console.log(response.data);
-	console.log("");
+//	console.log("form spec saved");
+	// console.log(response.data);
+	// console.log("");
 	vm.editor.selectedField = parseInt(response.data.identifier);
 	alert("saved spec, id:" + response.data.identifier);
       },function (error){
-	console.log("Error saving form spec: ");
-	console.log(error);
-	console.log("");
+	// console.log("Error saving form spec: ");
+	// console.log(error);
+	// console.log("");
+        
+        
 	alert("error: uploading");
       });
     }

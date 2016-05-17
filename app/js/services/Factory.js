@@ -58,7 +58,6 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
           "templateOptions":{},
           "expressionProperties":"",
           "noFormControl":true,
-//          "$$hashKey":"object:33",
         };
 
         var detail = interactivechild.interactive_details
@@ -212,95 +211,100 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     var typeOf = propMetaData.component || typeof value;
     var typeOptions = {};
    
-  commonOptions.customModel = {};
+    commonOptions.customModel = {};
     commonOptions.customModel.foobar = function(){alert('ere');};
-  commonOptions.element_id = getID();
-  commonOptions.mapping_id = propMetaData.id;
-  if(propMetaData.isContainer)
-  {
-    //recursive
-    commonOptions.element_type = "container";
-    commonOptions.children = [];
-    commonOptions.repeatable = false;
-    console.log("here");
-    var foo = getNestedFields(builderForms, propMetaData, true);
-    commonOptions.children = foo;
-    console.log(foo);
-//debugger;
-  }
-  else
-  {
-    
-    commonOptions.mapping_key="mappingKey-1";
-    commonOptions.element_type = "interactive";
-    commonOptions.validators = [propMetaData.validation];
-    commonOptions.interactive_details =  { label: propMetaData.label, placeholder : propMetaData.placeholder }
-
-
-    switch (typeOf) 
+    commonOptions.element_id = getID();
+    commonOptions.mapping_id = propMetaData.id;
+    if(propMetaData.isContainer)
     {
-    case 'textInput': {
-        commonOptions.interactive_type = "input";
+      //recursive
+      commonOptions.element_type = "container";
+      commonOptions.children = [];
+      commonOptions.repeatable = false;
+      console.log("here");
+      var foo = getNestedFields(builderForms, propMetaData, true);
+      commonOptions.children = foo;
+      console.log(foo);
+      //debugger;
     }
-      break;
-    case 'radio':
-      {
-        var radioOptions = [];
-        for (var k in propMetaData.options)
-        {
-          var value = propMetaData.options[k];
-          radioOptions.push(
-            {
-              label : value
-            });
-        }
-        commonOptions.interactive_type = "radio";
-       commonOptions.interactive_details.options = radioOptions;
+    else
+    {
+      debugger
+
+      commonOptions.mapping_key="mappingKey-1";
+      commonOptions.element_type = "interactive";
+      commonOptions.validators =[];//= [propMetaData.validation];
+      commonOptions.interactive_details =  { 
+        label: propMetaData.label, 
+        postLabel:propMetaData.postLabel,
+        placeholder : propMetaData.placeholder 
       }
-      break;
 
-    case "select":
+
+      switch (typeOf) 
       {
+      case 'textInput': {
+        commonOptions.interactive_type = "input";
+      }
+        break;
+      case 'radio':
+        {
+          var radioOptions = [];
+          for (var k in propMetaData.options)
+          {
+            var value = propMetaData.options[k];
+            radioOptions.push(
+              {
+                label : value
+              });
+          }
+          commonOptions.interactive_type = "radio";
+          commonOptions.interactive_details.options = radioOptions;
+        }
+        break;
+
+      case "select":
+        {
 
 
-commonOptions.interactive_type = "dropdown";
-commonOptions.interactive_details.options=[];
-commonOptions.interactive_details.defaultOption=1;
-        
+          commonOptions.interactive_type = "dropdown";
+          commonOptions.interactive_details.options=[];
+          commonOptions.interactive_details.defaultOption=1;
           
-        var selectOptions = [];
-        for (var k in propMetaData.options)
-        {
-          var value = propMetaData.options[k];
-          var so = {
+          
+          var selectOptions = [];
+          for (var k in propMetaData.options)
+          {
+            var value = propMetaData.options[k];
+            var so = {
 
-            "element_id"  : getID(),
-            "label" : value
-          };
-          commonOptions.interactive_details.options.push(so);
+              "element_id"  : getID(),
+              "label" : value
+            };
+            commonOptions.interactive_details.options.push(so);
+          }
+
+
         }
-
-
-      }
-      break;
+        break;
       case "description":
-      {
-        commonOptions.interactive_type = "description";
-        commonOptions.description_type = "text";
-        commonOptions.text =customModel.descriptionModel; 
-        
-      }
-      break;
+        {
+          commonOptions.interactive_type = "description";
+          commonOptions.description_type = "text";
+          commonOptions.text =customModel.descriptionModel; 
+          
+        }
+        break;
 
       case "container":
-      {
-        commonOptions.interactive_type = "container";
-         
+        {
+          commonOptions.interactive_type = "container";
+          
+          
+        }
+        break;
         
-      }
-      break;
-     
-     /*
+        /*
     case 'repeatSection': {
       
       typeOptions = {
