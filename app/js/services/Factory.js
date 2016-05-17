@@ -121,17 +121,18 @@ var baseID = 1;
 
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
-  function getOIMConfig(optionsOrignal, builderForms, recursive = false) {
-    baseID = 1;
+  function idpAndAngSpec(optionsOrignal, builderForms, recursive = false) {
+    baseID = 0;
     //debugger;
-    optionsCopy=angular.copy(optionsOrignal);
-    options = optionsCopy || {}; 
+    var optionsCopy=angular.copy(optionsOrignal);
+    var options = optionsCopy || {}; 
     var form = {};
     var fields = [];
-    
+
     angular.forEach(options, function (field, index, options) {
       
       // var field = angular.copy(fieldOriginal);
+
       if (!field.noFormControl)
       {
         var content = {                
@@ -146,7 +147,10 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         else if (field.id)
           key = field.id;
         var value = "";
-        fields.push(getOptionsFromValue(value, key, field, builderForms,fields));
+        fields.push(
+//          idpSpecFromIM(value, key, field, builderForms,fields)
+          newIdpSpecFromIM(value, key, field, builderForms,fields)
+        );
       }
     });
     if(recursive == false)
@@ -169,7 +173,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
   };
 
   return {
-    getOIMConfig: getOIMConfig,
+    getOIMConfig:idpAndAngSpec,
     getFormSpecification: mapToFormSpecification
 
   }
@@ -178,18 +182,100 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
   function getNestedFields(builderForms, propMetaData, recursive = false) {
     var _fields;
     if (builderForms[propMetaData.id])
-      _fields = getOIMConfig(builderForms[propMetaData.id], builderForms, recursive);
+      _fields = getNestedFields(builderForms[propMetaData.id], builderForms, recursive);
     else
       _fields = [];
     return _fields;
   }
 
 
-
   function getID() { baseID++; return baseID + ""; }
 
+
+  function validators(IMElement)
+  {
+    var validators = [];
+    if(IMElement.validation != "")
+    {
+      validators.push(IMElement.validation);
+    };
+    return validators;
+  };
+
+  function interactiveType(IMElement)
+  {
+    if(IMElement.component == "radio")
+    {
+      return "radio";
+    }
+    else
+    {
+      return "input"
+    };
+  };
+
+  function interactiveDetailsOptions(IMElement)
+  {
+    var po = {match:false};
+    if(interactiveType(IMElement) == "radio")
+    {
+      po.match = true;
+      po.value = [];
+      for (var o in IMElement.options)
+      {
+        var s = IMElement.options[o];
+        po.value.push({
+          "element_id": getID(),
+          "label": s
+        });
+      };
+    };
+    return po;
+  };
+
+  function interactiveDetails(IMElement)
+  {
+
+    var o = {
+      label:IMElement.label,
+    }; 
+
+    var parsedOptions = interactiveDetailsOptions(IMElement);
+    if(parsedOptions.match != false)
+    {
+      o.options = parsedOptions.value; 
+    }
+    else
+    {
+      o.placeholder = IMElement.placeholder
+    };
+
+
+    return o;
+  };
+
+  function newIdpSpecFromIM(value, key, IMElement, builderForms, formSoFar) {
+    var id = getID();
+    
+    
+    var el = 
+    {
+      "element_id":id,
+      "mapping_key":"mappingKey-"+id,
+      "element_type":"interactive",
+      "validators": validators(IMElement),
+      "interactive_details": interactiveDetails(IMElement),
+      "interactive_type": interactiveType(IMElement)
+    };
+
+
+    
+    return el;
+  }
+
+
   //Build IM Element
-  function getOptionsFromValue(value, key, propMetaData, builderForms, formSoFar) {
+  function idpSpecFromIM(value, key, propMetaData, builderForms, formSoFar) {
     //get label
     var label, placeholder;
     if (propMetaData.label)
@@ -233,11 +319,22 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
       commonOptions.mapping_key="mappingKey-1";
       commonOptions.element_type = "interactive";
-      commonOptions.validators =[];//= [propMetaData.validation];
+      commonOptions.validators = [
+        {
+          element_id:"?",
+          validator_name:"test",
+          validator_type:"custom",
+          test:{ 
+            message: "",
+            expression:""
+          },        
+          expression:propMetaData.validation
+        }
+      ];//= [propMetaData.validation];
       commonOptions.interactive_details =  { 
         label: propMetaData.label, 
         postLabel:propMetaData.postLabel,
-        placeholder : propMetaData.placeholder 
+        placeholder : propMetaData.placeholder
       }
 
 
@@ -370,10 +467,6 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
   }
 
 
-
-
-
-  
     
     var o = deepMerge(commonOptions, typeOptions, propMetaData.formlyOptions); 
     //debugger;
