@@ -1,0 +1,27 @@
+{
+  "element_id": "0",
+  "element_type": "form",
+  "metadata": [],
+  "children": [
+    {
+      "element_id": "1",
+      "element_type": "interactive",
+      "interactive_type": "radio",
+      "interactive_details": {
+        "label": "Radio Test",
+        "options": [
+          {
+            "element_id": "2",
+            "label": "Option one"
+          },
+          {
+            "element_id": "3",
+            "label": "Option two"
+          }
+        ]
+      },
+      "mapping_key": "mappingKey-1",
+      "validators": []
+    }
+  ]
+}

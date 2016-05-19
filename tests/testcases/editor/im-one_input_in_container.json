@@ -1,0 +1,42 @@
+{
+    "default": [
+        {
+            "$$hashKey": "object:47",
+            "component": "container",
+            "customModel": {},
+            "description": "Container title",
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-container-83",
+            "index": 0,
+            "isContainer": true,
+            "label": "Container",
+            "noFormControl": true,
+            "options": [],
+            "placeholder": "",
+            "required": false,
+            "templateOptions": {},
+            "validation": "/.*/"
+        }
+    ],
+    "default-container-83": [
+        {
+            "$$hashKey": "object:64",
+            "component": "textInput",
+            "customModel": {},
+            "description": "description",
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-container-83-textInput-7149",
+            "index": 0,
+            "isContainer": false,
+            "label": "Text Input",
+            "noFormControl": true,
+            "options": [],
+            "placeholder": "placeholder",
+            "required": false,
+            "templateOptions": {},
+            "validation": "/.*/"
+        }
+    ]
+}

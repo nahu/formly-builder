@@ -1,0 +1,21 @@
+[{
+    "component": "radio",
+    "customModel": {},
+    "description": "description",
+    "editable": true,
+    "expressionProperties": "",
+    "id": "default-radio-359",
+    "index": 0,
+    "isContainer": false,
+    "label": "Radio Test",
+    "noFormControl": true,
+    "options": [
+        "Option one",
+        "Option two"
+    ],
+    "placeholder": "placeholder",
+    "required": false,
+    "templateOptions": {},
+    "validation": ""
+}]
+

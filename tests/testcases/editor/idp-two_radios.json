@@ -1,0 +1,48 @@
+{
+  "element_id": "0",
+  "element_type": "form",
+  "metadata": [],
+  "children": [
+    {
+      "element_id": "1",
+      "element_type": "interactive",
+      "interactive_type": "radio",
+      "interactive_details": {
+        "label": "Radio Test",
+        "options": [
+          {
+            "element_id": "2",
+            "label": "Option one"
+          },
+          {
+            "element_id": "3",
+            "label": "Option two"
+          }
+        ]
+      },
+      "mapping_key": "mappingKey-1",
+      "validators": []
+    },
+
+    {
+      "element_id": "4",
+      "element_type": "interactive",
+      "interactive_type": "radio",
+      "interactive_details": {
+        "label": "Radio Test 2",
+        "options": [
+          {
+            "element_id": "5",
+            "label": "Option one 2"
+          },
+          {
+            "element_id": "6",
+            "label": "Option two 2"
+          }
+        ]
+      },
+      "mapping_key": "mappingKey-4",
+      "validators": []
+    }
+  ]
+}

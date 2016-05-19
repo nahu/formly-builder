@@ -1,0 +1,32 @@
+{
+  "element_id": "0",
+  "element_type": "form",
+  "metadata": [],
+  "children": [
+    {
+      "element_id": "1",
+      "element_type": "interactive",
+      "interactive_type": "dropdown",
+      "interactive_details": {
+        "defaultOption": 1,
+        "label": "Dropdown Test",
+        "options": [
+          {
+            "element_id": "2",
+            "label": "First option"
+          },
+          {
+            "element_id": "3",
+            "label": "Second option"
+          },
+          {
+            "element_id": "4",
+            "label": "Third option"
+          }
+        ]
+      },
+      "mapping_key": "mappingKey-1",
+      "validators": []
+    }
+  ]
+}

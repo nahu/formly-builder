@@ -1,0 +1,24 @@
+[
+    {
+        "component": "select",
+        "customModel": {},
+        "description": "description",
+        "editable": true,
+        "expressionProperties": "",
+        "id": "default-select-8076",
+        "index": 0,
+        "isContainer": false,
+        "label": "Dropdown Test",
+        "noFormControl": true,
+        "options": [
+          "First option",
+          "Second option",
+
+          "Third option"
+        ],
+        "placeholder": "placeholder",
+        "required": false,
+        "templateOptions": {},
+        "validation": ""
+    }
+]

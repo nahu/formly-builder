@@ -1,0 +1,46 @@
+[
+  {
+    "$$hashKey": "object:60",
+    "component": "select",
+    "customModel": {},
+    "description": "description",
+    "editable": true,
+    "expressionProperties": "",
+    "id": "default-select-8076",
+    "index": 0,
+    "isContainer": false,
+    "label": "Dropdown Test 1",
+    "noFormControl": true,
+    "options": [
+      "1/1"
+    ],
+    "placeholder": "placeholder",
+    "required": false,
+    "templateOptions": {},
+    "validation": ""
+  },
+  {
+    "$$hashKey": "object:70",
+    "component": "select",
+    "customModel": {
+      "postLabel":"Post Dropdown Test 2"
+    },
+    "description": "description",
+    "editable": true,
+    "expressionProperties": "",
+    "id": "default-select-6612",
+    "index": 1,
+    "isContainer": false,
+    "label": "Dropdown Test 2",
+    "noFormControl": true,
+    "options": [
+      "1/2",
+      "2/2"
+    ],
+    "placeholder": "placeholder",
+    "required": false,
+    "templateOptions": {},
+    "validation": ""
+  }
+]
+

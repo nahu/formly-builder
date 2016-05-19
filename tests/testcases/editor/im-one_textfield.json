@@ -1,0 +1,18 @@
+[
+  {"component":"textInput",
+  "editable":true,
+  "index":0,
+  "label":"Text Input",
+  "postLabel":"Post Label",
+  "description":"description",
+  "placeholder":"placeholder",
+  "options":[],
+  "required":false,
+  "validation":"/.*/",
+  "id":"default-textInput-1188",
+  "isContainer":false,
+  "templateOptions":{},
+  "expressionProperties":"",
+  "noFormControl":true,
+  "customModel":{},
+  "$$hashKey":"object:50"}]

@@ -1,0 +1,45 @@
+[
+        {
+            "$$hashKey": "object:92",
+            "component": "radio",
+            "customModel": {},
+            "description": "description",
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-radio-337",
+            "index": 0,
+            "isContainer": false,
+            "label": "Radio Test",
+            "noFormControl": true,
+          "options": [
+            "Option one",
+            "Option two"
+
+            ],
+            "placeholder": "placeholder",
+            "required": false,
+            "templateOptions": {},
+            "validation": ""
+        },
+        {
+            "$$hashKey": "object:78",
+            "component": "radio",
+            "customModel": {},
+            "description": "description",
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-radio-8402",
+            "index": 1,
+            "isContainer": false,
+            "label": "Radio Test 2",
+            "noFormControl": true,
+            "options": [
+              "Option one 2",
+              "Option two 2"
+            ],
+            "placeholder": "placeholder",
+            "required": false,
+            "templateOptions": {},
+            "validation": ""
+        }
+]

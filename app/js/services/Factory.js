@@ -46,49 +46,49 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
     {
       var interactive = children[k];
 
-        var interactivechild = interactive;
+      var interactivechild = interactive;
 
-        var q = {
-          "editable":true,
-          "index":c,
-          "description":"description",
-          "required":false,
-          "validation":"/.*/",
-          "isContainer":false,
-          "templateOptions":{},
-          "expressionProperties":"",
-          "noFormControl":true,
-        };
+      var q = {
+        "editable":true,
+        "index":c,
+        "description":"description",
+        "required":false,
+        "validation":"/.*/",
+        "isContainer":false,
+        "templateOptions":{},
+        "expressionProperties":"",
+        "noFormControl":true,
+      };
 
-        var detail = interactivechild.interactive_details
-        q.label = detail.label;
-        q.placeholder = detail.placeholder
-        q.options = [];
+      var detail = interactivechild.interactive_details
+      q.label = detail.label;
+      q.placeholder = detail.placeholder
+      q.options = [];
+      
+      if(interactivechild.interactive_type == "radio")
+      {
+        q.component = "radio";
+        for(var l in detail.options)
+        {
+          var option = detail.options[l]
+          q.options.push(option.label);
+        }
         
-        if(interactivechild.interactive_type == "radio")
+      }
+      else if(interactivechild.interactive_type == "input")
+      {
+        q.component = "textInput";
+        q.customModel = {};
+      }
+      else if(interactivechild.interactive_type == "dropdown")
+      {
+        q.component = "select";
+        for(var l in detail.options)
         {
-          q.component = "radio";
-          for(var l in detail.options)
-          {
-            var option = detail.options[l]
-            q.options.push(option.label);
-          }
-          
+          var option = detail.options[l]
+          q.options.push(option.label);
         }
-        else if(interactivechild.interactive_type == "input")
-        {
-          q.component = "textInput";
-          q.customModel = {};
-        }
-        else if(interactivechild.interactive_type == "dropdown")
-        {
-          q.component = "select";
-           for(var l in detail.options)
-          {
-            var option = detail.options[l]
-            q.options.push(option.label);
-          }
-        }
+      }
 
       if(interactive.element_id)
       {
@@ -98,9 +98,9 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
       {
         q.id = "default-" + q.component + "-" + Math.floor(Math.random() * 9999);
       };
-        
-        def.push(q);
-        c++;
+      
+      def.push(q);
+      c++;
       
     }
 
@@ -122,7 +122,11 @@ var baseID = 1;
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
   function idpAndAngSpec(optionsOrignal, builderForms, recursive = false) {
-    baseID = 0;
+    if(recursive == false)
+    {
+      baseID = 0;
+    };
+
     //debugger;
     var optionsCopy=angular.copy(optionsOrignal);
     var options = optionsCopy || {}; 
@@ -148,8 +152,8 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
           key = field.id;
         var value = "";
         fields.push(
-//          idpSpecFromIM(value, key, field, builderForms,fields)
-          newIdpSpecFromIM(value, key, field, builderForms,fields)
+          //          idpSpecFromIM(value, key, field, builderForms,fields)
+          newIdpSpecFromIM(value, key, field, builderForms, fields)
         );
       }
     });
@@ -192,32 +196,52 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
   function getID() { baseID++; return baseID + ""; }
 
 
+
+  //start new mapping
   function validators(IMElement)
   {
     var validators = [];
     if(IMElement.validation != "")
     {
-      validators.push(IMElement.validation);
+
+      var id = getID();
+      validators.push({
+        "element_id": id,
+        "validator_name": id,
+        "validator_type": "regex",
+        "message": "",
+        "expression": IMElement.validation
+      });
     };
     return validators;
   };
 
   function interactiveType(IMElement)
   {
-    if(IMElement.component == "radio")
-    {
-      return "radio";
-    }
-    else
-    {
-      return "input"
-    };
+    var map = { "radio" : "radio",
+                "select" : "dropdown",
+                "textInput" : "input" };
+    return map[IMElement.component];
+  };
+
+  function isDropdown(IMElement)  {
+    return interactiveType(IMElement) == "dropdown";
+  };
+  function isRadio(IMElement)  {
+    return interactiveType(IMElement) == "radio";
+  };
+  function isInput(IMElement)  {
+    return interactiveType(IMElement) == "input";
+  };
+  function isContainer(IMElement)  {
+    return IMElement.component == "container";
   };
 
   function interactiveDetailsOptions(IMElement)
   {
     var po = {match:false};
-    if(interactiveType(IMElement) == "radio")
+
+    if(isRadio(IMElement) || isDropdown(IMElement))
     {
       po.match = true;
       po.value = [];
@@ -228,53 +252,81 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
           "element_id": getID(),
           "label": s
         });
-      };
-    };
+      }
+    }
+
     return po;
   };
 
+  function getPostLabel(IMElement) {  return IMElement.customModel.postLabel; }
+  
   function interactiveDetails(IMElement)
   {
-
     var o = {
-      label:IMElement.label,
+      label:IMElement.label
     }; 
+
+    var postLabel = getPostLabel(IMElement);
+    if(postLabel)
+    {
+      o.post_label = postLabel;
+    };
+
 
     var parsedOptions = interactiveDetailsOptions(IMElement);
     if(parsedOptions.match != false)
     {
       o.options = parsedOptions.value; 
+      
+      if(isDropdown(IMElement))
+      {
+        o.defaultOption = 1;
+      };
     }
     else
     {
       o.placeholder = IMElement.placeholder
     };
 
-
     return o;
   };
 
+  function elementType(IMElement)
+  {
+    return isContainer(IMElement)? "container" : "interactive";
+  }
+
   function newIdpSpecFromIM(value, key, IMElement, builderForms, formSoFar) {
     var id = getID();
-    
-    
     var el = 
+          {
+            "element_id":id,
+            "element_type":elementType(IMElement),
+          };
+    if(isContainer(IMElement))
     {
-      "element_id":id,
-      "mapping_key":"mappingKey-"+id,
-      "element_type":"interactive",
-      "validators": validators(IMElement),
-      "interactive_details": interactiveDetails(IMElement),
-      "interactive_type": interactiveType(IMElement)
-    };
+      el.label = IMElement.description;
+      el.repeatable = false;
+      el.children = idpAndAngSpec(builderForms[IMElement.id], builderForms, true);
+    }
+    else
+    {
+      el.validators = validators(IMElement);
+      el.interactive_details = interactiveDetails(IMElement);
+      el.interactive_type = interactiveType(IMElement);
+      el.mapping_key = "mappingKey-"+id;
+    }
 
-
-    
     return el;
   }
+  //end new mapping
+
+
 
 
   //Build IM Element
+
+/*
   function idpSpecFromIM(value, key, propMetaData, builderForms, formSoFar) {
     //get label
     var label, placeholder;
@@ -288,7 +340,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
       placeholder = propMetaData.placeholder;
 
     var element = {};
-  var commonOptions = {};
+    var commonOptions = {};
 
     if (propMetaData.hasOwnProperty('expressionProperties') && propMetaData.expressionProperties) {
       commonOptions.expressionProperties = angular.fromJson("{"+propMetaData.expressionProperties+"}");
@@ -296,7 +348,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
     var typeOf = propMetaData.component || typeof value;
     var typeOptions = {};
-   
+    
     commonOptions.customModel = {};
     commonOptions.customModel.foobar = function(){alert('ere');};
     commonOptions.element_id = getID();
@@ -402,69 +454,69 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         break;
         
         /*
-    case 'repeatSection': {
-      
-      typeOptions = {
-        type: 'repeatSection',
-        templateOptions: {
-          fields: getNestedFields(builderForms, propMetaData),
-          btnText:propMetaData.templateOptions.btnText//'Add another investment'
+         case 'repeatSection': {
+         
+         typeOptions = {
+         type: 'repeatSection',
+         templateOptions: {
+         fields: getNestedFields(builderForms, propMetaData),
+         btnText:propMetaData.templateOptions.btnText//'Add another investment'
+         }
+         
+         
+         };
+
+         break;
+         }
+
+        //     case 'multiField': {
+        
+        //       typeOptions = {
+        //         type: 'multiField',
+        //         templateOptions: {
+        //           fields: getNestedFields(builderForms, propMetaData)
+        //         }
+        //       };
+
+        //       break;
+        //     }
+        //     case 'radioFlat': {
+        //       typeOptions = {
+        //         type: 'radioFlat',
+        //         'defaultValue':'Yes',
+        //         templateOptions: {
+        //           options: propMetaData.options.map(function (option) {
+        //             return {
+        //               name: makeHumanReadable(option),
+        //               value: option
+        //             };
+        //           }),
+        //           keyProp: name,
+        //           valueProp:value
+        //         }
+        //       };
+
+        //       break;
+        //     }
+        
+      case 'select':
+        {
+          typeOptions = {
+            type: 'select',
+            templateOptions: {
+              options: propMetaData.options.map(function (option) {
+                return {
+                  name: makeHumanReadable(option),
+                  value: option
+                };
+              })
+            }
+          };
+          break;
         }
-        
-        
-      };
-
-      break;
-    }
-    */
-//     case 'multiField': {
-      
-//       typeOptions = {
-//         type: 'multiField',
-//         templateOptions: {
-//           fields: getNestedFields(builderForms, propMetaData)
-//         }
-//       };
-
-//       break;
-//     }
-//     case 'radioFlat': {
-//       typeOptions = {
-//         type: 'radioFlat',
-//         'defaultValue':'Yes',
-//         templateOptions: {
-//           options: propMetaData.options.map(function (option) {
-//             return {
-//               name: makeHumanReadable(option),
-//               value: option
-//             };
-//           }),
-//           keyProp: name,
-//           valueProp:value
-//         }
-//       };
-
-//       break;
-//     }
-   
-    case 'select':
-      {
-        typeOptions = {
-          type: 'select',
-          templateOptions: {
-            options: propMetaData.options.map(function (option) {
-              return {
-                name: makeHumanReadable(option),
-                value: option
-              };
-            })
-          }
-        };
-        break;
       }
-    }
       
-  }
+    }
 
 
     
@@ -472,6 +524,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     //debugger;
     return o;
   }
+*/
 
   function makeHumanReadable(key) {
     if (key) {
@@ -487,4 +540,4 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
   }
 }
 
-        ]);
+      ]);

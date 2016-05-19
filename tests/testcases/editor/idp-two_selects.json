@@ -1,0 +1,47 @@
+
+{
+    "element_id": "0",
+    "element_type": "form",
+    "metadata": [],
+    "children": [
+        {
+            "element_id": "1",
+            "element_type": "interactive",
+            "interactive_type": "dropdown",
+            "interactive_details": {
+                "defaultOption": 1,
+                "label": "Dropdown Test 1",
+                "options": [
+                    {
+                        "element_id": "2",
+                        "label": "1/1"
+                    }
+                ]
+            },
+            "mapping_key": "mappingKey-1",
+            "validators": []
+        },
+        {
+            "element_id": "3",
+            "element_type": "interactive",
+            "interactive_type": "dropdown",
+            "interactive_details": {
+                "defaultOption": 1,
+                "label": "Dropdown Test 2",
+                "post_label": "Post Dropdown Test 2",
+                "options": [
+                    {
+                        "element_id": "4",
+                        "label": "1/2"
+                    },
+                    {
+                        "element_id": "5",
+                        "label": "2/2"
+                    }
+                ]
+            },
+            "mapping_key": "mappingKey-3",
+            "validators": []
+        }
+    ]
+}

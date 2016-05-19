@@ -1,0 +1,45 @@
+
+{
+  "element_id":"0",
+  "element_type":"form",
+  "metadata":[],
+  "children":[
+    {
+      "element_id":"1",
+      "element_type":"container",
+      "label":"Container title",
+      "repeatable":false,
+      "children":[
+        {
+          "element_id":"1",
+          "element_type":"container",
+          "label":"Container title",
+          "repeatable":false,
+          "children":[
+            {
+              "element_id":"2",
+              "mapping_key":"mappingKey-2",
+              "element_type":"interactive",
+              "validators":[
+                {
+                  "element_id": "3",
+                  "validator_name": "3",
+                  "validator_type": "regex",
+                  "message": "",
+                  "expression": "/.*/"
+                }
+
+              ],
+              "interactive_details": {
+                "label":"Text Input",
+                "placeholder":"placeholder"
+              },
+              "interactive_type":"input"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
