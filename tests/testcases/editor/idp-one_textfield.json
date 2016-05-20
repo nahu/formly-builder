@@ -18,6 +18,7 @@
       ],
       "interactive_details": {
         "label":"Text Input",
+        "post_label":"Post Label",
         "placeholder":"placeholder"
       },
       "interactive_type":"input"

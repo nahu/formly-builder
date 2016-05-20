@@ -50,8 +50,46 @@ function logMissing(ob1,ob2)
   console.log(JSON.stringify(getMissing(ob2,ob1),null, '\t'));
 };
 
-describe('IDP and angular from IM', function () {
-  var inputFsJson, outputJson, expectedOutputJson, jsonTransformer;
+
+describe('IM from IDP', function () {
+  var inputFsJson, outputJson, expectedOutputJson;
+  beforeEach(module("formlyExample"));
+
+  beforeEach(function () {
+    jasmine.getJSONFixtures().fixturesPath='base/idp-editor/tests/testcases/editor';
+    inputFsJson = {};
+    expectedOutputJson = {};
+    outputJson = {};
+  });
+
+
+
+  var toIMMapper;
+  beforeEach(inject(function(_getEditorConfig_) {
+    toIMMapper = _getEditorConfig_ ;
+  }));
+
+
+  it("maps empty form ",function(){
+    var emptyIdp = {"element_id":"0","element_type":"form","metadata":[],"children":[]};
+    var mapped = toIMMapper.mapIdpSpecToIM(emptyIdp);
+    expect(mapped).toEqual({default:[]});
+  });
+
+  it("maps single textfield back",function(){
+
+  });
+
+  //    var builderForms = getJSONFixture(imPath)
+
+
+});
+
+
+
+
+describe('IDP from IM', function () {
+  var inputFsJson, outputJson, expectedOutputJson;
 
   function testJsonMapping(result, expectedpath, log = false)
   {
@@ -140,15 +178,12 @@ describe('IDP and angular from IM', function () {
     var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_input_in_container.json');
     testJsonMapping(resIdpSpec, "idp-one_input_in_container.json");
   });
-/*
+
   it("maps a textfields in a container inside a container", function(){
     var resIdpSpec = resultIDPSpecFromBuilderForm('im-textfield_in_container_in_container.json');
     testJsonMapping(resIdpSpec, "idp-textfield_in_container_in_container.json");
   });
-*/
-});
-
-
-describe('IM from IDP', function () {
 
 });
+
+

@@ -267,6 +267,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     }; 
 
     var postLabel = getPostLabel(IMElement);
+//    console.log(postLabel);
     if(postLabel)
     {
       o.post_label = postLabel;
@@ -305,7 +306,8 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
           };
     if(isContainer(IMElement))
     {
-      el.label = IMElement.description;
+
+      el.label = IMElement.label;
       el.repeatable = false;
       el.children = idpAndAngSpec(builderForms[IMElement.id], builderForms, true);
     }

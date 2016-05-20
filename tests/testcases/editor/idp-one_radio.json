@@ -9,6 +9,7 @@
       "interactive_type": "radio",
       "interactive_details": {
         "label": "Radio Test",
+        "post_label":"Post Label Radio",
         "options": [
           {
             "element_id": "2",

@@ -1,6 +1,8 @@
 [{
     "component": "radio",
-    "customModel": {},
+  "customModel": {
+    "postLabel":"Post Label Radio"
+  },
     "description": "description",
     "editable": true,
     "expressionProperties": "",
@@ -15,7 +17,9 @@
     ],
     "placeholder": "placeholder",
     "required": false,
-    "templateOptions": {},
+  "templateOptions": {
+
+  },
     "validation": ""
 }]
 
