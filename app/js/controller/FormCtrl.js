@@ -45,8 +45,8 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   vm.getConnector = function(){
     return editorconnector;
   };
-  
-  editorconnector.loadIDs(function(response, status){
+  //load initial ids
+  editorconnector.loadIDs(function(response, status) {
 
     var ids = response.formList;
     var fields = [];

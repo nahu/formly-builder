@@ -1,36 +1,41 @@
-[{"component":"textInput",
-  "editable":true,
-  "index":0,
-  "label":"Text Input",
-  "postLabel":"Post Label",
-  "description":"description",
-  "placeholder":"placeholder",
-  "options":[],
-  "required":false,
-  "validation":"/foo.*/",
-  "id":"default-textInput-1188",
-  "isContainer":false,
-  "templateOptions":{},
-  "expressionProperties":"",
-  "noFormControl":true,
-  "customModel":{},
-  "$$hashKey":"object:50"},
- {
-   "component":"textInput",
-  "editable":true,
-  "index":1,
-  "label":"Text Input 2",
-  "postLabel":"Post Label",
-  "description":"description 2",
-  "placeholder":"placeholder 2",
-  "options":[],
-  "required":false,
-  "validation":"/bar.*/",
-  "id":"default-textInput-4321",
-  "isContainer":false,
-  "templateOptions":{},
-  "expressionProperties":"",
-  "noFormControl":true,
-  "customModel":{},
-  "$$hashKey":"object:51"}
-]
+{
+    "default": [
+        {
+            "component": "textInput",
+            "customModel": {
+                "postLabel": "Post Label 1"
+            },
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-textInput-1",
+            "index": 0,
+            "isContainer": false,
+            "label": "Text Input",
+            "noFormControl": true,
+            "options": [],
+            "placeholder": "placeholder",
+
+            "required": false,
+            "templateOptions": {},
+            "validation": "/foo.*/"
+        },
+        {
+            "component": "textInput",
+            "customModel": {
+                "postLabel": "Post Label 2"
+            },
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-textInput-3",
+            "index": 1,
+            "isContainer": false,
+            "label": "Text Input 2",
+            "noFormControl": true,
+            "options": [],
+            "placeholder": "placeholder 2",
+            "required": false,
+            "templateOptions": {},
+            "validation": "/bar.*/"
+        }
+    ]
+}

@@ -1,25 +1,24 @@
-[{
-    "component": "radio",
-  "customModel": {
-    "postLabel":"Post Label Radio"
-  },
-    "description": "description",
-    "editable": true,
-    "expressionProperties": "",
-    "id": "default-radio-359",
-    "index": 0,
-    "isContainer": false,
-    "label": "Radio Test",
-    "noFormControl": true,
-    "options": [
-        "Option one",
-        "Option two"
-    ],
-    "placeholder": "placeholder",
-    "required": false,
-  "templateOptions": {
-
-  },
-    "validation": ""
-}]
-
+{
+    "default": [
+        {
+            "component": "radio",
+            "customModel": {
+                "postLabel": "Post Label Radio"
+            },
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-radio-1",
+            "index": 0,
+            "isContainer": false,
+            "label": "Radio Test",
+            "noFormControl": true,
+            "options": [
+                "Option one",
+                "Option two"
+            ],
+            "required": false,
+            "templateOptions": {},
+            "validation": ""
+        }
+    ]
+}

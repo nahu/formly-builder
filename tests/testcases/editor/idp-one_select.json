@@ -8,7 +8,7 @@
       "element_type": "interactive",
       "interactive_type": "dropdown",
       "interactive_details": {
-        "defaultOption": 1,
+        "default_option": 1,
         "label": "Dropdown Test",
         "options": [
           {

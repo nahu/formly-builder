@@ -1,7 +1,6 @@
 "use strict";
 //var EditorConfig = injector.get("getEditorConfig");
 
-
 function getMissing(obj1, obj2) {
 
   function getClass(obj) {
@@ -27,7 +26,7 @@ function getMissing(obj1, obj2) {
           }
         } else {
           if(o2[k] != o1[k]) {
-            acc[k] = "is: ->" + o2[k] + "<- should be: ->" + o1[k]+"<-";
+            acc[k] = "is: ->" + o2[k] + "<- value should be: ->" + o1[k]+"<-";
             mis = true;
           }
         }
@@ -44,43 +43,91 @@ function getMissing(obj1, obj2) {
 
 
 
-function logMissing(ob1,ob2)
+function logMissing(ob1,ob2, fullLog)
 {
-  console.log(JSON.stringify(getMissing(ob1,ob2),null, '\t'));
-  console.log(JSON.stringify(getMissing(ob2,ob1),null, '\t'));
+    console.log('actual: ' + JSON.stringify(getMissing(ob1,ob2),null, '\t'));
+    console.log('expected' + JSON.stringify(getMissing(ob2,ob1),null, '\t'));
+    if(fullLog)
+    {
+        console.log('full actual: '+ JSON.stringify(ob1, null, '\t'));
+        console.log('full expected: '+ JSON.stringify(ob2, null, '\t'));
+    };
+
 };
 
 
+
 describe('IM from IDP', function () {
-  var inputFsJson, outputJson, expectedOutputJson;
-  beforeEach(module("formlyExample"));
+    var inputFsJson, outputJson, expectedOutputJson;
+    function testJsonMapping_idp_to_im(idpPath, imPath, log = false)
+    {
+        var input = getJSONFixture(idpPath);
+        var result = toIMMapper.mapIdpSpecToIM(input);
+        var expected = getJSONFixture(imPath);
 
-  beforeEach(function () {
-    jasmine.getJSONFixtures().fixturesPath='base/idp-editor/tests/testcases/editor';
-    inputFsJson = {};
-    expectedOutputJson = {};
-    outputJson = {};
-  });
+        if(angular.equals(expected, result) == false)
+        {
+            logMissing(result, expected, log);
+        };
+        expect(result).toEqual(expected);
+    }
+
+    beforeEach(module("formlyExample"));
+
+    beforeEach(function () {
+        jasmine.getJSONFixtures().fixturesPath='base/idp-editor/tests/testcases/editor';
+
+        inputFsJson = {};
+        expectedOutputJson = {};
+        outputJson = {};
+    });
 
 
+    var toIMMapper;
+    beforeEach(inject(function(_getEditorConfig_) {
+        toIMMapper = _getEditorConfig_ ;
+    }));
 
-  var toIMMapper;
-  beforeEach(inject(function(_getEditorConfig_) {
-    toIMMapper = _getEditorConfig_ ;
-  }));
+
+    it("maps empty form ",function(){
+        var emptyIdp = {"element_id":"0","element_type":"form","metadata":[],"children":[]};
+        var mapped = toIMMapper.mapIdpSpecToIM(emptyIdp);
+        expect(mapped).toEqual({default:[]});
+    });
+
+    it("maps single textfield from idp to im",function(){
+        testJsonMapping_idp_to_im("idp-one_textfield.json",'im-one_textfield.json');
+    });
 
 
-  it("maps empty form ",function(){
-    var emptyIdp = {"element_id":"0","element_type":"form","metadata":[],"children":[]};
-    var mapped = toIMMapper.mapIdpSpecToIM(emptyIdp);
-    expect(mapped).toEqual({default:[]});
-  });
+    it("maps two textfield from idp to im",function(){
+        testJsonMapping_idp_to_im("idp-two_textfields.json",'im-two_textfields.json');
+    });
 
-  it("maps single textfield back",function(){
+    it("maps one radio from idp to im",function(){
+        testJsonMapping_idp_to_im("idp-one_radio.json",'im-one_radio.json');
+    });
 
-  });
+    it("maps two radios from idp to im",function(){
+        testJsonMapping_idp_to_im("idp-two_radios.json",'im-two_radios.json');
+    });
 
-  //    var builderForms = getJSONFixture(imPath)
+    it("maps single dropdown from idp to im",function(){
+        testJsonMapping_idp_to_im("idp-one_select.json","im-one_select.json");
+    });
+
+    it("maps two dropdowns from idp to im",function(){
+        testJsonMapping_idp_to_im("idp-two_selects.json","im-two_selects.json");
+    });
+
+    it("maps a textfield inside a container from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-one_input_in_container.json","im-one_input_in_container.json");
+    });
+
+    it("maps a textfield inside a container inside a container from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-textfield_in_container_in_container.json","im-textfield_in_container_in_container.json");
+    });
+
 
 
 });
@@ -90,17 +137,17 @@ describe('IM from IDP', function () {
 
 describe('IDP from IM', function () {
   var inputFsJson, outputJson, expectedOutputJson;
-
-  function testJsonMapping(result, expectedpath, log = false)
-  {
-    var expected = getJSONFixture(expectedpath);
-
-    if(angular.equals(expected, result) == false)
+    function testJsonMapping(result, expectedpath, log = false)
     {
-      logMissing(result, expected);
-    };
-    expect(result).toEqual(expected);
-  }
+        var expected = getJSONFixture(expectedpath);
+
+        if(angular.equals(expected, result) == false)
+        {
+            logMissing(result, expected, log);
+        };
+        expect(result).toEqual(expected);
+    }
+
 
   beforeEach(module("formlyExample"));
   var OIMConfigMapper;
@@ -116,33 +163,34 @@ describe('IDP from IM', function () {
   });
 
 
-  it("maps empty form from IM to IDP",function(){
-    var resultIM = OIMConfigMapper.getOIMConfig([], {default:[]});
-    var resIdpSpec = resultIM.idpSpec;
-    var expectedIdpSpec = {"element_id":"0","element_type":"form","metadata":[],"children":[]};
-    expect(resIdpSpec).toEqual(expectedIdpSpec);
-  });
+    it("maps empty form from IM to IDP",function(){
+        var resultIM = OIMConfigMapper.getOIMConfig([], {default:[]});
+        var resIdpSpec = resultIM.idpSpec;
+        var expectedIdpSpec = {"element_id":"0","element_type":"form","metadata":[],"children":[]};
+        expect(resIdpSpec).toEqual(expectedIdpSpec);
+    });
 
-  function resultIDPSpecFromBuilderForm(imPath, idpPatch)
-  {
-    var builderForms = getJSONFixture(imPath)
-    var defaultElements = builderForms["default"];
-    var resultOIM = OIMConfigMapper.getOIMConfig(defaultElements, builderForms);
+    function resultIDPSpecFromBuilderForm(imPath)
+    {
+        var builderForms = getJSONFixture(imPath)
+        var defaultElements = builderForms["default"];
+        var resultOIM = OIMConfigMapper.getOIMConfig(defaultElements, builderForms);
 
-    var resIdpSpec = resultOIM.idpSpec;
-    return resIdpSpec;
-  }
+        var resIdpSpec = resultOIM.idpSpec;
+        return resIdpSpec;
+    }
 
-  function resultIDPSpec(imPath)
-  {
-    var optionsOriginal = getJSONFixture(imPath)
-    var builderForms = {"default":[optionsOriginal[0]]};
-    var resultOIM = OIMConfigMapper.getOIMConfig(optionsOriginal, builderForms);
+    function resultIDPSpec(imPath)
+    {
+        return resultIDPSpecFromBuilderForm(imPath);
 
-    var resIdpSpec = resultOIM.idpSpec;
-    return resIdpSpec;
-  };
+        var optionsOriginal = getJSONFixture(imPath)
+        var resultOIM = OIMConfigMapper.getOIMConfig(optionsOriginal["default"], optionsOriginal);
 
+        var resIdpSpec = resultOIM.idpSpec;
+
+        return resIdpSpec;
+    };
 
   it("maps one textfield",function(){
     var resIdpSpec = resultIDPSpec('im-one_textfield.json');
@@ -171,7 +219,7 @@ describe('IDP from IM', function () {
 
   it("maps two dropdowns with one post_label",function(){
     var resIdpSpec = resultIDPSpec('im-two_selects.json');
-    testJsonMapping(resIdpSpec, "idp-two_selects.json");
+    testJsonMapping(resIdpSpec, "idp-two_selects.json", true);
   });
 
   it("maps a textfield inside a container", function(){

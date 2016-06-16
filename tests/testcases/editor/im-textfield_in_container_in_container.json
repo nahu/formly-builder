@@ -1,13 +1,11 @@
 {
     "default": [
         {
-            "$$hashKey": "object:47",
             "component": "container",
             "customModel": {},
-            "description": "",
             "editable": true,
             "expressionProperties": "",
-            "id": "default-container-5517",
+            "id": "default-container-1",
             "index": 0,
             "isContainer": true,
             "label": "Container title",
@@ -19,16 +17,14 @@
             "validation": ""
         }
     ],
-    "default-container-5517": [
+    "default-container-1": [
         {
-            "$$hashKey": "object:57",
             "component": "container",
             "customModel": {},
-            "description": "",
             "editable": true,
             "expressionProperties": "",
-            "id": "default-container-5517-container-30",
-            "index": 0,
+            "id": "default-container-1-container-2",
+            "index": 1,
             "isContainer": true,
             "label": "Container title",
             "noFormControl": true,
@@ -39,16 +35,14 @@
             "validation": ""
         }
     ],
-    "default-container-5517-container-30": [
+    "default-container-1-container-2": [
         {
-            "$$hashKey": "object:66",
             "component": "textInput",
             "customModel": {},
-            "description": "description",
             "editable": true,
             "expressionProperties": "",
-            "id": "default-container-5517-container-30-textInput-6150",
-            "index": 0,
+            "id": "default-container-1-container-2-textInput-3",
+            "index": 2,
             "isContainer": false,
             "label": "Text Input",
             "noFormControl": true,

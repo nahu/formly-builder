@@ -1,114 +1,209 @@
 
 app.constant('deepMerge', (function () {
-  var objectPrototype = Object.getPrototypeOf({});
-  var arrayPrototype = Object.getPrototypeOf([]);
+    var objectPrototype = Object.getPrototypeOf({});
+    var arrayPrototype = Object.getPrototypeOf([]);
 
-  return deepMerge;
+    return deepMerge;
 
-  function deepMerge() {
-    var res = arguments[0];
-    angular.forEach(arguments, function (src, index) {
-      if (src && (index > 0 || false)) {
-        angular.forEach(src, function (val, prop) {
-          if (typeof val === "object" && val !== null && isObjectOrArrayLike(val)) {
-            var deepRes = res[prop];
-            if (!deepRes && Array.isArray(val)) {
-              deepRes = [];
-            } else if (!deepRes) {
-              deepRes = {};
+    function deepMerge() {
+        var res = arguments[0];
+        angular.forEach(arguments, function (src, index) {
+            if (src && (index > 0 || false)) {
+                angular.forEach(src, function (val, prop) {
+                    if (typeof val === "object" && val !== null && isObjectOrArrayLike(val)) {
+                        var deepRes = res[prop];
+                        if (!deepRes && Array.isArray(val)) {
+                            deepRes = [];
+                        } else if (!deepRes) {
+                            deepRes = {};
+                        }
+                        res[prop] = deepMerge(deepRes, val);
+                    } else {
+                        res[prop] = val;
+                    }
+                });
             }
-            res[prop] = deepMerge(deepRes, val);
-          } else {
-            res[prop] = val;
-          }
         });
-      }
-    });
-    return res;
-  }
+        return res;
+    }
 
-  function isObjectOrArrayLike(val) {
-    var proto = Object.getPrototypeOf(val);
-    return proto === objectPrototype || proto === arrayPrototype;
-  }
+    function isObjectOrArrayLike(val) {
+        var proto = Object.getPrototypeOf(val);
+        return proto === objectPrototype || proto === arrayPrototype;
+    }
 })());
+
+
 
 
 //build IM here!
 app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
-  function mapIdpSpecToIM(spec,$builder)
-  {
-    var c = 0;
-    var def = [];
 
-    var children = spec.children;
-    for(var k in children)
+    function getValidation(o)
     {
-      var interactive = children[k];
-
-      var interactivechild = interactive;
-
-      var q = {
-        "editable":true,
-        "index":c,
-        "description":"description",
-        "required":false,
-        "validation":"/.*/",
-        "isContainer":false,
-        "templateOptions":{},
-        "expressionProperties":"",
-        "noFormControl":true,
-      };
-
-      var detail = interactivechild.interactive_details
-      q.label = detail.label;
-      q.placeholder = detail.placeholder
-      q.options = [];
-      
-      if(interactivechild.interactive_type == "radio")
-      {
-        q.component = "radio";
-        for(var l in detail.options)
+        if(o.validators.length > 0)
         {
-          var option = detail.options[l]
-          q.options.push(option.label);
+            return o.validators[0].expression;
         }
+        else
+        {
+            return "";
+        };
+    };
+
+    //ast 
+    function ASTNode(el) {
+        this.parrent = undefined;
+        this.element = el;
+        this.children = [];
+        this.id = -1;
+        this.maxID = -1;
+
+        this.getElement = function(){ return this.element};
+        this.getParent = function(){ return this.parent;  };
+        this.getChildren = function()  { return this.children;  };    
+        this.getID = function(){ return this.id };
+        this.getMaxID = function(){ return this.maxID; };
         
-      }
-      else if(interactivechild.interactive_type == "input")
-      {
-        q.component = "textInput";
-        q.customModel = {};
-      }
-      else if(interactivechild.interactive_type == "dropdown")
-      {
-        q.component = "select";
-        for(var l in detail.options)
-        {
-          var option = detail.options[l]
-          q.options.push(option.label);
-        }
-      }
+        this.addNode = function(n) {
+            n.parent = this;
+            this.children.push(n);
+        };
 
-      if(interactive.element_id)
-      {
-        q.id = interactive.element_id;
-      }
-      else
-      {
-        q.id = "default-" + q.component + "-" + Math.floor(Math.random() * 9999);
-      };
-      
-      def.push(q);
-      c++;
-      
+        this.setMaxID = function(maxID) {  this.maxID = maxID; };
+        this.setID = function(mid) { this.id = mid  };        
+        this.getElementType = function() {  return this.element.element_type;   };
+        this.getInteractiveType = function(){ return this.element.interactive_type;  };
+        this.isRoot = function(){ return this.parent == undefined};
+        this.getFullID = function() { return this.isRoot() ? "default" : this.parent.getFullID() + "-" + this.getMappedName() + "-"+ this.element.element_id };
+        this.getMappedName = function(){
+            var m = { "radio":"radio",
+                      "input":"textInput",
+                      "dropdown":"select" };
+            return (this.getElementType() == "container")? "container" : m[this.getInteractiveType()];
+        };
+
+        this.print = function(indent){
+            if(indent == undefined){ indent = 0; };
+            console.log("   ".repeat(indent) + "i'm " + this.element.element_type + " id: " + this.element.element_id);
+            if(this.children.length > 0) {
+                console.log("   ".repeat(indent) + "children:");
+                for(var k in this.children) {
+                    this.children[k].print(indent+1);
+                };
+            };
+        };        
+
+    };
+    
+    function buildAst(idp, id)  {
+        var currentNode = new ASTNode(idp);
+        currentNode.setID(id);
+        currentNode.setMaxID(id);
+        if(idp.children && idp.children.length > 0)  {  //n has children
+            for(var k in idp.children)  {
+                var childIDP = idp.children[k]
+                var childNode = buildAst(childIDP, currentNode.getMaxID() + 1)
+                currentNode.setMaxID(childNode.getMaxID());
+                currentNode.addNode(childNode);
+            };
+        };
+        return currentNode;
+    };
+
+    function mapIdpSpecToIM(spec,$builder)  {
+        var rootNode = buildAst(spec, -1);
+//        console.log("\n\n");
+//        rootNode.print();
+        return mapForm(spec, $builder, rootNode);
     }
 
-    var im = { "default":def };                
-    return im;
-  }
+    function mapElement(node, im) {
+        var key = node.getParent().getFullID();
+        im[key] = im[key] || [];
 
-  return {"mapIdpSpecToIM" : mapIdpSpecToIM };
+        var interactive = node.getElement();
+        var q = {
+            "editable":true,
+            "index":node.id,
+            "required":false,
+            "isContainer":true,
+            "templateOptions":{},
+            "expressionProperties":"",
+            "noFormControl":true,
+        };
+
+        var id = node.getFullID();
+        q.id = id;
+        q.customModel = {};
+        q.options = [];
+
+        if(node.getElementType() != "container")
+        {
+            q.validation = getValidation(interactive)
+            var detail = interactive.interactive_details
+            q.label = detail.label;
+        
+            if(detail.placeholder) {
+                q.placeholder = detail.placeholder;
+            };
+         
+            if(interactive.interactive_details.post_label != undefined) {
+                q.customModel.postLabel = interactive.interactive_details.post_label
+            };
+            q.isContainer = false;
+
+            var interactiveType = node.getInteractiveType();
+            
+            if(interactiveType == "radio")  {
+                q.component = "radio";
+                for(var l in detail.options)     {
+                    var option = detail.options[l]
+                    q.options.push(option.label);
+                }
+            }
+            else if(interactiveType == "input") {
+                q.component = "textInput";
+
+            }
+            else if(interactiveType == "dropdown") {
+                q.component = "select";
+                for(var l in detail.options) {
+                    var option = detail.options[l]
+                    q.options.push(option.label);
+                }
+            }
+
+            im[key].push(q);
+        }
+        else
+        {
+            q.label = interactive.label;
+            q.validation = "";
+            q.placeholder = "";
+            q.component = "container";
+
+            im[key].push(q);
+            var childNodes = node.getChildren();
+            for(var k in childNodes) {
+                mapElement(childNodes[k], im); 
+            };
+        };
+    }
+    
+    function mapForm(spec, $builder, node) {
+        var im = {"default":[]};
+        var childNodes = node.getChildren();
+
+        for(var k in childNodes)
+        {
+            mapElement(childNodes[k], im); //container must not recurse, or it needs to create another top entry
+        };
+        
+        return im;
+    };
+
+    return {"mapIdpSpecToIM" : mapIdpSpecToIM };
 }]);
 
 /*
@@ -121,425 +216,226 @@ var baseID = 1;
 
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
-  function idpAndAngSpec(optionsOrignal, builderForms, recursive = false) {
-    if(recursive == false)
-    {
-      baseID = 0;
-    };
-
-    //debugger;
-    var optionsCopy=angular.copy(optionsOrignal);
-    var options = optionsCopy || {}; 
-    var form = {};
-    var fields = [];
-
-    angular.forEach(options, function (field, index, options) {
-      
-      // var field = angular.copy(fieldOriginal);
-
-      if (!field.noFormControl)
-      {
-        var content = {                
-          template: field.templateOptions.htmlContent == undefined ? " " : field.templateOptions.htmlContent
-        };
-        fields.push(content);        
-      }
-      else{
-        var key;
-        if (field.key)
-          key = field.key;
-        else if (field.id)
-          key = field.id;
-        var value = "";
-        fields.push(
-          //          idpSpecFromIM(value, key, field, builderForms,fields)
-          newIdpSpecFromIM(value, key, field, builderForms, fields)
-        );
-      }
-    });
-    if(recursive == false)
-    {
-      //wrap in form
-      form.element_id = "0";
-      form.element_type = "form";
-      form.metadata = [];
-      form.children = fields;
-      
-      return {
-        anSpec:angularFromIDPSpec(form),
-        idpSpec:form
-      };
-    }
-    else
-    {
-      return fields;
-    };
-  };
-
-  return {
-    getOIMConfig:idpAndAngSpec,
-    getFormSpecification: mapToFormSpecification
-
-  }
-
-
-  function getNestedFields(builderForms, propMetaData, recursive = false) {
-    var _fields;
-    if (builderForms[propMetaData.id])
-      _fields = getNestedFields(builderForms[propMetaData.id], builderForms, recursive);
-    else
-      _fields = [];
-    return _fields;
-  }
-
-
-  function getID() { baseID++; return baseID + ""; }
-
-
-
-  //start new mapping
-  function validators(IMElement)
-  {
-    var validators = [];
-    if(IMElement.validation != "")
-    {
-
-      var id = getID();
-      validators.push({
-        "element_id": id,
-        "validator_name": id,
-        "validator_type": "regex",
-        "message": "",
-        "expression": IMElement.validation
-      });
-    };
-    return validators;
-  };
-
-  function interactiveType(IMElement)
-  {
-    var map = { "radio" : "radio",
-                "select" : "dropdown",
-                "textInput" : "input" };
-    return map[IMElement.component];
-  };
-
-  function isDropdown(IMElement)  {
-    return interactiveType(IMElement) == "dropdown";
-  };
-  function isRadio(IMElement)  {
-    return interactiveType(IMElement) == "radio";
-  };
-  function isInput(IMElement)  {
-    return interactiveType(IMElement) == "input";
-  };
-  function isContainer(IMElement)  {
-    return IMElement.component == "container";
-  };
-
-  function interactiveDetailsOptions(IMElement)
-  {
-    var po = {match:false};
-
-    if(isRadio(IMElement) || isDropdown(IMElement))
-    {
-      po.match = true;
-      po.value = [];
-      for (var o in IMElement.options)
-      {
-        var s = IMElement.options[o];
-        po.value.push({
-          "element_id": getID(),
-          "label": s
-        });
-      }
-    }
-
-    return po;
-  };
-
-  function getPostLabel(IMElement) {  return IMElement.customModel.postLabel; }
-  
-  function interactiveDetails(IMElement)
-  {
-    var o = {
-      label:IMElement.label
-    }; 
-
-    var postLabel = getPostLabel(IMElement);
-//    console.log(postLabel);
-    if(postLabel)
-    {
-      o.post_label = postLabel;
-    };
-
-
-    var parsedOptions = interactiveDetailsOptions(IMElement);
-    if(parsedOptions.match != false)
-    {
-      o.options = parsedOptions.value; 
-      
-      if(isDropdown(IMElement))
-      {
-        o.defaultOption = 1;
-      };
-    }
-    else
-    {
-      o.placeholder = IMElement.placeholder
-    };
-
-    return o;
-  };
-
-  function elementType(IMElement)
-  {
-    return isContainer(IMElement)? "container" : "interactive";
-  }
-
-  function newIdpSpecFromIM(value, key, IMElement, builderForms, formSoFar) {
-    var id = getID();
-    var el = 
-          {
-            "element_id":id,
-            "element_type":elementType(IMElement),
-          };
-    if(isContainer(IMElement))
-    {
-
-      el.label = IMElement.label;
-      el.repeatable = false;
-      el.children = idpAndAngSpec(builderForms[IMElement.id], builderForms, true);
-    }
-    else
-    {
-      el.validators = validators(IMElement);
-      el.interactive_details = interactiveDetails(IMElement);
-      el.interactive_type = interactiveType(IMElement);
-      el.mapping_key = "mappingKey-"+id;
-    }
-
-    return el;
-  }
-  //end new mapping
-
-
-
-
-  //Build IM Element
-
-/*
-  function idpSpecFromIM(value, key, propMetaData, builderForms, formSoFar) {
-    //get label
-    var label, placeholder;
-    if (propMetaData.label)
-      label = propMetaData.label;
-    else
-      label= makeHumanReadable(key);
-
-    //get placeholder
-    if (propMetaData.placeholder!="")
-      placeholder = propMetaData.placeholder;
-
-    var element = {};
-    var commonOptions = {};
-
-    if (propMetaData.hasOwnProperty('expressionProperties') && propMetaData.expressionProperties) {
-      commonOptions.expressionProperties = angular.fromJson("{"+propMetaData.expressionProperties+"}");
-    }
-
-    var typeOf = propMetaData.component || typeof value;
-    var typeOptions = {};
-    
-    commonOptions.customModel = {};
-    commonOptions.customModel.foobar = function(){alert('ere');};
-    commonOptions.element_id = getID();
-    commonOptions.mapping_id = propMetaData.id;
-    if(propMetaData.isContainer)
-    {
-      //recursive
-      commonOptions.element_type = "container";
-      commonOptions.children = [];
-      commonOptions.repeatable = false;
-      console.log("here");
-      var foo = getNestedFields(builderForms, propMetaData, true);
-      commonOptions.children = foo;
-      console.log(foo);
-      //debugger;
-    }
-    else
-    {
-      debugger
-
-      commonOptions.mapping_key="mappingKey-1";
-      commonOptions.element_type = "interactive";
-      commonOptions.validators = [
+    function idpAndAngSpec(optionsOrignal, builderForms, recursive) {
+        if(recursive == undefined)
         {
-          element_id:"?",
-          validator_name:"test",
-          validator_type:"custom",
-          test:{ 
-            message: "",
-            expression:""
-          },        
-          expression:propMetaData.validation
+            recursive = false;
         }
-      ];//= [propMetaData.validation];
-      commonOptions.interactive_details =  { 
-        label: propMetaData.label, 
-        postLabel:propMetaData.postLabel,
-        placeholder : propMetaData.placeholder
-      }
 
-
-      switch (typeOf) 
-      {
-      case 'textInput': {
-        commonOptions.interactive_type = "input";
-      }
-        break;
-      case 'radio':
+        if(recursive == false)
         {
-          var radioOptions = [];
-          for (var k in propMetaData.options)
-          {
-            var value = propMetaData.options[k];
-            radioOptions.push(
-              {
-                label : value
-              });
-          }
-          commonOptions.interactive_type = "radio";
-          commonOptions.interactive_details.options = radioOptions;
+            baseID = 0;   
         }
-        break;
 
-      case "select":
-        {
+        //debugger;
+        var optionsCopy=angular.copy(optionsOrignal);
+        var options = optionsCopy || {}; 
+        var form = {};
+        var fields = [];
 
+        angular.forEach(options, function (field, index, options) {
+            
+            // var field = angular.copy(fieldOriginal);
 
-          commonOptions.interactive_type = "dropdown";
-          commonOptions.interactive_details.options=[];
-          commonOptions.interactive_details.defaultOption=1;
-          
-          
-          var selectOptions = [];
-          for (var k in propMetaData.options)
-          {
-            var value = propMetaData.options[k];
-            var so = {
-
-              "element_id"  : getID(),
-              "label" : value
-            };
-            commonOptions.interactive_details.options.push(so);
-          }
-
-
-        }
-        break;
-      case "description":
-        {
-          commonOptions.interactive_type = "description";
-          commonOptions.description_type = "text";
-          commonOptions.text =customModel.descriptionModel; 
-          
-        }
-        break;
-
-      case "container":
-        {
-          commonOptions.interactive_type = "container";
-          
-          
-        }
-        break;
-        
-        /*
-         case 'repeatSection': {
-         
-         typeOptions = {
-         type: 'repeatSection',
-         templateOptions: {
-         fields: getNestedFields(builderForms, propMetaData),
-         btnText:propMetaData.templateOptions.btnText//'Add another investment'
-         }
-         
-         
-         };
-
-         break;
-         }
-
-        //     case 'multiField': {
-        
-        //       typeOptions = {
-        //         type: 'multiField',
-        //         templateOptions: {
-        //           fields: getNestedFields(builderForms, propMetaData)
-        //         }
-        //       };
-
-        //       break;
-        //     }
-        //     case 'radioFlat': {
-        //       typeOptions = {
-        //         type: 'radioFlat',
-        //         'defaultValue':'Yes',
-        //         templateOptions: {
-        //           options: propMetaData.options.map(function (option) {
-        //             return {
-        //               name: makeHumanReadable(option),
-        //               value: option
-        //             };
-        //           }),
-        //           keyProp: name,
-        //           valueProp:value
-        //         }
-        //       };
-
-        //       break;
-        //     }
-        
-      case 'select':
-        {
-          typeOptions = {
-            type: 'select',
-            templateOptions: {
-              options: propMetaData.options.map(function (option) {
-                return {
-                  name: makeHumanReadable(option),
-                  value: option
+            if (!field.noFormControl)
+            {
+                var content = {                
+                    template: field.templateOptions.htmlContent == undefined ? " " : field.templateOptions.htmlContent
                 };
-              })
+                fields.push(content);        
             }
-          };
-          break;
+            else{
+                var key;
+                if (field.key)
+                    key = field.key;
+                else if (field.id)
+                    key = field.id;
+                var value = "";
+                fields.push(
+                    //          idpSpecFromIM(value, key, field, builderForms,fields)
+                    newIdpSpecFromIM(value, key, field, builderForms, fields)
+                );
+            }
+        });
+        if(recursive == false)
+        {
+            //wrap in form
+            form.element_id = "0";
+            form.element_type = "form";
+            form.metadata = [];
+            form.children = fields;
+            
+            return {
+                anSpec:angularFromIDPSpec(form),
+                idpSpec:form
+            };
         }
-      }
-      
+        else
+        {
+            return fields;
+        };
+    };
+
+    return {
+        getOIMConfig:idpAndAngSpec,
+        getFormSpecification: mapToFormSpecification
+
     }
 
 
+    function getNestedFields(builderForms, propMetaData, recursive) {
+        if(recursive == undefined)
+        {
+            recursive = false;
+        };
+
+        var _fields;
+        if (builderForms[propMetaData.id])
+            _fields = getNestedFields(builderForms[propMetaData.id], builderForms, recursive);
+        else
+            _fields = [];
+        return _fields;
+    }
+
+
+    function getID() { baseID++; return baseID + ""; }
+
+
+
+    //start new mapping
+    function validators(IMElement)
+    {
+        var validators = [];
+        if(IMElement.validation != "")
+        {
+
+            var id = getID();
+            validators.push({
+                "element_id": id,
+                "validator_name": id,
+                "validator_type": "regex",
+                "message": "",
+                "expression": IMElement.validation
+            });
+        };
+        return validators;
+    };
+
+    function interactiveType(IMElement)
+    {
+        var map = { "radio" : "radio",
+                    "select" : "dropdown",
+                    "textInput" : "input" };
+        return map[IMElement.component];
+    };
+
+    function isDropdown(IMElement)  {
+        return interactiveType(IMElement) == "dropdown";
+    };
+    function isRadio(IMElement)  {
+        return interactiveType(IMElement) == "radio";
+    };
+    function isInput(IMElement)  {
+        return interactiveType(IMElement) == "input";
+    };
+    function isContainer(IMElement)  {
+        return IMElement.component == "container";
+    };
+
+    function interactiveDetailsOptions(IMElement)
+    {
+        var po = {match:false};
+
+        if(isRadio(IMElement) || isDropdown(IMElement))
+        {
+            po.match = true;
+            po.value = [];
+            for (var o in IMElement.options)
+            {
+                var s = IMElement.options[o];
+                po.value.push({
+                    "element_id": getID(),
+                    "label": s
+                });
+            }
+        }
+
+        return po;
+    };
+
+    function getPostLabel(IMElement) {  return IMElement.customModel.postLabel; }
     
-    var o = deepMerge(commonOptions, typeOptions, propMetaData.formlyOptions); 
-    //debugger;
-    return o;
-  }
-*/
+    function interactiveDetails(IMElement)
+    {
+        var o = {
+            label:IMElement.label
+        }; 
 
-  function makeHumanReadable(key) {
-    if (key) {
-      var words = key.match(/[A-Za-z][a-z]*/g);
-      return words.map(capitalize).join(" ");
+        var postLabel = getPostLabel(IMElement);
+        if(postLabel != undefined) {
+            o.post_label = postLabel;
+        }
+
+        var parsedOptions = interactiveDetailsOptions(IMElement);
+        if(parsedOptions.match != false)
+        {
+            o.options = parsedOptions.value; 
+            
+            if(isDropdown(IMElement))
+            {
+                o.default_option = 1;
+            };
+        }
+        else
+        {
+            o.placeholder = IMElement.placeholder
+        };
+
+        return o;
+    };
+
+    function elementType(IMElement)
+    {
+        return isContainer(IMElement)? "container" : "interactive";
     }
-    else
-      return "";
-  }
 
-  function capitalize(word) {
-    return word.charAt(0).toUpperCase() + word.substring(1);
-  }
+    function newIdpSpecFromIM(value, key, IMElement, builderForms, formSoFar) {
+        var id = getID();
+        var el = 
+                {
+                    "element_id":id,
+                    "element_type":elementType(IMElement),
+                };
+        if(isContainer(IMElement))
+        {
+
+            el.label = IMElement.label;
+            el.repeatable = false;
+            el.children = idpAndAngSpec(builderForms[IMElement.id], builderForms, true);
+        }
+        else
+        {
+            el.validators = validators(IMElement);
+            el.interactive_details = interactiveDetails(IMElement);
+            el.interactive_type = interactiveType(IMElement);
+            el.mapping_key = "mappingKey-"+id;
+        }
+
+        return el;
+    }
+
+    function makeHumanReadable(key) {
+        if (key) {
+            var words = key.match(/[A-Za-z][a-z]*/g);
+            return words.map(capitalize).join(" ");
+        }
+        else
+            return "";
+    }
+
+    function capitalize(word) {
+        return word.charAt(0).toUpperCase() + word.substring(1);
+    }
 }
 
-      ]);
+            ]);

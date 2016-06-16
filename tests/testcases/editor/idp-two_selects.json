@@ -9,8 +9,9 @@
             "element_type": "interactive",
             "interactive_type": "dropdown",
             "interactive_details": {
-                "defaultOption": 1,
+                "default_option": 1,
                 "label": "Dropdown Test 1",
+                "post_label":"",
                 "options": [
                     {
                         "element_id": "2",
@@ -26,7 +27,7 @@
             "element_type": "interactive",
             "interactive_type": "dropdown",
             "interactive_details": {
-                "defaultOption": 1,
+                "default_option": 1,
                 "label": "Dropdown Test 2",
                 "post_label": "Post Dropdown Test 2",
                 "options": [

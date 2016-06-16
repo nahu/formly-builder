@@ -1,13 +1,11 @@
 {
     "default": [
         {
-            "$$hashKey": "object:47",
             "component": "container",
             "customModel": {},
-            "description": "",
             "editable": true,
             "expressionProperties": "",
-            "id": "default-container-83",
+            "id": "default-container-1",
             "index": 0,
             "isContainer": true,
             "label": "Container title",
@@ -16,19 +14,17 @@
             "placeholder": "",
             "required": false,
             "templateOptions": {},
-            "validation": "/.*/"
+            "validation": ""
         }
     ],
-    "default-container-83": [
+    "default-container-1": [
         {
-            "$$hashKey": "object:64",
             "component": "textInput",
             "customModel": {},
-            "description": "description",
             "editable": true,
             "expressionProperties": "",
-            "id": "default-container-83-textInput-7149",
-            "index": 0,
+            "id": "default-container-1-textInput-2",
+            "index": 1,
             "isContainer": false,
             "label": "Text Input",
             "noFormControl": true,
