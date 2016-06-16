@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
-node_modules/karma/bin/karma start config/editor_karma.conf.js
+../../idp-frontend/node_modules/karma/bin/karma start config/editor_karma.conf.js
 
