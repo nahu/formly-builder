@@ -1,0 +1,23 @@
+
+{
+    "default": [
+        {
+            "component": "description",
+            "customModel": {
+                "descriptionModel": "This description demonstrates Text content."
+            },
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-description-1",
+            "index": 0,
+            "isContainer": false,
+            "label": "",
+            "noFormControl": true,
+            "options": [],
+            "placeholder": "",
+            "required": false,
+            "templateOptions": {},
+            "validation": ""
+        }
+    ]
+}

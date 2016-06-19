@@ -90,7 +90,7 @@ describe('IM from IDP', function () {
 
 
     it("maps empty form ",function(){
-        var emptyIdp = {"element_id":"0","element_type":"form","metadata":[],"children":[]};
+        var emptyIdp = {"element_id":"0","element_type":"form","metadata":{},"children":[]};
         var mapped = toIMMapper.mapIdpSpecToIM(emptyIdp);
         expect(mapped).toEqual({default:[]});
     });
@@ -128,7 +128,17 @@ describe('IM from IDP', function () {
         testJsonMapping_idp_to_im("idp-textfield_in_container_in_container.json","im-textfield_in_container_in_container.json");
     });
 
+    it("maps a datefield from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-one_datefield.json","im-one_datefield.json");
+    });
 
+    it("maps a textarea from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-one_textarea.json","im-one_textarea.json", false);
+    });
+
+    it("maps a description from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-one_description.json","im-one_description.json", false);
+    });
 
 });
 
@@ -166,7 +176,7 @@ describe('IDP from IM', function () {
     it("maps empty form from IM to IDP",function(){
         var resultIM = OIMConfigMapper.getOIMConfig([], {default:[]});
         var resIdpSpec = resultIM.idpSpec;
-        var expectedIdpSpec = {"element_id":"0","element_type":"form","metadata":[],"children":[]};
+        var expectedIdpSpec = {"element_id":"0","element_type":"form","metadata":{},"children":[]};
         expect(resIdpSpec).toEqual(expectedIdpSpec);
     });
 
@@ -231,6 +241,21 @@ describe('IDP from IM', function () {
     var resIdpSpec = resultIDPSpecFromBuilderForm('im-textfield_in_container_in_container.json');
     testJsonMapping(resIdpSpec, "idp-textfield_in_container_in_container.json");
   });
+
+    it("maps a date from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_datefield.json');
+        testJsonMapping(resIdpSpec, "idp-one_datefield.json");
+    });
+
+    it("maps a textarea from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_textarea.json');
+        testJsonMapping(resIdpSpec, "idp-one_textarea.json");
+    });
+
+    it("maps a description from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_description.json');
+        testJsonMapping(resIdpSpec, "idp-one_description.json");
+    });
 
 });
 

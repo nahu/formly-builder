@@ -1,0 +1,28 @@
+{
+    "element_id":"0",
+    "element_type":"form",
+    "metadata":{},
+    "children":[
+        {
+            "element_id":"1",
+            "mapping_key":"mappingKey-1",
+            "element_type":"interactive",
+            "validators":[
+                {
+                    "element_id": "2",
+                    "validator_name": "2",
+                    "validator_type": "regex",
+                    "message": "",
+                    "expression": "/.*/"
+                }
+            ],
+            "interactive_details": {
+                "label":"Textarea Label",
+                "post_label":"Textarea Postlabel",
+                "placeholder":"Textarea Placeholder"
+            },
+            "interactive_type":"textarea"
+        }
+    ]
+}
+

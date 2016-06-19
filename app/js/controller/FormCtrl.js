@@ -47,14 +47,13 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   };
   //load initial ids
   editorconnector.loadIDs(function(response, status) {
-
     var ids = response.formList;
     var fields = [];
     for(var k in ids)
     {
       fields.push({
-	"name":ids[k].label,
-	"value":ids[k].id
+	"name":ids[k].metadata.title,
+	"value":ids[k].metadata.form_id
       });
     }
     vm.editorFields[0].templateOptions.options = fields;
@@ -82,10 +81,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
         };
       };
       
-
-//      console.log(JSON.stringify(imSpec));
-//      console.log(JSON.stringify(newForm));
-
       loadFormData(newForm);
     });
 
@@ -96,7 +91,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     vm.editor.loaded = idToLoad; 
 
     editorconnector.loadForm(idToLoad, function(result){
-      vm.editor.currentFormName = result.label;
+      vm.editor.currentFormName = result.metadata.title;
       var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
       loadFormData(imSpec);
     });
@@ -192,8 +187,9 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   
   vm.upload = function() {
-    vm.idpSpec.label = vm.editor.currentFormName;
-//    console.log(vm.idpSpec);
+      vm.idpSpec.metadata = vm.idpSpec.metadata || {} ;
+    vm.idpSpec.metadata.title = vm.editor.currentFormName;
+      debugger;
     if(vm.editor.selectedField == -1)
     {
       $http({

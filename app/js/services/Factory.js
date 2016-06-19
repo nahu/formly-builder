@@ -34,22 +34,10 @@ app.constant('deepMerge', (function () {
 })());
 
 
-
-
+// ---------------------------------------------------------------------
+//   IDP --> IM 
 //build IM here!
 app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
-
-    function getValidation(o)
-    {
-        if(o.validators.length > 0)
-        {
-            return o.validators[0].expression;
-        }
-        else
-        {
-            return "";
-        };
-    };
 
     //ast 
     function ASTNode(el) {
@@ -77,10 +65,23 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         this.isRoot = function(){ return this.parent == undefined};
         this.getFullID = function() { return this.isRoot() ? "default" : this.parent.getFullID() + "-" + this.getMappedName() + "-"+ this.element.element_id };
         this.getMappedName = function(){
-            var m = { "radio":"radio",
-                      "input":"textInput",
-                      "dropdown":"select" };
-            return (this.getElementType() == "container")? "container" : m[this.getInteractiveType()];
+            if(this.getElementType() == "container") {
+                return "container";
+            }
+            else if(this.getElementType() == "description")
+            {
+                return "description";
+            }
+            else 
+            {
+                var m = { "radio":"radio",
+                          "input":"textInput",
+                          "textarea":"textArea",
+                          "date":"date",
+                          "dropdown":"select" };
+                return  m[this.getInteractiveType()];
+            }
+
         };
 
         this.print = function(indent){
@@ -101,9 +102,12 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         currentNode.setID(id);
         currentNode.setMaxID(id);
         if(idp.children && idp.children.length > 0)  {  //n has children
+
             for(var k in idp.children)  {
+                
                 var childIDP = idp.children[k]
                 var childNode = buildAst(childIDP, currentNode.getMaxID() + 1)
+
                 currentNode.setMaxID(childNode.getMaxID());
                 currentNode.addNode(childNode);
             };
@@ -111,86 +115,15 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         return currentNode;
     };
 
+
     function mapIdpSpecToIM(spec,$builder)  {
         var rootNode = buildAst(spec, -1);
-//        console.log("\n\n");
-//        rootNode.print();
+        //        console.log("\n\n");
+        //        rootNode.print();
         return mapForm(spec, $builder, rootNode);
     }
 
-    function mapElement(node, im) {
-        var key = node.getParent().getFullID();
-        im[key] = im[key] || [];
 
-        var interactive = node.getElement();
-        var q = {
-            "editable":true,
-            "index":node.id,
-            "required":false,
-            "isContainer":true,
-            "templateOptions":{},
-            "expressionProperties":"",
-            "noFormControl":true,
-        };
-
-        var id = node.getFullID();
-        q.id = id;
-        q.customModel = {};
-        q.options = [];
-
-        if(node.getElementType() != "container")
-        {
-            q.validation = getValidation(interactive)
-            var detail = interactive.interactive_details
-            q.label = detail.label;
-        
-            if(detail.placeholder) {
-                q.placeholder = detail.placeholder;
-            };
-         
-            if(interactive.interactive_details.post_label != undefined) {
-                q.customModel.postLabel = interactive.interactive_details.post_label
-            };
-            q.isContainer = false;
-
-            var interactiveType = node.getInteractiveType();
-            
-            if(interactiveType == "radio")  {
-                q.component = "radio";
-                for(var l in detail.options)     {
-                    var option = detail.options[l]
-                    q.options.push(option.label);
-                }
-            }
-            else if(interactiveType == "input") {
-                q.component = "textInput";
-
-            }
-            else if(interactiveType == "dropdown") {
-                q.component = "select";
-                for(var l in detail.options) {
-                    var option = detail.options[l]
-                    q.options.push(option.label);
-                }
-            }
-
-            im[key].push(q);
-        }
-        else
-        {
-            q.label = interactive.label;
-            q.validation = "";
-            q.placeholder = "";
-            q.component = "container";
-
-            im[key].push(q);
-            var childNodes = node.getChildren();
-            for(var k in childNodes) {
-                mapElement(childNodes[k], im); 
-            };
-        };
-    }
-    
     function mapForm(spec, $builder, node) {
         var im = {"default":[]};
         var childNodes = node.getChildren();
@@ -203,17 +136,114 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         return im;
     };
 
+    function mapElement(node, im) {
+        var key = node.getParent().getFullID();
+        im[key] = im[key] || [];
+
+        var interactive = node.getElement();
+        var q = {
+            "editable":true,
+            "index":node.id,
+            "required":false,
+            "isContainer":false,
+            "templateOptions":{},
+            "expressionProperties":"",
+            "noFormControl":true,
+        };
+
+        var id = node.getFullID();
+        q.id = id;
+        q.customModel = {};
+        q.options = [];
+        q.component = node.getMappedName();
+        if(node.getElementType() == "container")
+        {
+            q.isContainer = true;
+
+            q.label = interactive.label;
+            q.validation = "";
+            q.placeholder = "";
+
+            im[key].push(q);
+            var childNodes = node.getChildren();
+            for(var k in childNodes) {
+                mapElement(childNodes[k], im); 
+            };
+        }
+        else if (node.getElementType() == "description" || node.getInteractiveType() == "description")
+        {
+            q.customModel.descriptionModel = interactive.text;
+            q.label = "";
+            q.validation = "";
+            q.placeholder = "";
+            im[key].push(q);
+        }
+        else
+        {
+
+            q.validation = getValidation(interactive)
+            var detail = interactive.interactive_details
+            q.label = detail.label;
+            
+            if(detail.placeholder) {
+                q.placeholder = detail.placeholder;
+            };
+            
+            if(interactive.interactive_details.post_label != undefined) {
+                q.customModel.postLabel = interactive.interactive_details.post_label
+            };
+
+            var interactiveType = node.getInteractiveType();
+            
+            if(interactiveType == "radio")  {
+                for(var l in detail.options)     {
+                    var option = detail.options[l]
+                    q.options.push(option.label);
+                }
+            }
+            else if(interactiveType == "date") {
+                q.customModel.dateFormat = interactive.interactive_details.date_format;
+            }
+            else if(interactiveType == "dropdown") {
+                for(var l in detail.options) {
+                    var option = detail.options[l]
+                    q.options.push(option.label);
+                }
+            }
+
+            im[key].push(q);
+
+        };
+    }
+   
+
+    function getValidation(o)
+    {
+        if(o.validators == undefined)
+        {
+            debugger;
+        };
+        if(o.validators.length > 0)
+        {
+            return o.validators[0].expression;
+        }
+        else
+        {
+            return "";
+        };
+    };
+
+
     return {"mapIdpSpecToIM" : mapIdpSpecToIM };
 }]);
 
-/*
- * This is where the magic of OIM comes into play, we generate the field
- * config based on the values in the model. You would write this function
- * to generate the config based on the config format of your server's model
- * meta data.
- */
-var baseID = 1;
 
+
+
+// ---------------------------------------------------------------------
+//   IM --> IDP 
+//build IDP here!
+var baseID = 1;
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
     function idpAndAngSpec(optionsOrignal, builderForms, recursive) {
@@ -252,7 +282,6 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                     key = field.id;
                 var value = "";
                 fields.push(
-                    //          idpSpecFromIM(value, key, field, builderForms,fields)
                     newIdpSpecFromIM(value, key, field, builderForms, fields)
                 );
             }
@@ -262,7 +291,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             //wrap in form
             form.element_id = "0";
             form.element_type = "form";
-            form.metadata = [];
+            form.metadata = {};
             form.children = fields;
             
             return {
@@ -325,22 +354,20 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     {
         var map = { "radio" : "radio",
                     "select" : "dropdown",
-                    "textInput" : "input" };
+                    "textInput" : "input",
+                    "textArea":"textarea",
+                    "date":"date"
+                  };
         return map[IMElement.component];
     };
 
-    function isDropdown(IMElement)  {
-        return interactiveType(IMElement) == "dropdown";
-    };
-    function isRadio(IMElement)  {
-        return interactiveType(IMElement) == "radio";
-    };
-    function isInput(IMElement)  {
-        return interactiveType(IMElement) == "input";
-    };
-    function isContainer(IMElement)  {
-        return IMElement.component == "container";
-    };
+    
+    function isDropdown(IMElement) { return interactiveType(IMElement) == "dropdown"; }; 
+    function isRadio(IMElement) { return interactiveType(IMElement) == "radio"; }; 
+    function isInput(IMElement) { return interactiveType(IMElement) == "input"; };
+    function isContainer(IMElement) { return IMElement.component == "container"; };
+    function isDate(IMElement) { return IMElement.component == "date"; };
+    function isDescription(IMElement) { return IMElement.component == "description"; };
 
     function interactiveDetailsOptions(IMElement)
     {
@@ -375,6 +402,10 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         if(postLabel != undefined) {
             o.post_label = postLabel;
         }
+        
+        if(isDate(IMElement)) {
+            o.date_format = IMElement.customModel.dateFormat;
+        }
 
         var parsedOptions = interactiveDetailsOptions(IMElement);
         if(parsedOptions.match != false)
@@ -396,7 +427,18 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
     function elementType(IMElement)
     {
-        return isContainer(IMElement)? "container" : "interactive";
+        if(isContainer(IMElement))
+        {
+            return "container";
+        }
+        else if(isDescription(IMElement))
+        {
+            return "description";
+        }
+        else
+        {
+            return "interactive";
+        };
     }
 
     function newIdpSpecFromIM(value, key, IMElement, builderForms, formSoFar) {
@@ -412,6 +454,11 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             el.label = IMElement.label;
             el.repeatable = false;
             el.children = idpAndAngSpec(builderForms[IMElement.id], builderForms, true);
+        }
+        else if(isDescription(IMElement))
+        {
+            el.text = IMElement.customModel.descriptionModel;
+            el.description_type = "text";
         }
         else
         {
@@ -438,4 +485,4 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     }
 }
 
-            ]);
+]);

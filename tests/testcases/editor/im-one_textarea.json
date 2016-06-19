@@ -1,0 +1,22 @@
+{
+    "default": [
+        {
+            "component": "textArea",
+            "customModel": {
+                "postLabel": "Textarea Postlabel"
+            },
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-textArea-1",
+            "index": 0,
+            "isContainer": false,
+            "label": "Textarea Label",
+            "noFormControl": true,
+            "options": [],
+            "placeholder": "Textarea Placeholder",
+            "required": false,
+            "templateOptions": {},
+            "validation": "/.*/"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "default": [
+        {
+            "component": "date",
+            "customModel": {
+                "dateFormat": "DD/MM/YYYY",
+                "postLabel": "Date Post Label"
+            },
+            "editable": true,
+            "expressionProperties": "",
+            "id": "default-date-1",
+            "index": 0,
+            "isContainer": false,
+            "label": "Date Label",
+            "noFormControl": true,
+            "options": [],
+            "placeholder": "11/11/2016",
+            "required": false,
+            "templateOptions": {},
+            "validation": "/.*/"
+        }
+    ]
+}
