@@ -187,9 +187,12 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   
   vm.upload = function() {
-      vm.idpSpec.metadata = vm.idpSpec.metadata || {} ;
+
+    vm.idpSpec.metadata = vm.idpSpec.metadata || {} ;
     vm.idpSpec.metadata.title = vm.editor.currentFormName;
-      debugger;
+    vm.idpSpec.metadata.form_id = "###REPLACE_FORM_ID###";
+
+
     if(vm.editor.selectedField == -1)
     {
       $http({
@@ -197,16 +200,18 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 	url: backendURL+"/" + vm.idpSpec.label,
 	data:vm.idpSpec
       }).then(function (response, status) {
-//	console.log("form spec saved");
+
+        // console.log("form spec saved");
 	// console.log(response.data);
 	// console.log("");
+
 	vm.editor.selectedField = parseInt(response.data.identifier);
 	alert("saved spec, id:" + response.data.identifier);
       },function (error){
+
 	// console.log("Error saving form spec: ");
 	// console.log(error);
 	// console.log("");
-        
         
 	alert("error: uploading");
       });
