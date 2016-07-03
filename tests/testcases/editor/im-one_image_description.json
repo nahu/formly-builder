@@ -4,8 +4,8 @@
         {
             "component": "description",
             "customModel": {
-                "descriptionModel": "This description demonstrates Text content.",
-                "type":"text"
+                "type":"image",
+                "urls":[]
             },
             "editable": true,
             "expressionProperties": "",

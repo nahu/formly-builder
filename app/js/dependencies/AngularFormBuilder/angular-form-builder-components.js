@@ -155,6 +155,30 @@
                          </form>"
       });
 
+        $builderProvider.registerComponent('image_description', {
+            group: 'IDP',
+            label: '',
+            description: 'description',
+            placeholder: 'placeholder',
+            required: false,
+            options: [],
+            template: "<div>" +
+                        "<label for=\"0\" class=\"control-label\">{{fb-required ? '*' : ''}}</label>" +
+                          "<div ng-model=\"customModel.urls\"" + 
+                               "ng-init=\"customModel.urls = ['app/images/thumbs_up.png']\">" +
+                                         "Image: <img src={{customModel.urls[0]}} " +
+                                                  "alt='Image Description'/>" +
+                         "</div>" +
+                      "</div>",
+            popoverTemplate: "<form>" +
+                               "<div class=\"form-group\">" +
+                                 "<label class='control-label'>Hier k&ouml;nnte Ihr Text stehen!</label>" +
+                                 "<textarea class=\"form-control\" rows=\"3\" ng-model=\"customModel.urls\"/>" +
+                               "</div>" +
+                             "</form>"
+        });
+
+
       $builderProvider.registerComponent('container', {
 		      group: 'IDP',
 		      label: 'Container',

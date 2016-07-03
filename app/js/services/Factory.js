@@ -38,7 +38,6 @@ app.constant('deepMerge', (function () {
 //   IDP --> IM 
 //build IM here!
 app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
-
     //ast 
     function ASTNode(el) {
         this.parrent = undefined;
@@ -170,9 +169,18 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
                 mapElement(childNodes[k], im); 
             };
         }
-        else if (node.getElementType() == "description" || node.getInteractiveType() == "description")
+        else if (node.getElementType() == "description" )        
         {
-            q.customModel.descriptionModel = interactive.text;
+            if(node.getElement().description_type == "image" )
+            {
+                q.customModel.urls = interactiveType.urls;
+            } 
+            else 
+            {
+                q.customModel.descriptionModel = interactive.text;
+            }
+
+            q.customModel.type = interactive.description_type
             q.label = "";
             q.validation = "";
             q.placeholder = "";
@@ -245,6 +253,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
 //build IDP here!
 var baseID = 1;
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
+    debugger
 
     function idpAndAngSpec(optionsOrignal, builderForms, recursive) {
         if(recursive == undefined)
@@ -368,6 +377,8 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     function isContainer(IMElement) { return IMElement.component == "container"; };
     function isDate(IMElement) { return IMElement.component == "date"; };
     function isDescription(IMElement) { return IMElement.component == "description"; };
+    function isImageDescription(IMElement) { return IMElement.customModel.type == "image"; };
+    function isTextDescription(IMElement) { return IMElement.customModel.type == "text"; };
 
     function interactiveDetailsOptions(IMElement)
     {
@@ -443,11 +454,10 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
     function newIdpSpecFromIM(value, key, IMElement, builderForms, formSoFar) {
         var id = getID();
-        var el = 
-                {
+        var el = {
                     "element_id":id,
                     "element_type":elementType(IMElement),
-                };
+                 };
         if(isContainer(IMElement))
         {
 
@@ -457,8 +467,16 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         }
         else if(isDescription(IMElement))
         {
-            el.text = IMElement.customModel.descriptionModel;
-            el.description_type = "text";
+            if(isImageDescription(IMElement)) 
+            {
+                el.urls = IMElement.customModel.urls;
+                el.description_type = "image";
+            }
+            else 
+            {
+                el.text = IMElement.customModel.descriptionModel;
+                el.description_type = "text";
+            }
         }
         else
         {

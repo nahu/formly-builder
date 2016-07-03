@@ -257,6 +257,12 @@ describe('IDP from IM', function () {
         testJsonMapping(resIdpSpec, "idp-one_description.json");
     });
 
+/*
+    it("maps an image description from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_image_description.json');
+        testJsonMapping(resIdpSpec, "idp-one_image_description.json");
+    });
+*/
 });
 
 
