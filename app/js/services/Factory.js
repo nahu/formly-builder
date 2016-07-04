@@ -253,7 +253,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
 //build IDP here!
 var baseID = 1;
 app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
-    debugger
+
 
     function idpAndAngSpec(optionsOrignal, builderForms, recursive) {
         if(recursive == undefined)
