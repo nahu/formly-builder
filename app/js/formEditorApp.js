@@ -8,7 +8,7 @@ var Settings = {
   //,PublicScriptURL: "https://spengineeringltd-public.sharepoint.com/SiteAsset/Scripts/"
 };
 
-var app = angular.module('formlyExample', ['formly', 'formlyBootstrap', 'angularFileUpload', 'builder', 'builder.components', 'validator.rules', 'ngRoute']);
+var app = angular.module('formlyExample', ['formly', 'formlyBootstrap', 'builder', 'builder.components', 'validator.rules', 'ngRoute']);
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -49,6 +49,19 @@ app.config(['formlyConfigProvider', function(formlyConfigProvider)
     });
 
 
+    formlyConfigProvider.setWrapper({
+        name: 'panel',
+        template: '<div class=\'panel panel-default\'>\
+            <div class=\"panel-heading px-nested-panel-heading clearfix">\
+            <strong class="control-label" ng-if="options.templateOptions.label">\
+        {{options.templateOptions.label}}\
+        </strong>\
+        </div>\
+            <div class="panel-body px-nested-panel-body">\
+            <formly-transclude></formly-transclude>\
+        </div>\
+        </div>'
+    });
 
     formlyConfigProvider.setType({
               name: 'mui',
@@ -64,6 +77,9 @@ app.config(['formlyConfigProvider', function(formlyConfigProvider)
                         <div class=\"form-block\"></div>',
               wrapper: ['bootstrapHasError']
             });
+
+
+
 
 
 }])

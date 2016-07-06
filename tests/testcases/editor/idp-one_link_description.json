@@ -7,8 +7,8 @@
         {
             "element_id": "1",
             "element_type": "description",
-            "url":"testurl",
-            "description_type": "image"
+            "text": "http://www.google.de",
+            "description_type": "link"
         }
     ]
 }

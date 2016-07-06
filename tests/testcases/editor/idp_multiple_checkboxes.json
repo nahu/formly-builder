@@ -1,0 +1,65 @@
+{
+    "children": [
+        {
+            "element_id": "11",
+            "element_type": "interactive",
+            "interactive_details": {
+                "label": "Checkbox Test 1"
+            },
+            "interactive_type": "checkbox",
+            "mapping_key": "k_checkbox1",
+            "validators": []
+        },
+        {
+            "element_id": "12",
+            "element_type": "interactive",
+            "interactive_details": {
+                "label": "Checkbox Test 2"
+            },
+            "interactive_type": "checkbox",
+            "mapping_key": "k_checkbox2",
+            "validators": []
+        },
+        {
+            "element_id": "13",
+            "element_type": "interactive",
+            "interactive_details": {
+                "label": "Checkbox Test 3"
+            },
+            "interactive_type": "checkbox",
+            "mapping_key": "k_checkbox3",
+            "validators": []
+        },
+        {
+            "element_id": "14",
+            "element_type": "interactive",
+            "interactive_details": {
+                "label": "Checkbox Test 4"
+            },
+            "interactive_type": "checkbox",
+            "mapping_key": "k_checkbox4",
+            "validators": []
+        },
+        {
+            "element_id": "15",
+            "element_type": "interactive",
+            "interactive_details": {
+                "label": "Checkbox Test 5"
+            },
+            "interactive_type": "checkbox",
+            "mapping_key": "k_checkbox5",
+            "validators": []
+        }
+    ],
+    "element_type": "form",
+    "metadata": {
+        "category": "Cardiac",
+        "creation_date": "13.07.2015",
+        "creator": "Andreas Eichner",
+        "form_id": "2",
+        "is_template": false,
+        "title": "Checkboxes",
+        "version": "1.0"
+    }
+}
+

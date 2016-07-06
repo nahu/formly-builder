@@ -642,6 +642,7 @@
                 }
                 var type = typeMap[name];
                 if (!type && throwError === true) {
+                    debugger
                     throw getError("There is no type by the name of \"" + name + "\": " + JSON.stringify(errorContext));
                 } else {
                     return type;

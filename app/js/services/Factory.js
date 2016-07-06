@@ -77,7 +77,8 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
                           "input":"textInput",
                           "textarea":"textArea",
                           "date":"date",
-                          "dropdown":"select" };
+                          "dropdown":"select",
+                        "checkbox":"checkbox"};
                 return  m[this.getInteractiveType()];
             }
 
@@ -119,7 +120,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         var rootNode = buildAst(spec, -1);
         //        console.log("\n\n");
         //        rootNode.print();
-        return mapForm(spec, $builder, rootNode);
+        return {metadata:spec.metadata ,im:mapForm(spec, $builder, rootNode)};
     }
 
 
@@ -171,9 +172,10 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         }
         else if (node.getElementType() == "description" )        
         {
-            if(node.getElement().description_type == "image" )
+            if(node.getElement().description_type == "image" ||
+               node.getElement().description_type == "video" )
             {
-                q.customModel.urls = interactiveType.urls;
+                q.customModel.url = interactive.url;
             } 
             else 
             {
@@ -256,6 +258,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
 
     function idpAndAngSpec(optionsOrignal, builderForms, recursive) {
+//        debugger
         if(recursive == undefined)
         {
             recursive = false;
@@ -365,6 +368,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                     "select" : "dropdown",
                     "textInput" : "input",
                     "textArea":"textarea",
+                    "checkbox":"checkbox",
                     "date":"date"
                   };
         return map[IMElement.component];
@@ -378,7 +382,9 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     function isDate(IMElement) { return IMElement.component == "date"; };
     function isDescription(IMElement) { return IMElement.component == "description"; };
     function isImageDescription(IMElement) { return IMElement.customModel.type == "image"; };
+    function isVideoDescription(IMElement) { return IMElement.customModel.type == "video"; };
     function isTextDescription(IMElement) { return IMElement.customModel.type == "text"; };
+    function isLinkDescription(IMElement) { return IMElement.customModel.type == "link"; };
 
     function interactiveDetailsOptions(IMElement)
     {
@@ -402,7 +408,12 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     };
 
     function getPostLabel(IMElement) {  return IMElement.customModel.postLabel; }
-    
+    function getPlaceholder(IMElement) {
+        if(IMElement.component == "checkbox") {
+            return undefined
+        }
+        return IMElement.placeholder;
+    }
     function interactiveDetails(IMElement)
     {
         var o = {
@@ -430,7 +441,12 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         }
         else
         {
-            o.placeholder = IMElement.placeholder
+            var ph = getPlaceholder(IMElement);
+            if (ph != undefined)
+            {
+                o.placeholder = ph;
+            }
+  
         };
 
         return o;
@@ -469,13 +485,23 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         {
             if(isImageDescription(IMElement)) 
             {
-                el.urls = IMElement.customModel.urls;
+                el.url = IMElement.customModel.url;
                 el.description_type = "image";
             }
-            else 
+            else if (isTextDescription(IMElement))
             {
                 el.text = IMElement.customModel.descriptionModel;
                 el.description_type = "text";
+            }
+            else if (isVideoDescription(IMElement))
+            {
+                el.url = IMElement.customModel.url;
+                el.description_type = "video";
+            }
+            else if (isLinkDescription(IMElement))
+            {
+                el.text = IMElement.customModel.descriptionModel;
+                el.description_type = "link";
             }
         }
         else

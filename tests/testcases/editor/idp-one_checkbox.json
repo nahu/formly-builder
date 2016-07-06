@@ -1,0 +1,21 @@
+
+
+{
+    "element_id":"0",
+    "element_type":"form",
+    "metadata":{},
+    "children":[
+        {
+            "element_id": "1",
+            "element_type": "interactive",
+            "interactive_type": "checkbox",
+            "interactive_details": {
+                "label": "Checkbox Test 1",
+                "post_label":"Checkbox Postlabel"
+            },
+            "mapping_key": "mappingKey-1",
+            "validators": []
+        }
+    ]
+}
+

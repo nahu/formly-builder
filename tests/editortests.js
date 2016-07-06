@@ -62,7 +62,7 @@ describe('IM from IDP', function () {
     function testJsonMapping_idp_to_im(idpPath, imPath, log = false)
     {
         var input = getJSONFixture(idpPath);
-        var result = toIMMapper.mapIdpSpecToIM(input);
+        var result = toIMMapper.mapIdpSpecToIM(input).im;
         var expected = getJSONFixture(imPath);
 
         if(angular.equals(expected, result) == false)
@@ -91,7 +91,7 @@ describe('IM from IDP', function () {
 
     it("maps empty form ",function(){
         var emptyIdp = {"element_id":"0","element_type":"form","metadata":{},"children":[]};
-        var mapped = toIMMapper.mapIdpSpecToIM(emptyIdp);
+        var mapped = toIMMapper.mapIdpSpecToIM(emptyIdp).im;
         expect(mapped).toEqual({default:[]});
     });
 
@@ -138,6 +138,19 @@ describe('IM from IDP', function () {
 
     it("maps a description from idp to im", function(){
         testJsonMapping_idp_to_im("idp-one_description.json","im-one_description.json", false);
+    });
+
+    it("maps a checkbox from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-one_checkbox.json","im-one_checkbox.json", false);
+    });
+
+
+    it("maps a link description from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-one_link_description.json","im-one_link_description.json", false);
+    });
+
+    it("maps a link description from idp to im", function(){
+        testJsonMapping_idp_to_im("idp-one_video_description.json","im-one_video_description.json", false);
     });
 
 });
@@ -257,12 +270,26 @@ describe('IDP from IM', function () {
         testJsonMapping(resIdpSpec, "idp-one_description.json");
     });
 
-/*
+    it("maps a checkbox from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_checkbox.json');
+        testJsonMapping(resIdpSpec, "idp-one_checkbox.json");
+    });
+
+    it("maps a link description from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_link_description.json');
+        testJsonMapping(resIdpSpec, "idp-one_link_description.json");
+    });
+
     it("maps an image description from im to idp", function(){
         var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_image_description.json');
         testJsonMapping(resIdpSpec, "idp-one_image_description.json");
     });
-*/
+
+    it("maps a video description from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_video_description.json');
+        testJsonMapping(resIdpSpec, "idp-one_video_description.json");
+    });
+
 });
 
 

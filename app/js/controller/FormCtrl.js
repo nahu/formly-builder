@@ -61,11 +61,12 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   });
   
   
-  
+//insert another form into a container
   vm.insertContainerForm = function(formID, elementIMID){
-
     editorconnector.loadForm(formID, function(result) {
-      var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
+        var mapped = getEditorConfig.mapIdpSpecToIM(result, $builder);
+        var imSpec = mapped.im;
+        
       var containerID = elementIMID.id;
 
       var newForm = angular.copy($scope.forms);
@@ -92,7 +93,13 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 
     editorconnector.loadForm(idToLoad, function(result){
       vm.editor.currentFormName = result.metadata.title;
-      var imSpec = getEditorConfig.mapIdpSpecToIM(result, $builder);
+
+//        debugger
+
+        var mapped =  getEditorConfig.mapIdpSpecToIM(result, $builder);
+
+        vm.editor.metadata = mapped.metadata;
+      var imSpec = mapped.im;
       loadFormData(imSpec);
     });
   };
@@ -122,6 +129,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   vm.CopyForm = function () {
     var mapping = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms); 
 
+//      debugger
     vm.fields = mapping.anSpec;
     vm.model = getModel($scope.forms["default"]);
     vm.idpSpec = mapping.idpSpec
@@ -187,17 +195,17 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   
   vm.upload = function() {
+      vm.idpSpec.metadata = vm.editor.metadata
+      vm.idpSpec.metadata.title = vm.editor.currentFormName;
 
-    vm.idpSpec.metadata = vm.idpSpec.metadata || {} ;
-    vm.idpSpec.metadata.title = vm.editor.currentFormName;
-    vm.idpSpec.metadata.form_id = "###REPLACE_FORM_ID###";
+      vm.idpSpec.metadata.form_id = vm.idpSpec.metadata.form_id || "###REPLACE_FORM_ID###";
 
 
     if(vm.editor.selectedField == -1)
     {
       $http({
 	method: 'POST',
-	url: backendURL+"/" + vm.idpSpec.label,
+	url: backendURL,
 	data:vm.idpSpec
       }).then(function (response, status) {
 
@@ -220,7 +228,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     {
       $http({
 	method: 'PUT',
-	url: backendURL + "/" + vm.editor.selectedField,
+	url: backendURL,
 	data:vm.idpSpec
       }).then(function (response, status) {
 	console.log(response.data);

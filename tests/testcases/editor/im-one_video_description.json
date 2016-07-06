@@ -4,7 +4,7 @@
         {
             "component": "description",
             "customModel": {
-                "type":"image",
+                "type":"video",
                 "url":"testurl"
             },
             "editable": true,

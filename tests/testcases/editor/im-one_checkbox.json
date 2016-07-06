@@ -1,23 +1,21 @@
-
 {
     "default": [
         {
-            "component": "description",
+            "component": "checkbox",
             "customModel": {
-                "type":"image",
-                "url":"testurl"
+                "postLabel":"Checkbox Postlabel"
             },
             "editable": true,
             "expressionProperties": "",
-            "id": "default-description-1",
+            "id": "default-checkbox-1",
             "index": 0,
             "isContainer": false,
-            "label": "",
+            "label": "Checkbox Test 1",
             "noFormControl": true,
             "options": [],
-            "placeholder": "",
             "required": false,
-            "templateOptions": {},
+            "templateOptions": {
+            },
             "validation": ""
         }
     ]

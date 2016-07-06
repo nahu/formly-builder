@@ -1,11 +1,12 @@
 
+
 {
     "default": [
         {
             "component": "description",
             "customModel": {
-                "type":"image",
-                "url":"testurl"
+                "descriptionModel": "http://www.google.de",
+                "type":"link"
             },
             "editable": true,
             "expressionProperties": "",
@@ -22,3 +23,4 @@
         }
     ]
 }
+
