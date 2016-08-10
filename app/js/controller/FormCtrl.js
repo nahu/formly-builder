@@ -130,7 +130,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     var mapping = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms); 
 
 //      debugger
-    vm.fields = mapping.anSpec;
+//    vm.fields = mapping.anSpec;
     vm.model = getModel($scope.forms["default"]);
     vm.idpSpec = mapping.idpSpec
   };
