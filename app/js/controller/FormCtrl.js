@@ -89,9 +89,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   };
 
   vm.loadForm = function(idToLoad) {
-
     vm.editor.loaded = idToLoad; 
-
     editorconnector.loadForm(idToLoad, function(result){
       vm.editor.currentFormName = result.metadata.title;
 
@@ -113,10 +111,11 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   vm.exampleTitle = 'IDP Editor'; // add this
   $scope.isFormlyShowScope = true;
+    $scope.isFormlyShowAngular = false;
   vm.RawFieldCode = function () {
-    
-    $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
-    $scope.formSpecification = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).idpSpec
+      $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
+      $scope.imFieldCode = $scope.forms;//JSON.stringify(,null, '\t')
+      $scope.formSpecification = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).idpSpec
   }
   vm.StartScratch = function () {
     delete vm.editor.currentFormName;

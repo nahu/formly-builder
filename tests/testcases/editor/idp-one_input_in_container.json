@@ -21,7 +21,8 @@
               "validator_name": "3",
               "validator_type": "regex",
               "message": "",
-              "expression": "/.*/"
+                "expression": "/.*/",
+                "cross_key":""
             }
 
           ],

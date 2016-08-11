@@ -60,18 +60,29 @@
     <div class="checkbox">
         <label>
             <input type="checkbox" ng-model="isFormlyShowScope" />
-            Show scope
+            Show IM and IDP
         </label>
+    </div>
+          </br>
+    <div class="checkbox">
+
+      <label>
+        <input type="checkbox" ng-model="isFormlyShowAngular" />
+        Show Angular
+      </label>
     </div>
     <div ng-if="isFormlyShowScope">
         <hr />
         <!--h2>Model</!h2>
-        <pre>{{vm.model | json}}</pre-->
-        <h2>Formly Specification</h2>
-        <pre>{{rawFieldCode|json}}</pre>
+            <pre>{{vm.model | json}}</pre-->
+        <h2>IM Specification</h2>
+        <pre>{{imFieldCode|json}}</pre>
         <h2> IDP Specification</h2>
         <pre>{{formSpecification|json}}</pre>
-
-        
+        <div ng-if="isFormlyShowAngular">
+          <hr />
+          <h2>Formly Specification</h2>
+        <pre>{{rawFieldCode|json}}</pre>
+        </div>
     </div>
 </div>

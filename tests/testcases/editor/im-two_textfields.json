@@ -4,18 +4,19 @@
             "component": "textInput",
             "customModel": {
                 "postLabel": "Post Label 1",
-                "validationMessage":""
+                "validationMessage":"",
+                "crossValidationKey":"default-textInput-3"
             },
             "editable": true,
             "expressionProperties": "",
             "id": "default-textInput-1",
+            "user_assigned_id":"",
             "index": 0,
             "isContainer": false,
             "label": "Text Input",
             "noFormControl": true,
             "options": [],
             "placeholder": "placeholder",
-
             "required": false,
             "templateOptions": {},
             "validation": "/foo.*/"

@@ -352,7 +352,9 @@
 
               "<label class=\'control-label\'>Containertype</label>" +
               "<select ng-model=\"customModel.type\" class='form-control' ng-options=\"option as option for option in ['normal','tab']\" ng-init=\"customModel.type='normal'\">" +
-              "</select>"+
+             "</select>"+
+
+
               "<\/div>" +
               "<div class=\"form-group\">" +
               "<label class=\'control-label\'>Options<\/label>        " +

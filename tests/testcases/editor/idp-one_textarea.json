@@ -13,7 +13,8 @@
                     "validator_name": "2",
                     "validator_type": "regex",
                     "message": "this is my validation msg",
-                    "expression": "/.*/"
+                    "expression": "/.*/",
+                    "cross_key":""
                 }
             ],
             "interactive_details": {

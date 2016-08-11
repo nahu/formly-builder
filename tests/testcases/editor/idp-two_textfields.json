@@ -1,47 +1,49 @@
 {
-  "element_id":"0",
-  "element_type":"form",
+    "element_id":"0",
+    "element_type":"form",
     "metadata":{},
-  "children":[
-    {
-      "element_id":"1",
-      "mapping_key":"mappingKey-1",
-      "element_type":"interactive",
-      "validators":[
+    "children":[
         {
-          "element_id": "2",
-          "validator_name": "2",
-          "validator_type": "regex",
-          "message": "",
-          "expression": "/foo.*/"
-        }
-      ],
-      "interactive_details": {
-          "label":"Text Input",
-          "post_label":"Post Label 1",
-        "placeholder":"placeholder"
-      },
-      "interactive_type":"input"
-    },
-    {
-      "element_id":"3",
-      "mapping_key":"mappingKey-3",
-      "element_type":"interactive",
-      "validators":[
+            "element_id":"1",
+            "mapping_key":"mappingKey-1",
+            "element_type":"interactive",
+            "validators":[
+                {
+                    "element_id": "2",
+                    "validator_name": "2",
+                    "validator_type": "regex",
+                    "message": "",
+                    "expression": "/foo.*/",
+                    "cross_key":"3"
+                }
+            ],
+            "interactive_details": {
+                "label":"Text Input",
+                "post_label":"Post Label 1",
+                "placeholder":"placeholder"
+            },
+            "interactive_type":"input"
+        },
         {
-          "element_id": "4",
-          "validator_name": "4",
-          "validator_type": "regex",
-          "message": "",
-          "expression": "/bar.*/"
+            "element_id":"3",
+            "mapping_key":"mappingKey-3",
+            "element_type":"interactive",
+            "validators":[
+                {
+                    "element_id": "4",
+                    "validator_name": "4",
+                    "validator_type": "regex",
+                    "message": "",
+                    "expression": "/bar.*/",
+                    "cross_key":""
+                }
+            ],
+            "interactive_details": {
+                "label":"Text Input 2",
+                "post_label":"Post Label 2",
+                "placeholder":"placeholder 2"
+            },
+            "interactive_type":"input"
         }
-      ],
-      "interactive_details": {
-          "label":"Text Input 2",
-          "post_label":"Post Label 2",
-        "placeholder":"placeholder 2"
-      },
-      "interactive_type":"input"
-    }
-  ]
+    ]
 }

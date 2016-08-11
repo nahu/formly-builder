@@ -43,6 +43,8 @@ module.exports = function(config) {
     "idp-editor/app/js/dependencies/AngularFormbuilder/angular-form-customComponents.js",
     "idp-editor/app/js/FormConstant.js",
     "idp-editor/app/js/services/Factory.js",
+        "idp-editor/app/js/services/FactoryIDPtoIM.js",
+        "idp-editor/app/js/services/FactoryIMtoIDP.js",
     "idp-editor/app/js/services/CommonService.js",
     "idp-editor/app/js/Directive.js",
 

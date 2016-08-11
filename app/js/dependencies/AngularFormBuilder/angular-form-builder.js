@@ -1353,12 +1353,17 @@
            var $originalHTML = $('<div />', { html: originalHTML });
            if (component.noFormControl)
                {
-            $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>Key</label><input type='text' ng-model='key' class='form-control' /></div>");
+            $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>id:</label><label />{{id}}</label</div>");
            }
 
            var validationHTML = "<div class='form-group'>" +
+
                                 "<label class='control-label'>Validation Expression</label>" +
                                 "<input type='text' ng-model='expressionProperties' class='form-control' />" +
+
+                   "<label class='control-label'>Crossvalidation key</label>" +
+                   "<input type='text' ng-model='customModel.crossValidationKey' class='form-control' />" +
+
                    "<label class='control-label'>Validation Message</label>" +
                    "<input type='text' ng-model='customModel.validationMessage' class='form-control' /></div>";
 
