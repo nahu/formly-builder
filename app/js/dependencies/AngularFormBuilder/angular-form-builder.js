@@ -1258,20 +1258,22 @@
             if (formObject == null) {
                 formObject = {};
             }
-            
+            /*
             console.log("this.components:")
             console.log(this.components);
+             */
             component = this.components[formObject.component];
 
             if (component == null) {
                 throw "The component " + formObject.component + " was not registered.";
             }
             var _newId=name.concat("-" + formObject.component).concat("-" + Math.floor(Math.random() * 9999));
+/*
             console.log("generating new id: " + _newId);
             console.log(name);
             console.log(formObject)
             console.log(this.components)
-            
+  */          
             result = {
                 key: formObject.key,
                 component: formObject.component,
@@ -1353,10 +1355,17 @@
                {
             $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>Key</label><input type='text' ng-model='key' class='form-control' /></div>");
            }
-           $originalHTML.find("form").children(".form-group").last().after("<div class='form-group'><label class='control-label'>Validation Expression</label><input type='text' ng-model='expressionProperties' class='form-control' /><p class='help-block'>Example:&quot;hide&quot;:&quot;model.myDate===''&quot;</p></div>");
+
+           var validationHTML = "<div class='form-group'>" +
+                                "<label class='control-label'>Validation Expression</label>" +
+                                "<input type='text' ng-model='expressionProperties' class='form-control' />" +
+                   "<label class='control-label'>Validation Message</label>" +
+                   "<input type='text' ng-model='customModel.validationMessage' class='form-control' /></div>";
+
+           $originalHTML.find("form").children(".form-group").last().after(validationHTML);
 
            $originalHTML.find("form").children().last().append("<hr /><div class='form-group'><input type='submit' ng-click='popover.save($event)' class='btn btn-primary' value='Save' /><input type='button' ng-click='popover.cancel($event)' class='btn btn-default' value='Cancel' /><input type='button' ng-click='popover.remove($event)' class='btn btn-danger' value='Delete' /></div>");
-            
+           
             var newHTML = $originalHTML.html();
             return component.popoverTemplate = newHTML;
            

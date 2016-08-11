@@ -12,7 +12,7 @@
           "element_id": "2",
           "validator_name": "2",
           "validator_type": "regex",
-          "message": "",
+          "message": "this is a custom validation message",
           "expression": "/.*/"
         }
       ],

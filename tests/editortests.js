@@ -57,7 +57,7 @@ function logMissing(ob1,ob2, fullLog)
 
 
 
-describe('IM from IDP', function () {
+describe('from IDP to IM', function () {
     var inputFsJson, outputJson, expectedOutputJson;
     function testJsonMapping_idp_to_im(idpPath, imPath, log = false)
     {
@@ -121,7 +121,7 @@ describe('IM from IDP', function () {
     });
 
     it("maps a textfield inside a container from idp to im", function(){
-        testJsonMapping_idp_to_im("idp-one_input_in_container.json","im-one_input_in_container.json");
+        testJsonMapping_idp_to_im("idp-one_input_in_container.json","im-one_input_in_container.json", true);
     });
 
     it("maps a textfield inside a container inside a container from idp to im", function(){
@@ -144,21 +144,23 @@ describe('IM from IDP', function () {
         testJsonMapping_idp_to_im("idp-one_checkbox.json","im-one_checkbox.json", false);
     });
 
-
     it("maps a link description from idp to im", function(){
         testJsonMapping_idp_to_im("idp-one_link_description.json","im-one_link_description.json", false);
     });
 
-    it("maps a link description from idp to im", function(){
+    it("maps a video description from idp to im", function(){
         testJsonMapping_idp_to_im("idp-one_video_description.json","im-one_video_description.json", false);
     });
 
+    it("maps a tabbed container from im to idp", function(){
+        testJsonMapping_idp_to_im("idp-one_tabbed_container.json","im-one_tabbed_container.json", false);
+    });
 });
 
 
 
 
-describe('IDP from IM', function () {
+describe('from IM to IDP', function () {
   var inputFsJson, outputJson, expectedOutputJson;
     function testJsonMapping(result, expectedpath, log = false)
     {
@@ -242,7 +244,7 @@ describe('IDP from IM', function () {
 
   it("maps two dropdowns with one post_label",function(){
     var resIdpSpec = resultIDPSpec('im-two_selects.json');
-    testJsonMapping(resIdpSpec, "idp-two_selects.json", true);
+    testJsonMapping(resIdpSpec, "idp-two_selects.json");
   });
 
   it("maps a textfield inside a container", function(){
@@ -290,6 +292,10 @@ describe('IDP from IM', function () {
         testJsonMapping(resIdpSpec, "idp-one_video_description.json");
     });
 
+    it("maps a tabbed container from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_tabbed_container.json');
+        testJsonMapping(resIdpSpec, "idp-one_tabbed_container.json");
+    });
 });
 
 

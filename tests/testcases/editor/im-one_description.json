@@ -4,8 +4,7 @@
         {
             "component": "description",
             "customModel": {
-                "descriptionModel": "This description demonstrates Text content.",
-                "type":"text"
+                "descriptionModel": "This description demonstrates Text content."
             },
             "editable": true,
             "expressionProperties": "",

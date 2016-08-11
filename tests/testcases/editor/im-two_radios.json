@@ -2,7 +2,9 @@
     "default": [
         {
             "component": "radio",
-            "customModel": {},
+            "customModel": {
+                "validationMessage":""
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-radio-1",
@@ -20,7 +22,9 @@
         },
         {
             "component": "radio",
-            "customModel": {},
+            "customModel": {
+                "validationMessage":""
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-radio-4",

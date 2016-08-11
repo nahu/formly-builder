@@ -12,6 +12,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   vm.editor = vm.editor || {};
   vm.container = vm.container || {};
   vm.editor.selectedField = -1;
+  vm.editor.metadata = {};
   vm.container.selectedField = -1;
 
   vm.editorFields = [{
@@ -195,6 +196,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   
   vm.upload = function() {
+      debugger;
       vm.idpSpec.metadata = vm.editor.metadata
       vm.idpSpec.metadata.title = vm.editor.currentFormName;
 

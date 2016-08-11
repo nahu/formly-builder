@@ -60,8 +60,10 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         this.setMaxID = function(maxID) {  this.maxID = maxID; };
         this.setID = function(mid) { this.id = mid  };        
         this.getElementType = function() {  return this.element.element_type;   };
+        this.isInline = function(){ return this.element.display_inline;};
         this.getInteractiveType = function(){ return this.element.interactive_type;  };
         this.isRoot = function(){ return this.parent == undefined};
+        this.containerType = function(){ return this.element.container_type; };
         this.getFullID = function() { return this.isRoot() ? "default" : this.parent.getFullID() + "-" + this.getMappedName() + "-"+ this.element.element_id };
         this.getMappedName = function(){
             if(this.getElementType() == "container") {
@@ -69,6 +71,15 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
             }
             else if(this.getElementType() == "description")
             {
+                if(this.element.description_type == "video")
+                {
+                    return "video_description";
+                }
+                else if(this.element.description_type == "link")
+                {
+                    return "link_description";
+                }
+                
                 return "description";
             }
             else 
@@ -159,7 +170,8 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         if(node.getElementType() == "container")
         {
             q.isContainer = true;
-
+            q.customModel.inline = node.isInline();
+            q.customModel.type = node.containerType();
             q.label = interactive.label;
             q.validation = "";
             q.placeholder = "";
@@ -182,7 +194,6 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
                 q.customModel.descriptionModel = interactive.text;
             }
 
-            q.customModel.type = interactive.description_type
             q.label = "";
             q.validation = "";
             q.placeholder = "";
@@ -192,6 +203,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         {
 
             q.validation = getValidation(interactive)
+            q.customModel.validationMessage = getValidationMessage(interactive);
             var detail = interactive.interactive_details
             q.label = detail.label;
             
@@ -226,6 +238,16 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         };
     }
    
+    function getValidationMessage(interactive)
+    {
+//        console.log("validators: ");
+//        console.log(interactive.validators);
+        if(interactive.validators && interactive.validators.length > 0)
+        {
+            return interactive.validators[0].message;
+        }
+        return "";
+    };
 
     function getValidation(o)
     {
@@ -258,7 +280,11 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
 
     function idpAndAngSpec(optionsOrignal, builderForms, recursive) {
-//        debugger
+/*
+        console.log("\n\n\nhere");
+        console.log(optionsOrignal);
+        console.log("end\n\n\n");
+*/
         if(recursive == undefined)
         {
             recursive = false;
@@ -349,13 +375,13 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         var validators = [];
         if(IMElement.validation != "")
         {
-
             var id = getID();
+            var msg = IMElement.customModel.validationMessage;
             validators.push({
                 "element_id": id,
                 "validator_name": id,
                 "validator_type": "regex",
-                "message": "",
+                "message":  msg? msg : "",
                 "expression": IMElement.validation
             });
         };
@@ -380,11 +406,15 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     function isInput(IMElement) { return interactiveType(IMElement) == "input"; };
     function isContainer(IMElement) { return IMElement.component == "container"; };
     function isDate(IMElement) { return IMElement.component == "date"; };
-    function isDescription(IMElement) { return IMElement.component == "description"; };
+
+    function isDescription(IMElement) { 
+        return IMElement.component == "description" || isVideoDescription(IMElement)|| isLinkDescription(IMElement) ; 
+    };
+
     function isImageDescription(IMElement) { return IMElement.customModel.type == "image"; };
-    function isVideoDescription(IMElement) { return IMElement.customModel.type == "video"; };
-    function isTextDescription(IMElement) { return IMElement.customModel.type == "text"; };
-    function isLinkDescription(IMElement) { return IMElement.customModel.type == "link"; };
+    function isVideoDescription(IMElement) { return IMElement.component == "video_description"; };
+    function isTextDescription(IMElement) { return IMElement.component == "description"; };
+    function isLinkDescription(IMElement) { return IMElement.component == "link_description"; };
 
     function interactiveDetailsOptions(IMElement)
     {
@@ -468,6 +498,23 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         };
     }
 
+    function displayInline(IMElement)
+    {
+        if(IMElement.customModel.inline)
+        {
+            return true;
+        }
+        return false;
+    };
+
+    function containerType(IMElement)
+    {
+        if(IMElement.customModel.type && IMElement.customModel.type == "tab")
+        {
+            return "tab"
+        } return "normal";
+    };
+
     function newIdpSpecFromIM(value, key, IMElement, builderForms, formSoFar) {
         var id = getID();
         var el = {
@@ -476,8 +523,9 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                  };
         if(isContainer(IMElement))
         {
-
+            el.container_type = containerType(IMElement);
             el.label = IMElement.label;
+            el.display_inline = displayInline(IMElement);
             el.repeatable = false;
             el.children = idpAndAngSpec(builderForms[IMElement.id], builderForms, true);
         }

@@ -1,17 +1,17 @@
-
 {
     "default": [
         {
-            "component": "video_description",
+            "component": "container",
             "customModel": {
-                "url":"testurl"
+                "inline":false,
+                "type":"tab"
             },
             "editable": true,
             "expressionProperties": "",
-            "id": "default-video_description-1",
+            "id": "default-container-1",
             "index": 0,
-            "isContainer": false,
-            "label": "",
+            "isContainer": true,
+            "label": "Container title",
             "noFormControl": true,
             "options": [],
             "placeholder": "",

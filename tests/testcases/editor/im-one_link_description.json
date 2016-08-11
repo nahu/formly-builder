@@ -3,14 +3,13 @@
 {
     "default": [
         {
-            "component": "description",
+            "component": "link_description",
             "customModel": {
-                "descriptionModel": "http://www.google.de",
-                "type":"link"
+                "descriptionModel": "http://www.google.de"
             },
             "editable": true,
             "expressionProperties": "",
-            "id": "default-description-1",
+            "id": "default-link_description-1",
             "index": 0,
             "isContainer": false,
             "label": "",

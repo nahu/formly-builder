@@ -3,7 +3,8 @@
         {
             "component": "textInput",
             "customModel": {
-                "postLabel": "Post Label 1"
+                "postLabel": "Post Label 1",
+                "validationMessage":""
             },
             "editable": true,
             "expressionProperties": "",
@@ -22,7 +23,8 @@
         {
             "component": "textInput",
             "customModel": {
-                "postLabel": "Post Label 2"
+                "postLabel": "Post Label 2",
+                "validationMessage":""
             },
             "editable": true,
             "expressionProperties": "",

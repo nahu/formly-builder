@@ -337,24 +337,31 @@
 		                \
 		                <\/div>",
 		
-		      popoverTemplate: "<form>" +
-                                       "<div class=\"form-group\">" + 
+	  popoverTemplate: "<form>" +
+              "<div class=\"form-group\">" + 
 
           "<formly-form model=\"popover.getParrentApp().container\" fields=\"popover.getParrentApp().containerFields\">" + 
-          "<button type=\"submit\" class=\"btn btn-default\" ng-click=\"popover.getParrentApp().insertContainerForm(popover.getParrentApp().container.selectedField, popover.getCurrentElementScope())\">insert</button>" +
-         "</formly-form>" +
+              "<button type=\"submit\" class=\"btn btn-default\" ng-click=\"popover.getParrentApp().insertContainerForm(popover.getParrentApp().container.selectedField, popover.getCurrentElementScope())\">insert</button>" +
+              "</formly-form>" +
 
-                                          "<label class=\'control-label\'>Label</label>" +
-                                          "<input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>    " +
-                                       "<\/div>" +
-                                       "<div class=\"form-group\">" +
-                                       "<label class=\'control-label\'>Options<\/label>        " +
-                                       "<textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\" \/>    " +
-                                       "<\/div>" +
-                                       "<\/form>",
-		      isContainer: true
-		     
-		  });
+          "<label class=\'control-label\'>Label</label>" +
+              "<input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>    " +
+
+              "<label class=\'control-label\'>Display Inline</label>" +
+              "<input type=\"checkbox\" ng-model=\"customModel.inline\"  class=\'form-control\' \/>    " +
+
+              "<label class=\'control-label\'>Containertype</label>" +
+              "<select ng-model=\"customModel.type\" class='form-control' ng-options=\"option as option for option in ['normal','tab']\" ng-init=\"customModel.type='normal'\">" +
+              "</select>"+
+              "<\/div>" +
+              "<div class=\"form-group\">" +
+              "<label class=\'control-label\'>Options<\/label>        " +
+              "<textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\" \/>    " +
+              "<\/div>" +
+              "<\/form>",
+	  isContainer: true
+	  
+      });
 
    return $builderProvider.registerComponent('textArea', {
         group: 'IDP',

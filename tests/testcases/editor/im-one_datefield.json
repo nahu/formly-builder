@@ -4,7 +4,8 @@
             "component": "date",
             "customModel": {
                 "dateFormat": "DD/MM/YYYY",
-                "postLabel": "Date Post Label"
+                "postLabel": "Date Post Label",
+                "validationMessage":""
             },
             "editable": true,
             "expressionProperties": "",

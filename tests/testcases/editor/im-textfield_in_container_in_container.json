@@ -2,7 +2,10 @@
     "default": [
         {
             "component": "container",
-            "customModel": {},
+            "customModel": {
+                "inline":false,
+                "type":"tab"
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-container-1",
@@ -20,7 +23,10 @@
     "default-container-1": [
         {
             "component": "container",
-            "customModel": {},
+            "customModel": {
+                "inline":true,
+                "type":"normal"
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-container-1-container-2",
@@ -38,7 +44,9 @@
     "default-container-1-container-2": [
         {
             "component": "textInput",
-            "customModel": {},
+            "customModel": {
+                "validationMessage":""
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-container-1-container-2-textInput-3",

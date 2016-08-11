@@ -3,7 +3,8 @@
         {
             "component": "textInput",
             "customModel": {
-                "postLabel": "Post Label"
+                "postLabel": "Post Label",
+                "validationMessage":"this is a custom validation message"
             },
             "editable": true,
             "expressionProperties": "",

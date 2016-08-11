@@ -3,7 +3,8 @@
         {
             "component": "select",
             "customModel": {
-                "postLabel" : ""
+                "postLabel" : "",
+                "validationMessage":""
             },
             "editable": true,
             "expressionProperties": "",
@@ -22,7 +23,9 @@
         {
             "component": "select",
             "customModel": {
-                "postLabel": "Post Dropdown Test 2"
+                "postLabel": "Post Dropdown Test 2",
+                "validationMessage":""
+
             },
             "editable": true,
             "expressionProperties": "",

@@ -2,7 +2,10 @@
     "default": [
         {
             "component": "container",
-            "customModel": {},
+            "customModel": {
+                "inline":false,
+                "type":"normal"
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-container-1",
@@ -20,7 +23,9 @@
     "default-container-1": [
         {
             "component": "textInput",
-            "customModel": {},
+            "customModel": {
+                "validationMessage":""
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-container-1-textInput-2",

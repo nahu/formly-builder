@@ -3,7 +3,8 @@
         {
             "component": "radio",
             "customModel": {
-                "postLabel": "Post Label Radio"
+                "postLabel": "Post Label Radio",
+                "validationMessage":""
             },
             "editable": true,
             "expressionProperties": "",

@@ -1,0 +1,17 @@
+{
+    "element_id":"0",
+    "element_type":"form",
+    "metadata":{},
+    "children":[
+        {
+            "element_id":"1",
+            "element_type":"container",
+            "label":"Container title",
+            "container_type":"tab",
+            "display_inline": false,
+            "repeatable":false,
+            "children":[]
+        }
+    ]
+}
+

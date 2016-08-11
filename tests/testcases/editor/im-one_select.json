@@ -2,7 +2,9 @@
     "default": [
         {
             "component": "select",
-            "customModel": {},
+            "customModel": {
+                "validationMessage":""
+            },
             "editable": true,
             "expressionProperties": "",
             "id": "default-select-1",
