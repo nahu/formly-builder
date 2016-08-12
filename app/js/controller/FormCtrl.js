@@ -195,7 +195,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   
   
   vm.upload = function() {
-      debugger;
       vm.idpSpec.metadata = vm.editor.metadata
       vm.idpSpec.metadata.title = vm.editor.currentFormName;
 
