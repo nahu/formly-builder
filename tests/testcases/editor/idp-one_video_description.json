@@ -7,7 +7,7 @@
         {
             "element_id": "1",
             "element_type": "description",
-            "url":"testurl",
+            "urls":["testurl"],
             "description_type": "video"
         }
     ]

@@ -114,7 +114,6 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
 
     function findIMKeyForIDPKey(node, key)
     {
-        console.log("checking: " + node.element.element_id);
         if(node.element.element_id == key)
         {
             return node.getFullID();
@@ -232,10 +231,22 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         }
         else if (node.getElementType() == "description" )
         {
-            if(node.getElement().description_type == "image" ||
-               node.getElement().description_type == "video" )
+            if(node.getElement().description_type == "image")
             {
                 q.customModel.url = interactive.url;
+            }
+            else if(node.getElement().description_type == "video" )
+            {
+                if(interactive.urls && interactive.urls.length > 0)
+                {
+                    q.customModel.url = interactive.urls[0];
+                }
+                else
+                {
+                    q.customModel.url = [];
+                }
+
+
             }
             else
             {

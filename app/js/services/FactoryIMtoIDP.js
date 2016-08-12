@@ -301,7 +301,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             }
             else if (isVideoDescription(IMElement))
             {
-                el.url = IMElement.customModel.url;
+                el.urls = [IMElement.customModel.url];
                 el.description_type = "video";
             }
             else if (isLinkDescription(IMElement))
