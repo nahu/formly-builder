@@ -1,5 +1,6 @@
 
 <div class="container-fluid">
+  <h1>{{vm.exampleTitle}}</h1>
     <div class="row">
 
         <hr />
@@ -16,7 +17,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Builder</h3>
                 </div>
-                <div fb-builder="default"></div>
+                <div fb-builder="default" class="leftside" ng-class="{crossmode : vm.showCrossmode}"></div>
 
                 <div class="panel-footer">
                     <div class="checkbox">
@@ -43,7 +44,7 @@
 
 <div style="z-index:-1;background-color:white;position:relative">
     <a href="{{vm.SwitchView.link}}">{{vm.SwitchView.text}}</a>
-    <h1>{{vm.exampleTitle}}</h1>
+
 
     <hr />
     <div kcd-recompile="vm.fields">

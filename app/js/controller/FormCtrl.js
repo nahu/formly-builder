@@ -14,7 +14,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
   vm.editor.selectedField = -1;
   vm.editor.metadata = {};
   vm.container.selectedField = -1;
-
+  vm.showCrossmode = false;
   vm.editorFields = [{
     key: "selectedField",
     type: "select",
@@ -31,8 +31,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
                      }
 		    ];
 
-  
-
   vm.containerFields = [{
     key: "selectedField",
     type: "select",
@@ -40,8 +38,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
       label: "Insert In Me:",
       options: []}}
 		    ];
-
-
 
   vm.getConnector = function(){
     return editorconnector;
@@ -102,6 +98,10 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
       loadFormData(imSpec);
     });
   };
+
+    vm.displayCrossMode = function(inCrossMode, params){
+        vm.showCrossmode = inCrossMode;
+    };
 
   vm.loadContainerForm = function()
   {

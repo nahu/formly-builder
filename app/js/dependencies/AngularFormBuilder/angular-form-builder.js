@@ -1,3 +1,5 @@
+var isInCrossmode = false;
+var crossModel = {};
 
 (function () {
     var copyObjectToScope;
@@ -477,6 +479,17 @@
                               return $(element).popover('hide');
                           });
                       },
+                      selectCrossKey:function($event, sourcevm){
+                          $event.preventDefault();
+                          $validator.validate(scope).success(function () {
+                              popover.isClickedSave = true;
+                              isInCrossmode = true;
+                              crossModel = {source: sourcevm , target:undefined};
+                              $builder.parrentApp.displayCrossMode(isInCrossmode, {});
+
+                              return $(element).popover('hide');
+                          });
+                      },
                       remove: function ($event) {
 
                           /*
@@ -538,11 +551,27 @@
                       }
                   });
                   $(element).on('shown.bs.popover', function (e) {
-                     // e.stopPropagation();
-                      $(".popover ." + popover.id + " input:first").select();
-                      scope.$apply(function () {
-                          return scope.popover.shown();
-                      });
+                      // e.stopPropagation();
+                      if(isInCrossmode)
+                      {
+                          isInCrossmode = false;
+
+                          var myID = scope.popover.getCurrentElementScope().id;
+                          crossModel.source.customModel = crossModel.source.customModel || {};
+                          crossModel.source.customModel.crossValidationKey = myID
+
+                          scope.popover.getParrentApp().displayCrossMode(isInCrossmode, {});
+//                          e.stopPropagation();
+                          crossModel = {};
+
+                      }
+                      else
+                      {
+                          $(".popover ." + popover.id + " input:first").select();
+                          scope.$apply(function () {
+                              return scope.popover.shown();
+                          });
+                      }
                   });
                   return $(element).on('hide.bs.popover', function () {
                       var $popover;
@@ -1363,6 +1392,7 @@
 
                    "<label class='control-label'>Crossvalidation key</label>" +
                    "<input type='text' ng-model='customModel.crossValidationKey' class='form-control' />" +
+                   "<input type='button' ng-click='popover.selectCrossKey($event, this)' class='btn btn-default' value='Select Crosskey' />" + 
 
                    "<label class='control-label'>Validation Message</label>" +
                    "<input type='text' ng-model='customModel.validationMessage' class='form-control' /></div>";
