@@ -262,7 +262,9 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         {
 
             q.validation = getValidation(interactive)
+
             q.customModel.validationMessage = getValidationMessage(interactive);
+            q.customModel.validation_action = getValidationAction(interactive);
             var crossKey = getCrossKey(interactive, node)
             if(crossKey != "")
             {
@@ -309,6 +311,15 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         if(interactive.validators && interactive.validators.length > 0)
         {
             return interactive.validators[0].message;
+        }
+        return "";
+    };
+
+    function getValidationAction(interactive)
+    {
+        if(interactive.validators && interactive.validators.length > 0)
+        {
+            return interactive.validators[0].validator_action;
         }
         return "";
     };

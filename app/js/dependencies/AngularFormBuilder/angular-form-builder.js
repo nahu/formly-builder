@@ -1255,7 +1255,7 @@ var crossModel = {};
                 placeholder: (_ref3 = component.placeholder) != null ? _ref3 : '',
                 editable: (_ref4 = component.editable) != null ? _ref4 : true,
                 required: (_ref5 = component.required) != null ? _ref5 : false,
-                validation: (_ref6 = component.validation) != null ? _ref6 : '/.*/',
+                validation: (_ref6 = component.validation) != null ? _ref6 : '',
                 validationOptions: (_ref7 = component.validationOptions) != null ? _ref7 : [],
                 options: (_ref8 = component.options) != null ? _ref8 : [],
                 arrayToText: (_ref9 = component.arrayToText) != null ? _ref9 : false,
@@ -1381,28 +1381,28 @@ var crossModel = {};
            var originalHTML = component.popoverTemplate;
            var $originalHTML = $('<div />', { html: originalHTML });
            if (component.noFormControl)
-               {
-            $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>id:</label><label />{{id}}</label</div>");
+           {
+               $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>id:</label><label />{{id}}</label</div>");
            }
 
            var validationHTML = "<div class='form-group'>" +
 
-                                "<label class='control-label'>Validation Expression</label>" +
-                                "<input type='text' ng-model='expressionProperties' class='form-control' />" +
+               "<label class='control-label'>Validation Expression</label>" +
+                   "<input type='text' ng-model='validation' class='form-control' />" +
 
-                   "<label class='control-label'>Crossvalidation key</label>" +
+               "<label class='control-label'>Crossvalidation key</label>" +
                    "<input type='text' ng-model='customModel.crossValidationKey' class='form-control' />" +
                    "<input type='button' ng-click='popover.selectCrossKey($event, this)' class='btn btn-default' value='Select Crosskey' />" + 
 
-                   "<label class='control-label'>Validation Message</label>" +
+               "<label class='control-label'>Validation Message</label>" +
                    "<input type='text' ng-model='customModel.validationMessage' class='form-control' /></div>";
 
            $originalHTML.find("form").children(".form-group").last().after(validationHTML);
 
            $originalHTML.find("form").children().last().append("<hr /><div class='form-group'><input type='submit' ng-click='popover.save($event)' class='btn btn-primary' value='Save' /><input type='button' ng-click='popover.cancel($event)' class='btn btn-default' value='Cancel' /><input type='button' ng-click='popover.remove($event)' class='btn btn-danger' value='Delete' /></div>");
            
-            var newHTML = $originalHTML.html();
-            return component.popoverTemplate = newHTML;
+           var newHTML = $originalHTML.html();
+           return component.popoverTemplate = newHTML;
            
         };
 

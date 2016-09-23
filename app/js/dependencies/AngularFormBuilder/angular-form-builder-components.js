@@ -8,23 +8,25 @@
         group: 'IDP',
         label: 'Text Input',
         description: 'description',
-        placeholder: 'placeholder',
-        required: false,
-        validationOptions: [
-          {
-            label: 'none',
-            rule: '/.*/'
-          }, {
-            label: 'number',
-            rule: '[number]'
-          }, {
-            label: 'email',
-            rule: '[email]'
-          }, {
-            label: 'url',
-            rule: '[url]'
-          }
-        ],
+         placeholder: 'placeholder',
+         required: false,
+         validationOptions: [
+             {
+                 label: 'none',
+                 action: ''
+             },
+             {
+                 label: 'show message',
+                 action: 'message'
+             }, 
+             {
+                 label: 'hide element',
+                 action: 'hide'
+             }, {
+                 label: 'disable element',
+                 action: 'disable'
+             }
+         ],
         template: "<div> " +
                      "<label for=\"0\" class=\"control-label\"> {{label}} {{fb-required ? '*' : ''}} </label>  " +
                      "<input class=\"form-control\" ng-model=\"inputText\" placeholder=\"{{placeholder}}\"> " +
@@ -48,8 +50,8 @@
                                "</label> " +
                             "</div> " +
                             "<div class=\"form-group\" ng-if=\"validationOptions.length > 0\"> " +
-                               "<label class='control-label'>Validation</label> " +
-                               "<select ng-model=\"$parent.validation\" class='form-control' ng-options=\"option.rule as option.label for option in validationOptions\">" +
+                               "<label class='control-label'>Validation action</label> " +
+             "<select ng-model=\"$parent.customModel.validation_action\" class='form-control' ng-options=\"option.action as option.label for option in validationOptions\">" +
                                "</select> " +
                             "</div> " +
                           "</form>"

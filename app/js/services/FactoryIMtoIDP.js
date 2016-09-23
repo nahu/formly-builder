@@ -131,10 +131,13 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         {
             var id = getID(IMElement, false);
             var msg = IMElement.customModel.validationMessage;
+            var valAction = IMElement.customModel.validation_action;
+
             var v = {
                 "element_id": id,
                 "validator_name": id,
                 "validator_type": "regex",
+                "validator_action":valAction,
                 "message":  msg? msg : "",
                 "expression": IMElement.validation,
                 "cross_key": crosskeyForElement(IMElement)
