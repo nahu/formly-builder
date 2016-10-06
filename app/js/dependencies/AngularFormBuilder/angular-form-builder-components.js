@@ -5,28 +5,11 @@
 
 
      $builderProvider.registerComponent('textInput', {
-        group: 'IDP',
-        label: 'Text Input',
-        description: 'description',
+         group: 'IDP',
+         label: 'Text Input',
+         description: 'description',
          placeholder: 'placeholder',
-         required: false,
-         validationOptions: [
-             {
-                 label: 'none',
-                 action: ''
-             },
-             {
-                 label: 'show message',
-                 action: 'message'
-             }, 
-             {
-                 label: 'hide element',
-                 action: 'hide'
-             }, {
-                 label: 'disable element',
-                 action: 'disable'
-             }
-         ],
+         hasValidation:true,
         template: "<div> " +
                      "<label for=\"0\" class=\"control-label\"> {{label}} {{fb-required ? '*' : ''}} </label>  " +
                      "<input class=\"form-control\" ng-model=\"inputText\" placeholder=\"{{placeholder}}\"> " +
@@ -41,19 +24,9 @@
                                " <input type='text' ng-model=\"customModel.postLabel\" class='form-control'/> " +
                             " </div> " +
                             "<div class=\"form-group\"> " +
-                               "<label class='control-label'>Placeholder</label>" +
+                               "<label class='control-label'>Placeholders</label>" +
                                "<input type='text' ng-model=\"placeholder\" class='form-control'/> " +
-                            "</div> " +
-                            "<div class=\"checkbox\"> " +
-                               "<label> " +
-                               "  <input type='checkbox' ng-model=\"required\" />Required" +
-                               "</label> " +
-                            "</div> " +
-                            "<div class=\"form-group\" ng-if=\"validationOptions.length > 0\"> " +
-                               "<label class='control-label'>Validation action</label> " +
-             "<select ng-model=\"$parent.customModel.validation_action\" class='form-control' ng-options=\"option.action as option.label for option in validationOptions\">" +
-                               "</select> " +
-                            "</div> " +
+                            "</div> " + 
                           "</form>"
       });
 
@@ -63,22 +36,7 @@
         label: 'Date',
         description: 'A Datepicker',
         placeholder: '1/1/2016',
-        required: false,
-        validationOptions: [
-          {
-            label: 'none',
-            rule: '/.*/'
-          }, {
-            label: 'number',
-            rule: '[number]'
-          }, {
-            label: 'email',
-            rule: '[email]'
-          }, {
-            label: 'url',
-            rule: '[url]'
-          }
-        ],
+         hasValidation:true,
         template: "<div> " +
                      "<label for=\"0\" class=\"control-label\">{{label}}  {{fb-required ? '*' : ''}} </label> " +
                      "<input type=\"date\" class=\"form-control\"  ng-model=\"inputText\" placeholder=\"{{placeholder}}\">" +
@@ -91,20 +49,13 @@
                          "   <label class='control-label'>Post Label</label>   " +
                          "     <input type='text' ng-model=\"customModel.postLabel\" class='form-control'/>  " +
                          "   <label class='control-label'>Date Format</label>   " +
-                        "     <input type='text' ng-model=\"customModel.dateFormat\" class='form-control'/>  " +
+                        "     <input type='text' ng-model=\"customModel.dateFormat\" class='form-control' ng-init='customModel.dateFormat = \"DD/MM/YYYY\"'/>  " +
                          "  </div>        " +
                          " <div class=\"form-group\">        " +
                          "   <label class='control-label'>Placeholder</label>        " +
                          "   <input type='text' ng-model=\"placeholder\" class='form-control'/>    " +
                          " </div>    " +
-                         " <div class=\"checkbox\">        " +
-                         "  <label>            " +
-                         "   <input type='checkbox' ng-model=\"required\" />Required</label>    " +
-                         " </div>    " +
-                         "  <div class=\"form-group\" ng-if=\"validationOptions.length > 0\">        " +
-                         "   <label class='control-label'>Validation</label>        " +
-                         "   <select ng-model=\"$parent.validation\" class='form-control' ng-options=\"option.rule as option.label for option in validationOptions\"></select>    " +
-                         "  </div>    " +
+
                          "</form>"
       });
 
@@ -116,6 +67,7 @@
         description: 'description',
         placeholder: 'placeholder',
         required: false,
+        hasValidation:true,
         options: ['value one', 'value two'],
         template: "<div>" +
                      "<label for=\"0\" class=\"control-label\"> {{label}} {{fb-required ? '*' : ''}} " +
@@ -373,7 +325,7 @@
         description: '',
         placeholder: 'placeholder',
         required: false,
-
+       hasValidation:true,
     template: "<div> " +
               " <label for=\"0\" class=\"control-label\">{{label}} {{fb-required ? '*' : ''}}</label>" +
               " <textarea class=\"form-control\" ng-model=\"inputText\" rows='4' cols='50' placeholder=\"{{placeholder}}\">" +
@@ -389,11 +341,7 @@
                      "  <label class='control-label'>Placeholder</label>    " +
                      "  <input type='text' ng-model=\"placeholder\" class='form-control'/>  " +
                      " </div>  " +
-                     " <div class=\"checkbox\">    " +
-                     " <label>      " +
-                     " <input type='checkbox' ng-model=\"required\" /> Required</label>  " +
-                     " </div>  " +
-                     "<div class=\"form-group\" ng-if=\"validationOptions.length > 0\">    <label class='control-label'>Validation</label>    <select ng-model=\"$parent.validation\" class='form-control' ng-options=\"option.rule as option.label for option in validationOptions\"></select>  </div>  </form>"
+                     "</form>"
    });
 
 

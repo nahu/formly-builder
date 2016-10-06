@@ -37,7 +37,8 @@ var crossModel = {};
               var component;
               copyObjectToScope(formObject, $scope);
               $scope.optionsText = formObject.options.join('\n');
-              $scope.$watch('[key,label, description, placeholder, required, options, validation,templateOptions,expressionProperties,customModel]', function () {
+
+              $scope.$watch('[key,label, description, placeholder, required, options, templateOptions,expressionProperties,customModel]', function () {
                   formObject.key = $scope.key;
                   formObject.label = $scope.label;
                   formObject.description = $scope.description;
@@ -46,14 +47,19 @@ var crossModel = {};
                   formObject.options = $scope.options;
                   formObject.templateOptions = $scope.templateOptions;
                   formObject.expressionProperties = $scope.expressionProperties;
-                  formObject.customModel = $scope.customModel;
-                  
-                  
-                  return formObject.validation = $scope.validation;
+                  formObject.hasValidation = $scope.hasValidation;
+                  formObject.validationOptions = $scope.validationOptions;
+                  return formObject.customModel = $scope.customModel;
               }, true);
+
+              component = $builder.components[formObject.component];
+              return $scope.validationOptions = component.validationOptions;
+          };
+
               $scope.$watch('optionsText', function (text) {
                   var x;
                   $scope.options = (function () {
+                      if (text == undefined) return [];
                       var _i, _len, _ref, _results;
                       _ref = text.split('\n');
                       _results = [];
@@ -67,10 +73,6 @@ var crossModel = {};
                   })();
                   return $scope.inputText = $scope.options[0];
               });
-              component = $builder.components[formObject.component];
-              return $scope.validationOptions = component.validationOptions;
-          };
-
 
           return $scope.data = {
               model: null,
@@ -85,12 +87,13 @@ var crossModel = {};
                       description: $scope.description,
                       placeholder: $scope.placeholder,
                       required: $scope.required,
-                      optionsText: $scope.optionsText,
-                      validation: $scope.validation,
                       key: $scope.key,
                       templateOptions: $scope.templateOptions,
                       expressionProperties: $scope.expressionProperties,
-                      customModel: $scope.customModel
+                      customModel: $scope.customModel,
+                      hasValidation: $scope.hasValidation,
+                      validationOptions: $scope.validationOptions
+
                   };
               },
               rollback: function () {
@@ -109,8 +112,9 @@ var crossModel = {};
                   $scope.key = this.model.key;
                   $scope.templateOptions = this.model.templateOptions;
                   $scope.expressionProperties = this.model.expressionProperties;
-                  $scope.customModel = this.model.customModel;
-                  return $scope.validation = this.model.validation;
+                  $scope.hasValidation = this.model.hasValidation;
+                  $scope.validationOptions = this.model.validationOptions;
+                  return $scope.customModel = this.model.customModel;
               }
           };
       }
@@ -329,11 +333,6 @@ var crossModel = {};
                                  //     app.isMirrorDrop = true;
 
 
-                                 console.log("dropping object");
-                                 console.log(scope.formName)
-                                 console.log(draggable.object)
-                                 console.log("----------");
-
                                   $builder.insertFormObject(scope.formName, $(element).find('.empty').index(), {
                                       component: draggable.object.componentName
                                   });
@@ -457,6 +456,7 @@ var crossModel = {};
                           html: template
                       };
                       popover.html = $(popover.html).addClass(popover.id);
+  
                       popover.view = $compile(popover.html)(scope);
                       $(element).addClass(popover.id);
                       return $(element).popover({
@@ -479,16 +479,30 @@ var crossModel = {};
                               return $(element).popover('hide');
                           });
                       },
-                      selectCrossKey:function($event, sourcevm){
+                      selectCrossKey:function($event, sourcevm, validatorID){
                           $event.preventDefault();
                           $validator.validate(scope).success(function () {
                               popover.isClickedSave = true;
                               isInCrossmode = true;
-                              crossModel = {source: sourcevm , target:undefined};
+                              crossModel = {source: sourcevm , target:undefined, validatorID:validatorID};
                               $builder.parrentApp.displayCrossMode(isInCrossmode, {});
 
                               return $(element).popover('hide');
                           });
+                      },
+                      addValidationOption:function($event, sourcevm){
+
+                          var validators = sourcevm.data.model.customModel.validators
+                          var validator = {
+                              "validationMessage":"",
+                              "validationAction":"",
+                              "crossKey":"",
+                              "validation": ""
+                          }
+                          validators.push(validator);
+                      },
+                      removeValidationOption: function($event, sourcevm, validatorIndex) {
+                          sourcevm.data.model.customModel.validators.splice(validatorIndex, 1);
                       },
                       remove: function ($event) {
 
@@ -540,7 +554,7 @@ var crossModel = {};
                           popoverTop = elementOrigin - $popover.height() / 2;
                           $popover.css({
                               position: 'absolute',
-                              top: popoverTop
+                              top: popoverTop > 0 ? popoverTop : 0
                           });
                           $popover.show();
                           setTimeout(function () {
@@ -554,14 +568,18 @@ var crossModel = {};
                       // e.stopPropagation();
                       if(isInCrossmode)
                       {
+
+                          
                           isInCrossmode = false;
 
                           var myID = scope.popover.getCurrentElementScope().id;
-                          crossModel.source.customModel = crossModel.source.customModel || {};
-                          crossModel.source.customModel.crossValidationKey = myID
+//                          crossModel.source.customModel = crossModel.source.customModel || {};
+
+                          crossModel.source.customModel.validators[crossModel.validatorID].crossKey = myID
 
                           scope.popover.getParrentApp().displayCrossMode(isInCrossmode, {});
-//                          e.stopPropagation();
+
+//                        e.stopPropagation();
                           crossModel = {};
 
                       }
@@ -702,9 +720,6 @@ var crossModel = {};
                     }
                     $template = $(template);
                     $input = $template.find("[ng-model='inputText']");
-                    $input.attr({
-                        validator: '{{validation}}'
-                    });
                     view = $compile($template)(scope);
                     return $(element).html(view);
                 });
@@ -1255,8 +1270,8 @@ var crossModel = {};
                 placeholder: (_ref3 = component.placeholder) != null ? _ref3 : '',
                 editable: (_ref4 = component.editable) != null ? _ref4 : true,
                 required: (_ref5 = component.required) != null ? _ref5 : false,
-                validation: (_ref6 = component.validation) != null ? _ref6 : '',
-                validationOptions: (_ref7 = component.validationOptions) != null ? _ref7 : [],
+                hasValidation: (_ref6 = component.hasValidation) != null ? _ref6 : false,
+                validationOptions: (_ref7 = component.validationOptions) != null ? _ref7 : false,
                 options: (_ref8 = component.options) != null ? _ref8 : [],
                 arrayToText: (_ref9 = component.arrayToText) != null ? _ref9 : false,
                 template: component.template,
@@ -1279,9 +1294,6 @@ var crossModel = {};
         };
         
         this.convertFormObject = function (name, formObject) {
-               console.log("converting form object:")
-               console.log(name)
-               console.log(formObject) 
             var component, result, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, _ref12,_ref14;
           
             if (formObject == null) {
@@ -1313,7 +1325,8 @@ var crossModel = {};
                 placeholder: (_ref4 = formObject.placeholder) != null ? _ref4 : component.placeholder,
                 options: (_ref5 = formObject.options) != null ? _ref5 : component.options,
                 required: (_ref6 = formObject.required) != null ? _ref6 : component.required,
-                validation: (_ref7 = formObject.validation) != null ? _ref7 : component.validation,
+                hasValidation: (_ref7 = formObject.hasValidation) != null ? _ref7 : component.hasValidation,
+                validationOptions: (_ref8 = formObject.validationOptions) != null ? _ref8 : component.validationOptions,
                 id: (_ref9 = formObject.id) != null ? _ref9 : _newId,
                 isContainer: (_ref8 = formObject.isContainer) != null ? _ref8 : component.isContainer,
                 templateOptions: (_ref10 = formObject.templateOptions) != null ? _ref10 : component.templateOptions,
@@ -1378,6 +1391,11 @@ var crossModel = {};
 
        loadPopoverSharedElements = function (component)
        {
+           component.customModel.validators = [];
+           if (component.hasValidation) {
+               component.validationOptions=[{label:'show message',action:'message'},{label:'hide element',action:'hide'},{label:'disable element',action:'disable'}];
+           }
+
            var originalHTML = component.popoverTemplate;
            var $originalHTML = $('<div />', { html: originalHTML });
            if (component.noFormControl)
@@ -1385,22 +1403,44 @@ var crossModel = {};
                $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>id:</label><label />{{id}}</label</div>");
            }
 
-           var validationHTML = "<div class='form-group'>" +
 
-               "<label class='control-label'>Validation Expression</label>" +
-                   "<input type='text' ng-model='validation' class='form-control' />" +
+           var validationLoopHTML = 
+                   "<div class='form-group' ng-if='hasValidation'>" +
+                       "<div ng-repeat=\"validator in customModel.validators\" class='popupValidatorGroup'>" +
 
-               "<label class='control-label'>Crossvalidation key</label>" +
-                   "<input type='text' ng-model='customModel.crossValidationKey' class='form-control' />" +
-                   "<input type='button' ng-click='popover.selectCrossKey($event, this)' class='btn btn-default' value='Select Crosskey' />" + 
+                          "<label class='control-label'>Validation Expression</label>" +
+                          "<input type='text' ng-model='validator.validation' class='form-control' />" +
 
-               "<label class='control-label'>Validation Message</label>" +
-                   "<input type='text' ng-model='customModel.validationMessage' class='form-control' /></div>";
+                          "<label class='control-label'>Validation action</label> " +
+                          "<select ng-model=\"validator.validationAction\" class='form-control' ng-options=\"option.action as option.label for option in validationOptions\" ng-init='validator.validationAction = \"message\"''>" +
+                          "</select> " +
 
-           $originalHTML.find("form").children(".form-group").last().after(validationHTML);
+                          "<div ng-if='validator.validationAction == \"message\"'>" +
+                             "<label class='control-label'>Validation Message</label>" +
+                             "<input type='text' ng-model='validator.validationMessage' class='form-control' />" +
+                          "</div>" +
 
-           $originalHTML.find("form").children().last().append("<hr /><div class='form-group'><input type='submit' ng-click='popover.save($event)' class='btn btn-primary' value='Save' /><input type='button' ng-click='popover.cancel($event)' class='btn btn-default' value='Cancel' /><input type='button' ng-click='popover.remove($event)' class='btn btn-danger' value='Delete' /></div>");
-           
+
+                          "<label class='control-label'>Cross Validation</label>" +
+                          "<input type='text' ng-model='validator.crossKey' class='form-control' />" +
+                          "<input type='button' ng-click='popover.selectCrossKey($event, this, $index)' class='btn btn-default popupValidatorGroupButton' value='select key'/>" + 
+                          "<br/>" + 
+       
+                          "<input type='button' ng-click='popover.removeValidationOption($event, this, $index)' class='btn btn-danger popupValidatorGroupButton' value='remove' />"+
+                   "</div> " +
+                   "</div>" + 
+                   "</div>";
+
+           var validationButtonHTML = "<div id=\"popover_validators\"></div><input type='button' ng-if='hasValidation' ng-click='popover.addValidationOption($event, this)' class='btn btn-default' value='Add validation' />";
+
+           var saveButtonsHTML = "<hr /><div class='form-group'><input type='submit' ng-click='popover.save($event)' class='btn btn-primary' value='Save' /><input type='button' ng-click='popover.cancel($event)' class='btn btn-default' value='Cancel' /><input type='button' ng-click='popover.remove($event)' class='btn btn-danger' value='Delete' /></div>"
+
+           $originalHTML.find("form").children(".form-group").last().after(validationLoopHTML);
+
+         $originalHTML.find("form").children(".form-group").last().after(validationButtonHTML);
+
+           $originalHTML.find("form").last().after(saveButtonsHTML);  
+
            var newHTML = $originalHTML.html();
            return component.popoverTemplate = newHTML;
            
@@ -1424,8 +1464,6 @@ var crossModel = {};
                     placeholder: {string} The placeholder of the input.
                     editable: {bool} Is the form object editable?
                     required: {bool} Is the form object required?
-                    validation: {string} angular-validator. "/regex/" or "[rule1, rule2]". (default is RegExp(.*))
-                    validationOptions: {array} [{rule: angular-validator, label: 'option label'}] the options for the validation. (default is [])
                     options: {array} The input options.
                     arrayToText: {bool} checkbox could use this to convert input (default is no)
                     template: {string} html template
@@ -1493,7 +1531,6 @@ var crossModel = {};
                     placeholder: {string} The form object placeholder.
                     options: {array} The form object options.
                     required: {bool} Is the form object required? (default is no)
-                    validation: {string} angular-validator. "/regex/" or "[rule1, rule2]".
                     [index]: {int} The form object index. It will be updated by $builder.
                 @return: The form object.
                  */
