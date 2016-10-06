@@ -5,7 +5,7 @@
 
 
      $builderProvider.registerComponent('textInput', {
-         group: 'IDP',
+         group: 'Interactive',
          label: 'Text Input',
          description: 'description',
          placeholder: 'placeholder',
@@ -13,7 +13,7 @@
         template: "<div> " +
                      "<label for=\"0\" class=\"control-label\"> {{label}} {{fb-required ? '*' : ''}} </label>  " +
                      "<input class=\"form-control\" ng-model=\"inputText\" placeholder=\"{{placeholder}}\"> " +
-                     "<label for=\"0\" class=\"control-label\"> {{postLabel}} {{fb-required ? '*' : ''}} </label>  " +
+                     "<label for=\"0\" class=\"control-label\"> {{customModel.postLabel}}</label>  " +
                     "</div>",
 
         popoverTemplate: "<form> " +
@@ -32,7 +32,7 @@
 
 
      $builderProvider.registerComponent('date', {
-        group: 'IDP',
+        group: 'Interactive',
         label: 'Date',
         description: 'A Datepicker',
         placeholder: '1/1/2016',
@@ -40,6 +40,7 @@
         template: "<div> " +
                      "<label for=\"0\" class=\"control-label\">{{label}}  {{fb-required ? '*' : ''}} </label> " +
                      "<input type=\"date\" class=\"form-control\"  ng-model=\"inputText\" placeholder=\"{{placeholder}}\">" +
+             "<label>{{customModel.postLabel}}</label>" + 
                   "</div>",
 
         popoverTemplate: "<form>    " +
@@ -60,9 +61,8 @@
       });
 
 
-
        $builderProvider.registerComponent('radio', {
-        group: 'IDP',
+        group: 'Interactive',
         label: 'Radio',
         description: 'description',
         placeholder: 'placeholder',
@@ -70,52 +70,54 @@
         hasValidation:true,
         options: ['value one', 'value two'],
         template: "<div>" +
-                     "<label for=\"0\" class=\"control-label\"> {{label}} {{fb-required ? '*' : ''}} " +
+                     "<label for=\"0\" class=\"control-label\"> {{label}}" +
                      "</label>" +
                      "<div class=\"radio\" ng-repeat=\"item in options track by $index\">" +
                         "<label>" +
                            "<input type=\"radio\" ng-model=\"$parent.inputText\" value='{{item}}'/> {{item}} " +
                         "</label>" +
                      "</div>" +
+               "<label>{{customModel.postLabel}}</label>" + 
                   "</div>",
 
          popoverTemplate: "<form> " +
                           "<div class=\"form-group\"> " +
                           "  <label class='control-label'>Label</label> " +
-                          "  <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n  " +
+                          "  <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>  " +
                           "  <label class='control-label'>Post Label</label> " +
-                          "  <input type='text' ng-model=\"customModel.postLabel\" class='form-control'/>  " +
-                          "</div>       " +
-                          "<div class=\"form-group\">\n        " +
-                          "<label class='control-label'>Options</label>\n        " +
-                          "<textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>\n    " +
-                          "</div>\n\n    " +
+                          "  <input type='text' ng-model=\"customModel.postLabel\" class='form-control'/> " +
+                          "</div>" +
+                          "<div class=\"form-group\">" +
+                          "    <label class='control-label'>Options</label>        " +
+                          "    <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>" +
+                          "</div>  " +
                           "</form>"
       });
       
       $builderProvider.registerComponent('select', {
-        group: 'IDP',
+        group: 'Interactive',
         label: 'Select',
         description: 'description',
         placeholder: 'placeholder',
-        required: false,
         options: ['value one', 'value two'],
         template: "<div>\
-                        <label for=\"0\" class=\"control-label\">\
-                              {{label}} \
-                              {{fb-required ? '*' : ''}} \
-                        </label>\
-                        <select ng-options=\"value for value in options\" id=\"{{formName+index}}\" class=\"form-control\" ng-model=\"inputText\" ng-init=\"inputText = options[0]\"/>\
-                  </div>\
-        "
+                        <label for=\"0\" class=\"control-label\">{{label}} </label>\
+                        <select ng-options=\"value for value in options\" id=\"{{formName+index}}\" class=\"form-control\" ng-model=\"inputText\" ng-init=\"inputText = 'value one'\"/>\
+                  </div>" + 
+              "<label>{{customModel.postLabel}}</label>"
         ,
-        popoverTemplate: "<form>\n    " +
-                         "<div class=\"form-group\">\n        " +
-                         "   <label class='control-label'>Label</label>\n        " +
-                         "   <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    " +
-          "   <label class='control-label'>Post Label</label>\n        " +
-          "   <input type='text' ng-model=\"customModel.postLabel\" class='form-control'/>\n    " +
-                         "</div>\n    <div class=\"form-group\">\n        <label class='control-label'>Options</label>\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>\n    </div>\n\n   <div class=\"checkbox\"><label><input type='checkbox' ng-model=\"required\" />Required</label></div>  </form>"
+        popoverTemplate: "<form>    " +
+                         "<div class=\"form-group\">" +
+                         "   <label class='control-label'>Label</label>" +
+                         "   <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>" +
+                         "   <label class='control-label'>Post Label</label>" +
+                         "   <input type='text' ng-model=\"customModel.postLabel\" class='form-control'/>" +
+                         "</div>" +
+                         "<div class=\"form-group\">" +
+                         "    <label class='control-label'>Options</label>" +
+                         "    <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>" +
+                         "</div>  " +
+                         "</form>"
       });
 
       $builderProvider.registerComponent('description', {
@@ -126,7 +128,7 @@
         required: false,
         options: [],
         template: "<div>\
-                        <label for=\"0\" class=\"control-label\">\n    {{fb-required ? '*' : ''}}\n  \
+                        <label for=\"0\" class=\"control-label\">    {{fb-required ? '*' : ''}}  \
                         </label>\
                         <div ng-model=\"customModel.descriptionModel\" ng-init=\"customModel.descriptionModel = 'Textlabel'\">{{customModel.descriptionModel}}</div>    \
                    </div>",
@@ -147,7 +149,7 @@
             required: false,
             options: [],
             template: "<div>\
-                <label for=\"0\" class=\"control-label\">\n    {{fb-required ? '*' : ''}}\n  \
+                <label for=\"0\" class=\"control-label\">    {{fb-required ? '*' : ''}}  \
             </label>\
                 <div ng-model=\"customModel.descriptionModel\" ng-init=\"customModel.descriptionModel = 'http://www.google.de'\">{{label}} <a href='{{customModel.descriptionModel}}'>{{customModel.descriptionModel}}</a></div>    \
             </div>",
@@ -221,42 +223,19 @@
         });
 
 
-
-        /*
       $builderProvider.registerComponent('checkbox', {
-        group: 'IDP',
+        group: 'Interactive',
         label: 'Checkbox',
         description: 'description',
-        placeholder: 'placeholder',
-        required: false,
+        hasValidation: true,
         options: [],
         arrayToText: true,
         template: "<div> " +
-                     "<label for=\"0\" class=\"control-label\"> {{label}} {{fb-required ? '*' : ''}}  </label>" +
-                     "<div class=\"checkbox\" ng-repeat=\"item in options track by $index\">" +
-                        "<label><input type=\"checkbox\" ng-model=\"$parent.inputArray[$index]\" value='item'/> {{item}} </label> " +
-                     "</div>" +
-                  "</div>",
-
-        popoverTemplate: "<form>" +
-                         " <div class=\"form-group\">   <label class='control-label'>Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n        <div class=\"form-group\">\n        <label class='control-label'>Options</label>\n        <textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\"/>\n    </div>\n    <div class=\"checkbox\">\n        <label>\n            <input type='checkbox' ng-model=\"required\" />\n            Required\n        </label>\n    </div>\n\n    </form>"
-      });
-
-*/
-
-      $builderProvider.registerComponent('checkbox', {
-        group: 'IDP',
-        label: 'Checkbox',
-        description: 'description',
-        required: false,
-        options: [],
-        arrayToText: true,
-        template: "<div> " +
-                     "<label for=\"0\" class=\"control-label\"> {{label}} {{fb-required ? '*' : ''}} </label> " +
+                     "<label for=\"0\" class=\"control-label\"> {{label}} </label> " +
                      "<label> " +
                         "<input type=\"checkbox\" /> {{item}} " +
                      "</label> " +
-                    "<label for=\"0\" class=\"control-label\"> {{customModel.postLabel}} {{fb-required ? '*' : ''}} </label> " +
+                    "<label for=\"0\" class=\"control-label\"> {{customModel.postLabel}}</label> " +
                   "</div>",
 
         popoverTemplate: "<form>" +
@@ -266,13 +245,7 @@
                             "<div class=\"form-group\">" +
                                "<label class='control-label'>Post Label</label> " +
                                "<input type='text' ng-model=\"customModel.postLabel\" class='form-control'/>  " +
-                            "</div>\n    " +
-   
-                            "<div class=\"checkbox\">\n        " +
-                               "<label> " +
-                                 "<input type='checkbox' ng-model=\"required\" />Required" +
-                               "</label> " +
-                            "</div>" +
+                            "</div>    " +
                          "</form>"
       });
 
@@ -280,10 +253,9 @@
 
 
       $builderProvider.registerComponent('container', {
-		      group: 'layout',
-		      label: 'Container',
-		   
-		      template: "<div class=\"panel panel-default\">\
+	group: 'layout',
+	label: 'Container',
+	template: "<div class=\"panel panel-default\">\
 		                      <div class=\"panel-heading\">\
 		                      <h3 class=\"panel-title\">{{label}}<\/h3>\
 		                <\/div>\
@@ -299,20 +271,18 @@
               "</formly-form>" +
 
           "<label class=\'control-label\'>Label</label>" +
-              "<input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>    " +
+              "<input type=\'text\' ng-model=\"label\"  class=\'form-control\' \/>" +
 
-              "<label class=\'control-label\'>Display Inline</label>" +
-              "<input type=\"checkbox\" ng-model=\"customModel.inline\"  class=\'form-control\' \/>    " +
+          "<label><input type='checkbox' ng-model=\"customModel.inline\"> Display Inline</label>" + 
 
               "<label class=\'control-label\'>Containertype</label>" +
-              "<select ng-model=\"customModel.type\" class='form-control' ng-options=\"option as option for option in ['normal','tab']\" ng-init=\"customModel.type='normal'\">" +
+              "<select ng-model=\"customModel.type\" class='form-control' ng-options=\"option as option for option in ['normal','tab', 'repeating']\" ng-init=\"customModel.type='normal'\">" +
              "</select>"+
-
 
               "<\/div>" +
               "<div class=\"form-group\">" +
-              "<label class=\'control-label\'>Options<\/label>        " +
-              "<textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\" \/>    " +
+              "<label class=\'control-label\'>Options<\/label>" +
+              "<textarea class=\"form-control\" rows=\"3\" ng-model=\"optionsText\" \/>" +
               "<\/div>" +
               "<\/form>",
 	  isContainer: true
@@ -320,7 +290,7 @@
       });
 
    return $builderProvider.registerComponent('textArea', {
-        group: 'IDP',
+        group: 'Interactive',
         label: 'Textarea',
         description: '',
         placeholder: 'placeholder',
@@ -328,7 +298,8 @@
        hasValidation:true,
     template: "<div> " +
               " <label for=\"0\" class=\"control-label\">{{label}} {{fb-required ? '*' : ''}}</label>" +
-              " <textarea class=\"form-control\" ng-model=\"inputText\" rows='4' cols='50' placeholder=\"{{placeholder}}\">" +
+              " <textarea class=\"form-control\" ng-model=\"inputText\" rows='4' cols='50' placeholder=\"{{placeholder}}\" />" +
+              "<label>{{customModel.postLabel}}</label> " +
               "</div>",
     popoverTemplate: "<form>" +
                      " <div class=\"form-group\">" +

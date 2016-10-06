@@ -273,9 +273,9 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
 
     function containerType(IMElement)
     {
-        if(IMElement.customModel.type && IMElement.customModel.type == "tab")
+        if(IMElement.customModel.type)
         {
-            return "tab"
+            return IMElement.customModel.type
         } return "normal";
     };
 
@@ -290,7 +290,6 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             el.container_type = containerType(IMElement);
             el.label = IMElement.label;
             el.display_inline = displayInline(IMElement);
-            el.repeatable = false;
             el.children = idpAndAngSpec(builderForms[IMElement.id], builderForms, true);
         }
         else if(isDescription(IMElement))

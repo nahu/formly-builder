@@ -45,6 +45,7 @@ var crossModel = {};
                   formObject.placeholder = $scope.placeholder;
                   formObject.required = $scope.required;
                   formObject.options = $scope.options;
+                  formObject.optionsText = $scope.optionsText;
                   formObject.templateOptions = $scope.templateOptions;
                   formObject.expressionProperties = $scope.expressionProperties;
                   formObject.hasValidation = $scope.hasValidation;
@@ -81,11 +82,11 @@ var crossModel = {};
                   /*
                   Backup input value.
                    */
-
                   return this.model = {
                       label: $scope.label,
                       description: $scope.description,
                       placeholder: $scope.placeholder,
+                      optionsText:$scope.optionsText,
                       required: $scope.required,
                       key: $scope.key,
                       templateOptions: $scope.templateOptions,
@@ -97,7 +98,6 @@ var crossModel = {};
                   };
               },
               rollback: function () {
-
                   /*
                   Rollback input value.
                    */
@@ -1511,12 +1511,6 @@ var crossModel = {};
                 if (formObject == null) {
                     formObject = {};
                 }
-              /*
-                console.log("inserting");
-                console.log(name);
-                console.log(index);
-                console.log(formObject);
-               */
 
                 /*
                 Insert the form object into the form at {index}.

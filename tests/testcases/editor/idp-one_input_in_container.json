@@ -9,7 +9,6 @@
         "label":"Container title",
         "container_type":"normal",
         "display_inline": false,
-      "repeatable":false,
       "children":[
         {
           "element_id":"2",

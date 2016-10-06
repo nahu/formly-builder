@@ -10,14 +10,12 @@
             "label":"Container title",
             "display_inline":false,
             "container_type":"tab",
-            "repeatable":false,
             "children":[
                 {
                     "element_id":"2",
                     "element_type":"container",
                     "label":"Container title",
                     "display_inline":true,
-                    "repeatable":false,
                     "container_type":"normal",
                     "children":[
                         {
