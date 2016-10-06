@@ -5,7 +5,7 @@
             "customModel": {
                 "postLabel": "Post Label",
                 "validators":[{
-
+                    "type":"regex",
                     "validationMessage":"this is a custom validation message",
                     "validationAction":"message",
                     "validation": "/.*/",

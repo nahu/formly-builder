@@ -6,6 +6,7 @@
                 "postLabel": "Textarea Postlabel",
                 "validators":[
                     {
+                        "type":"regex",
                         "validationMessage":"this is my validation msg",
                         "validationAction":"message",
                         "validation":"/.*/",

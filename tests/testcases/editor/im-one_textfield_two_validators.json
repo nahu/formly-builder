@@ -6,11 +6,13 @@
                 "postLabel": "Post Label 1",
                 "validators":[
                     {
+                        "type":"regex",
                         "validationMessage":"first",
                         "validationAction":"message",
                         "validation": "foo"
                     },
                     {
+                        "type":"regex",
                         "validationMessage":"second message",
                         "validationAction":"message",
                         "validation": "bar"

@@ -494,6 +494,7 @@ var crossModel = {};
 
                           var validators = sourcevm.data.model.customModel.validators
                           var validator = {
+                              "type":"regex",
                               "validationMessage":"",
                               "validationAction":"",
                               "crossKey":"",
@@ -1392,8 +1393,11 @@ var crossModel = {};
        loadPopoverSharedElements = function (component)
        {
            component.customModel.validators = [];
+           component.templateOptio
            if (component.hasValidation) {
                component.validationOptions=[{label:'show message',action:'message'},{label:'hide element',action:'hide'},{label:'disable element',action:'disable'}];
+
+               component.templateOptions.validatorTypes = [{type:"notEmpty", label:"Not Empty"} , {type:"minLength" , label:"Minimum Length"},{type:"maxLength", label:"Maximum Length"} ,{ type:"minDate", label:"After Date"} ,{type:"maxDate", label:"Before Date"}, {type:"regex", label:"Regular Expression"}]
            }
 
            var originalHTML = component.popoverTemplate;
@@ -1407,6 +1411,9 @@ var crossModel = {};
            var validationLoopHTML = 
                    "<div class='form-group' ng-if='hasValidation'>" +
                        "<div ng-repeat=\"validator in customModel.validators\" class='popupValidatorGroup'>" +
+                       "<label class='control-label'>Validator Type</label> " +
+                   "<select ng-model=\"validator.type\" class='form-control' ng-options=\"option.type as option.label for option in templateOptions.validatorTypes\" ng-init='validator.type = \"regex\"''>" +
+                       "</select> " +
 
                           "<label class='control-label'>Validation Expression</label>" +
                           "<input type='text' ng-model='validator.validation' class='form-control' />" +

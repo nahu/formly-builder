@@ -110,13 +110,15 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 
   
   vm.exampleTitle = 'IDP Editor'; // add this
+  
   $scope.isFormlyShowScope = true;
     $scope.isFormlyShowAngular = false;
-  vm.RawFieldCode = function () {
+    vm.RawFieldCode = function () {
       $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
       $scope.imFieldCode = $scope.forms;//JSON.stringify(,null, '\t')
       $scope.formSpecification = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).idpSpec
   }
+
   vm.StartScratch = function () {
     delete vm.editor.currentFormName;
     vm.editor.selectedField = -1;
@@ -209,18 +211,11 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 	data:vm.idpSpec
       }).then(function (response, status) {
 
-        // console.log("form spec saved");
-	// console.log(response.data);
-	// console.log("");
-
+  
 	vm.editor.selectedField = parseInt(response.data.identifier);
 	alert("saved spec, id:" + response.data.identifier);
       },function (error){
 
-	// console.log("Error saving form spec: ");
-	// console.log(error);
-	// console.log("");
-        
 	alert("error: uploading");
       });
     }

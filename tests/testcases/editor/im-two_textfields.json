@@ -5,6 +5,7 @@
             "customModel": {
                 "postLabel": "Post Label 1",
                 "validators":[{
+                    "type":"regex",
                     "validationMessage":"",
                     "validationAction":"hide",
                     "crossKey":"default-textInput-3",
@@ -28,6 +29,7 @@
             "customModel": {
                 "postLabel": "Post Label 2",
                 "validators":[{
+                    "type":"regex",
                     "validationMessage":"",
                     "validationAction":"message",
                     "validation": "/bar.*/",

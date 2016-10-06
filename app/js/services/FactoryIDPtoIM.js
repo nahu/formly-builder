@@ -239,7 +239,6 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
             }
 
             q.label = "";
-            q.validation = "";
             q.placeholder = "";
             im[key].push(q);
         }
@@ -296,7 +295,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         var validator = {};
         validator.validationMessage = idpValidator.message;
         validator.validationAction = idpValidator.validator_action;
-
+        validator.type = idpValidator.validator_type;
         if (idpValidator.cross_key != undefined) {
             validator.crossKey = getCrossKey(idpValidator);
         }

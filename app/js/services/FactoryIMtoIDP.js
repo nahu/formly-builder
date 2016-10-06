@@ -138,7 +138,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
             var v = {
                 "element_id": id,
                 "validator_name": id,
-                "validator_type": "regex",
+                "validator_type": imValidator.type,
                 "validator_action":valAction,
                 "message":  msg? msg : "",
                 "expression": imValidator.validation,

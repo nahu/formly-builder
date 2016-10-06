@@ -7,9 +7,10 @@
                 "postLabel": "Date Post Label",
                 "validators":[
                     {
+                        "type":"minDate",
                         "validationMessage":"",
                         "validationAction":"",
-                        "validation": "/.*/",
+                        "validation": "01/12/2014",
                         "crossKey":""
                     }
                 ]

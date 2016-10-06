@@ -24,6 +24,7 @@
             "component": "textInput",
             "customModel": {
                 "validators":[{
+                    "type":"regex",
                 "validationMessage":"",
                     "validationAction":"",
                     "validation": "/.*/",
