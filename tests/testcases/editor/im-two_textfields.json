@@ -5,6 +5,7 @@
             "customModel": {
                 "postLabel": "Post Label 1",
                 "validationMessage":"",
+                "validationAction":"message",
                 "crossValidationKey":"default-textInput-3"
             },
             "editable": true,
@@ -24,7 +25,8 @@
             "component": "textInput",
             "customModel": {
                 "postLabel": "Post Label 2",
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":"message"
             },
             "editable": true,
             "expressionProperties": "",

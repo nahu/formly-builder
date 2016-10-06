@@ -3,7 +3,8 @@
         {
             "component": "select",
             "customModel": {
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
             },
             "editable": true,
             "expressionProperties": "",

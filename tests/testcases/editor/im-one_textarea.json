@@ -4,7 +4,8 @@
             "component": "textArea",
             "customModel": {
                 "postLabel": "Textarea Postlabel",
-                "validationMessage":"this is my validation msg"
+                "validationMessage":"this is my validation msg",
+                "validationAction":"message"
             },
             "editable": true,
             "expressionProperties": "",

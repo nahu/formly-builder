@@ -45,7 +45,8 @@
         {
             "component": "textInput",
             "customModel": {
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
             },
             "editable": true,
             "expressionProperties": "",

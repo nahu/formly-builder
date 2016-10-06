@@ -3,7 +3,8 @@
         {
             "component": "radio",
             "customModel": {
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
             },
             "editable": true,
             "expressionProperties": "",
@@ -23,7 +24,8 @@
         {
             "component": "radio",
             "customModel": {
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
             },
             "editable": true,
             "expressionProperties": "",

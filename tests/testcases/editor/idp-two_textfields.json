@@ -12,6 +12,7 @@
                     "element_id": "2",
                     "validator_name": "2",
                     "validator_type": "regex",
+                    "validator_action":"message",
                     "message": "",
                     "expression": "/foo.*/",
                     "cross_key":"3"
@@ -33,6 +34,7 @@
                     "element_id": "4",
                     "validator_name": "4",
                     "validator_type": "regex",
+                    "validator_action":"message",
                     "message": "",
                     "expression": "/bar.*/",
                     "cross_key":""

@@ -19,7 +19,8 @@
             {
               "element_id": "3",
               "validator_name": "3",
-              "validator_type": "regex",
+                "validator_type": "regex",
+                "validator_action":"",
               "message": "",
                 "expression": "/.*/",
                 "cross_key":""

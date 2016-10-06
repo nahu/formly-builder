@@ -131,7 +131,7 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         {
             var id = getID(IMElement, false);
             var msg = IMElement.customModel.validationMessage;
-            var valAction = IMElement.customModel.validation_action;
+            var valAction = IMElement.customModel.validationAction;
 
             var v = {
                 "element_id": id,

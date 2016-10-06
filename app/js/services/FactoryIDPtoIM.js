@@ -65,7 +65,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
             if(this.children.length > 0) {
                 console.log("   ".repeat(indent) + "children:");
                 for(var k in this.children) {
-                    this.children[k].print(indent+1);
+                    this.children[k].print(indent + 1);
                 };
             };
         };
@@ -77,17 +77,16 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         currentNode.setID(id);
         currentNode.setMaxID(id);
         if(idp.children && idp.children.length > 0)  {  //n has children
-
             for(var k in idp.children)  {
                 var childIDP = idp.children[k]
                 var childNode = buildAst(childIDP, currentNode.getMaxID() + 1)
 
                 currentNode.setMaxID(childNode.getMaxID());
                 currentNode.addNode(childNode);
-            };
-        };
+            }
+        }
         return currentNode;
-    };
+    }
 
 
     function mapIdpSpecToIM(spec,$builder)  {
@@ -95,7 +94,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         var rootNode = buildAst(spec, -1);
         //        console.log("\n\n");
         //        rootNode.print();
-        return {metadata:spec.metadata ,im:mapForm(spec, $builder, rootNode)};
+        return { metadata:spec.metadata, im:mapForm(spec, $builder, rootNode) };
     }
 
 
@@ -264,7 +263,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
             q.validation = getValidation(interactive)
 
             q.customModel.validationMessage = getValidationMessage(interactive);
-            q.customModel.validation_action = getValidationAction(interactive);
+            q.customModel.validationAction = getValidationAction(interactive);
             var crossKey = getCrossKey(interactive, node)
             if(crossKey != "")
             {
@@ -306,8 +305,6 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
 
     function getValidationMessage(interactive)
     {
-//        console.log("validators: ");
-//        console.log(interactive.validators);
         if(interactive.validators && interactive.validators.length > 0)
         {
             return interactive.validators[0].message;
@@ -315,17 +312,15 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         return "";
     };
 
-    function getValidationAction(interactive)
-    {
-        if(interactive.validators && interactive.validators.length > 0)
-        {
-            return interactive.validators[0].validator_action;
+    function getValidationAction(interactive) {
+        if(interactive.validators && interactive.validators.length > 0) {
+            var action = interactive.validators[0].validator_action
+            return action ? action : "";
         }
         return "";
     };
 
-    function getValidation(o)
-    {
+    function getValidation(o) {
         if(o.validators == undefined)
         {
             debugger;

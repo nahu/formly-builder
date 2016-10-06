@@ -59,7 +59,7 @@ function logMissing(ob1,ob2, fullLog)
 
 describe('from IDP to IM', function () {
     var inputFsJson, outputJson, expectedOutputJson;
-    function testJsonMapping_idp_to_im(idpPath, imPath, log = false)
+    function testJsonMapping_idp_to_im(idpPath, imPath, log = true)
     {
         var input = getJSONFixture(idpPath);
         var result = toIMMapper.mapIdpSpecToIM(input).im;
@@ -101,8 +101,9 @@ describe('from IDP to IM', function () {
 
 
     it("maps two textfield from idp to im",function(){
-        testJsonMapping_idp_to_im("idp-two_textfields.json",'im-two_textfields.json');
+        testJsonMapping_idp_to_im("idp-two_textfields.json",'im-two_textfields.json', true);
     });
+
 
     it("maps one radio from idp to im",function(){
         testJsonMapping_idp_to_im("idp-one_radio.json",'im-one_radio.json');

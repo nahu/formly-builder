@@ -4,7 +4,8 @@
             "component": "checkbox",
             "customModel": {
                 "postLabel":"Checkbox Postlabel",
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
             },
             "editable": true,
             "expressionProperties": "",

@@ -5,7 +5,8 @@
             "customModel": {
                 "dateFormat": "DD/MM/YYYY",
                 "postLabel": "Date Post Label",
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
             },
             "editable": true,
             "expressionProperties": "",

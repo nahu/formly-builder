@@ -13,6 +13,7 @@
                     "element_id": "2",
                     "validator_name": "2",
                     "validator_type": "regex",
+                    "validator_action":"",
                     "message": "",
                     "expression": "/.*/",
                     "cross_key":""

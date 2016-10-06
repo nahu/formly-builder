@@ -12,6 +12,7 @@
                     "element_id": "2",
                     "validator_name": "2",
                     "validator_type": "regex",
+                    "validator_action":"message",
                     "message": "this is my validation msg",
                     "expression": "/.*/",
                     "cross_key":""

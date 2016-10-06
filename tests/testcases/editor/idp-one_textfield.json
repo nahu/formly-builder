@@ -14,7 +14,8 @@
           "validator_type": "regex",
           "message": "this is a custom validation message",
             "expression": "/.*/",
-            "cross_key":""
+            "cross_key":"",
+            "validator_action":"message"
         }
       ],
       "interactive_details": {

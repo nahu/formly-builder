@@ -4,7 +4,8 @@
             "component": "select",
             "customModel": {
                 "postLabel" : "",
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
             },
             "editable": true,
             "expressionProperties": "",
@@ -24,7 +25,8 @@
             "component": "select",
             "customModel": {
                 "postLabel": "Post Dropdown Test 2",
-                "validationMessage":""
+                "validationMessage":"",
+                "validationAction":""
 
             },
             "editable": true,
