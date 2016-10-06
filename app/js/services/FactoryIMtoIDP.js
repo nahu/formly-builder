@@ -111,14 +111,13 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
         return k;
     }
 
-    function crosskeyForElement(IMElement) {
-        if( IMElement.customModel.crossValidationKey == undefined || IMElement.customModel.crossValidationKey == "") { return "";  }
-        else {  return IMElement.customModel.crossValidationKey  }
+    function crosskeyForElement(imValidator) {
+        if( imValidator.crossKey == undefined || imValidator.crossKey == "") { return "";  }
+        else {  return imValidator.crossKey  }
     }
 
     function enqueueValidator(validator) {
-        if(validator.cross_key.length > 0)
-        {
+        if(validator.cross_key.length > 0) {
             queuedElements.push(validator);
         };
     }
@@ -127,11 +126,14 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
     function validators(IMElement)
     {
         var validators = [];
-        if(IMElement.validation != "")
-        {
+
+        for (var k in IMElement.customModel.validators) {
+
+            var imValidator = IMElement.customModel.validators[k]
+
             var id = getID(IMElement, false);
-            var msg = IMElement.customModel.validationMessage;
-            var valAction = IMElement.customModel.validationAction;
+            var msg = imValidator.validationMessage;
+            var valAction = imValidator.validationAction;
 
             var v = {
                 "element_id": id,
@@ -139,12 +141,13 @@ app.factory('getOIMConfig',["deepMerge", function (deepMerge) {
                 "validator_type": "regex",
                 "validator_action":valAction,
                 "message":  msg? msg : "",
-                "expression": IMElement.validation,
-                "cross_key": crosskeyForElement(IMElement)
+                "expression": imValidator.validation,
+                "cross_key": crosskeyForElement(imValidator)
             }
             enqueueValidator(v);
             validators.push(v);
-        };
+        }
+
         return validators;
     };
 

@@ -4,16 +4,13 @@
             "component": "textInput",
             "customModel": {
                 "postLabel": "Post Label 1",
-                "validators":[{
-                    "validationMessage":"",
-                    "validationAction":"hide",
-                    "crossKey":"default-textInput-3",
-                    "validation": "/foo.*/"
-                }]
+                "validationMessage":"",
+                "validationAction":"message",
+                "crossValidationKey":"default-textInput-3"
             },
             "editable": true,
             "expressionProperties": "",
-            "id": "default-textInput-1",
+            "id": "default-textInput-3",
             "index": 0,
             "isContainer": false,
             "label": "Text Input",
@@ -21,22 +18,19 @@
             "options": [],
             "placeholder": "placeholder",
             "required": false,
-            "templateOptions": {}
+            "templateOptions": {},
+            "validation": "/foo.*/"
         },
         {
             "component": "textInput",
             "customModel": {
                 "postLabel": "Post Label 2",
-                "validators":[{
-                    "validationMessage":"",
-                    "validationAction":"message",
-                    "validation": "/bar.*/",
-                    "crossKey":""
-                }]
+                "validationMessage":"",
+                "validationAction":"message"
             },
             "editable": true,
             "expressionProperties": "",
-            "id": "default-textInput-3",
+            "id": "default-textInput-1",
             "index": 1,
             "isContainer": false,
             "label": "Text Input 2",
@@ -44,7 +38,8 @@
             "options": [],
             "placeholder": "placeholder 2",
             "required": false,
-            "templateOptions": {}
+            "templateOptions": {},
+            "validation": "/bar.*/"
         }
     ]
 }

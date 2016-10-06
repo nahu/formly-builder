@@ -1,3 +1,4 @@
+TODO
 {
     "element_id":"0",
     "element_type":"form",
@@ -12,7 +13,7 @@
                     "element_id": "2",
                     "validator_name": "2",
                     "validator_type": "regex",
-                    "validator_action":"hide",
+                    "validator_action":"message",
                     "message": "",
                     "expression": "/foo.*/",
                     "cross_key":"3"

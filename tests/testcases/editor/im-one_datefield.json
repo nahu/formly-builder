@@ -5,8 +5,15 @@
             "customModel": {
                 "dateFormat": "DD/MM/YYYY",
                 "postLabel": "Date Post Label",
-                "validationMessage":"",
-                "validationAction":""
+                "validators":[
+                    {
+                        "validationMessage":"",
+                        "validationAction":"",
+                        "validation": "/.*/",
+                        "crossKey":""
+                    }
+                ]
+
             },
             "editable": true,
             "expressionProperties": "",
@@ -18,8 +25,7 @@
             "options": [],
             "placeholder": "11/11/2016",
             "required": false,
-            "templateOptions": {},
-            "validation": "/.*/"
+            "templateOptions": {}
         }
     ]
 }

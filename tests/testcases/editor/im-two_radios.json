@@ -3,8 +3,7 @@
         {
             "component": "radio",
             "customModel": {
-                "validationMessage":"",
-                "validationAction":""
+                "validators":[]
             },
             "editable": true,
             "expressionProperties": "",
@@ -18,14 +17,12 @@
                 "Option two"
             ],
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         },
         {
             "component": "radio",
             "customModel": {
-                "validationMessage":"",
-                "validationAction":""
+                "validators":[]
             },
             "editable": true,
             "expressionProperties": "",
@@ -39,8 +36,7 @@
                 "Option two 2"
             ],
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ]
 }

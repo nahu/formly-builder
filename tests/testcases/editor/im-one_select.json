@@ -3,8 +3,7 @@
         {
             "component": "select",
             "customModel": {
-                "validationMessage":"",
-                "validationAction":""
+                "validators":[]
             },
             "editable": true,
             "expressionProperties": "",
@@ -19,8 +18,7 @@
                 "Third option"
             ],
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ]
 }

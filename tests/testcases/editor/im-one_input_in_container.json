@@ -16,16 +16,19 @@
             "options": [],
             "placeholder": "",
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ],
     "default-container-1": [
         {
             "component": "textInput",
             "customModel": {
+                "validators":[{
                 "validationMessage":"",
-                "validationAction":""
+                    "validationAction":"",
+                    "validation": "/.*/",
+                    "crossKey":""
+                }]
             },
             "editable": true,
             "expressionProperties": "",
@@ -37,8 +40,7 @@
             "options": [],
             "placeholder": "placeholder",
             "required": false,
-            "templateOptions": {},
-            "validation": "/.*/"
+            "templateOptions": {}
         }
     ]
 }

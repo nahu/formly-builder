@@ -4,8 +4,7 @@
             "component": "select",
             "customModel": {
                 "postLabel" : "",
-                "validationMessage":"",
-                "validationAction":""
+                "validators":[]
             },
             "editable": true,
             "expressionProperties": "",
@@ -18,15 +17,13 @@
                 "1/1"
             ],
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         },
         {
             "component": "select",
             "customModel": {
                 "postLabel": "Post Dropdown Test 2",
-                "validationMessage":"",
-                "validationAction":""
+                "validators":[]
 
             },
             "editable": true,
@@ -41,8 +38,7 @@
                 "2/2"
             ],
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ]
 }

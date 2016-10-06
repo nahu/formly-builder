@@ -16,8 +16,7 @@
             "options": [],
             "placeholder": "",
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ]
 }

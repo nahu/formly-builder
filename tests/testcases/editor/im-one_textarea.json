@@ -4,8 +4,14 @@
             "component": "textArea",
             "customModel": {
                 "postLabel": "Textarea Postlabel",
-                "validationMessage":"this is my validation msg",
-                "validationAction":"message"
+                "validators":[
+                    {
+                        "validationMessage":"this is my validation msg",
+                        "validationAction":"message",
+                        "validation":"/.*/",
+                        "crossKey":""
+                    }
+                ]
             },
             "editable": true,
             "expressionProperties": "",
@@ -17,8 +23,7 @@
             "options": [],
             "placeholder": "Textarea Placeholder",
             "required": false,
-            "templateOptions": {},
-            "validation": "/.*/"
+            "templateOptions": {}
         }
     ]
 }

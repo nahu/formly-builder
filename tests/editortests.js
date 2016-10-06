@@ -297,6 +297,17 @@ describe('from IM to IDP', function () {
         var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_tabbed_container.json');
         testJsonMapping(resIdpSpec, "idp-one_tabbed_container.json");
     });
+
+    it("maps a textfield with two validators from im to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-one_textfield_two_validators.json');
+        testJsonMapping(resIdpSpec, "idp-one_textfield_two_validators.json");
+    });
+/*
+    it("maps a two modified textfields stable to idp", function(){
+        var resIdpSpec = resultIDPSpecFromBuilderForm('im-two-textfields-stable-id.json');
+        testJsonMapping(resIdpSpec, "idp-two-textfields-stable-id.json");
+    });
+*/
 });
 
 

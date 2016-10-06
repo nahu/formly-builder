@@ -141,8 +141,7 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
             var o = imsToUpdate[k];
             var idpKey = o.ckey;
             var imKey = findIMKeyForIDPKey(rootNode, idpKey)
-            if(imKey == "")
-            {
+            if(imKey == "") {
                 console.log(o);
                 throw new Error("IM key for idpkey ->" + idpKey + "<- not found");
             }
@@ -153,20 +152,22 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
                 for (var imElKey in im[topKey])
                 {
                     var imO = im[topKey][imElKey];
-                    if(imO.customModel && imO.customModel.crossValidationKey)
+                    if(imO.customModel && imO.customModel.validators)
                     {
-                        if(imO.customModel.crossValidationKey == idpKey)
-                        {
-                            imO.customModel.crossValidationKey = imKey;
-                            found = true;
-                            break;
+                        for (var k in imO.customModel.validators) {
+                            var imValidator = imO.customModel.validators[k];
+                            if(imValidator.crossKey == idpKey) {
+                                imValidator.crossKey = imKey;
+                                found = true;
+                                break;
+                            }
                         }
+
+
                     }
+                    if(found) { break; }
                 }
-                if(found)
-                {
-                    break;
-                }
+                if(found) { break; };
             }
             if(!found)
             {
@@ -177,20 +178,6 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
 
 
 
-    function getCrossKey(interactive, node)
-    {
-        if(interactive.validators.length > 0 &&
-           interactive.validators[0].cross_key &&
-           interactive.validators[0].cross_key != undefined)
-        {
-            if(interactive.validators[0].cross_key != "")
-            {
-                imsToUpdate.push({ckey:interactive.validators[0].cross_key});
-            }
-            return interactive.validators[0].cross_key
-        };
-        return "";
-    }
 
     function mapElement(node, im) {
         var key = node.getParent().getFullID();
@@ -219,7 +206,6 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
             q.customModel.inline = node.isInline();
             q.customModel.type = node.containerType();
             q.label = interactive.label;
-            q.validation = "";
             q.placeholder = "";
 
             im[key].push(q);
@@ -260,15 +246,9 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         else
         {
 
-            q.validation = getValidation(interactive)
+            q.customModel.validators = getValidators(interactive);
 
-            q.customModel.validationMessage = getValidationMessage(interactive);
-            q.customModel.validationAction = getValidationAction(interactive);
-            var crossKey = getCrossKey(interactive, node)
-            if(crossKey != "")
-            {
-                q.customModel.crossValidationKey = crossKey;
-            }
+
             var detail = interactive.interactive_details
             q.label = detail.label;
 
@@ -303,38 +283,34 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
         };
     }
 
-    function getValidationMessage(interactive)
-    {
-        if(interactive.validators && interactive.validators.length > 0)
-        {
-            return interactive.validators[0].message;
+    function getValidators(interactive) {
+        var validators = [];
+        for (var k in interactive.validators) {
+            var val = interactive.validators[k];
+            validators.push(getValidator(val));
         }
-        return "";
-    };
+        return validators;
+    }
 
-    function getValidationAction(interactive) {
-        if(interactive.validators && interactive.validators.length > 0) {
-            var action = interactive.validators[0].validator_action
-            return action ? action : "";
+    function getValidator(idpValidator) {
+        var validator = {};
+        validator.validationMessage = idpValidator.message;
+        validator.validationAction = idpValidator.validator_action;
+
+        if (idpValidator.cross_key != undefined) {
+            validator.crossKey = getCrossKey(idpValidator);
         }
-        return "";
-    };
+        validator.validation = idpValidator.expression;
 
-    function getValidation(o) {
-        if(o.validators == undefined)
-        {
-            debugger;
-        };
-        if(o.validators.length > 0)
-        {
-            return o.validators[0].expression;
+        return validator;
+    }
+
+    function getCrossKey(idpValidator) {
+        if(idpValidator.cross_key != "") {
+            imsToUpdate.push({ckey:idpValidator.cross_key});
         }
-        else
-        {
-            return "";
-        };
-    };
-
+        return idpValidator.cross_key
+    }
 
     return {"mapIdpSpecToIM" : mapIdpSpecToIM };
 }]);

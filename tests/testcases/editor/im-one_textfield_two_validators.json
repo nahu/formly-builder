@@ -3,14 +3,19 @@
         {
             "component": "textInput",
             "customModel": {
-                "postLabel": "Post Label",
-                "validators":[{
-
-                    "validationMessage":"this is a custom validation message",
-                    "validationAction":"message",
-                    "validation": "/.*/",
-                    "crossKey":""
-                }]
+                "postLabel": "Post Label 1",
+                "validators":[
+                    {
+                        "validationMessage":"first",
+                        "validationAction":"message",
+                        "validation": "foo"
+                    },
+                    {
+                        "validationMessage":"second message",
+                        "validationAction":"message",
+                        "validation": "bar"
+                    }
+                ]
             },
             "editable": true,
             "expressionProperties": "",

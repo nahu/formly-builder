@@ -16,8 +16,7 @@
             "options": [],
             "placeholder": "",
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ],
     "default-container-1": [
@@ -37,16 +36,14 @@
             "options": [],
             "placeholder": "",
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ],
     "default-container-1-container-2": [
         {
             "component": "textInput",
             "customModel": {
-                "validationMessage":"",
-                "validationAction":""
+                "validators":[]
             },
             "editable": true,
             "expressionProperties": "",
@@ -58,8 +55,7 @@
             "options": [],
             "placeholder": "placeholder",
             "required": false,
-            "templateOptions": {},
-            "validation": ""
+            "templateOptions": {}
         }
     ]
 }
