@@ -184,6 +184,13 @@ app.directive('dynamic', function ($compile) {
     };
 });
 
+app.filter('trusted', ['$sce', function ($sce) {
+    return function(url) {
+        console.log("filtering url: " + url);
+        return $sce.trustAsResourceUrl(url);
+    };
+}]);
+
 app.directive('kcdRecompile', function ($compile, $parse) {
     'use strict';
     return {
@@ -242,6 +249,8 @@ app.directive('manualInstruction', function () {
         }
     };
 });
+
+
 
 /*
 try {

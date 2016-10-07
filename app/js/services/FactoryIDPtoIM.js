@@ -220,18 +220,8 @@ app.factory('getEditorConfig',["deepMerge", function (deepMerge) {
             {
                 q.customModel.url = interactive.url;
             }
-            else if(node.getElement().description_type == "video" )
-            {
-                if(interactive.urls && interactive.urls.length > 0)
-                {
-                    q.customModel.url = interactive.urls[0];
-                }
-                else
-                {
-                    q.customModel.url = [];
-                }
-
-
+            else if(node.getElement().description_type == "video" )  {
+                q.customModel.videoUrls = interactive.urls ? interactive.urls : [];
             }
             else
             {

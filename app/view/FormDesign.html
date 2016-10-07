@@ -1,89 +1,55 @@
 
 <div class="container-fluid">
   <h1>{{vm.exampleTitle}}</h1>
-    <div class="row">
-
-        <hr />
-
-        <div class="col-md-6">
-            <p>
-                <button type="button" class="btn btn-primary" ng-click="vm.StartScratch()">Start From Scratch</button>                
-                
-                <formly-form model="vm.editor" fields="vm.editorFields">
-                  <button type="submit" class="btn btn-default" ng-click="vm.loadForm(vm.editor.selectedField)">load</button>
-                </formly-form> 
-            </p>
-            <div class="panel panel-default idp">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Builder</h3>
-                </div>
-                <div fb-builder="default" class="leftside" ng-class="{crossmode : vm.showCrossmode}"></div>
-
-                <div class="panel-footer">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="isShowScope" />
-                            Show scope
-                        </label>
-                    </div>
-                    <pre ng-if="isShowScope">{{forms| json}}</pre>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div fb-components class="components-panel idp">
-            
-        </div>
-    </div>
-
-</div>
-<div>
-<button type="button" class="btn btn-primary" ng-click="vm.upload()">Upload</button>
-</div>
-
-<div style="z-index:-1;background-color:white;position:relative">
-    <a href="{{vm.SwitchView.link}}">{{vm.SwitchView.text}}</a>
-
+  <div class="row">
 
     <hr />
-    <div kcd-recompile="vm.fields">
-        <formly-form model="vm.model" fields="vm.fields" form="vm.form1">
-            <br />
-            <br />
-            <p>
-                <button type="button" class="btn btn-primary" ng-click="vm.RawFieldCode()">View formly Design Raw Code</button>
-                
-            </p>
-        </formly-form>
-    </div>
-    
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" ng-model="isFormlyShowScope" />
-            Show IM and IDP
-        </label>
-    </div>
-          </br>
-    <div class="checkbox">
 
-      <label>
-        <input type="checkbox" ng-model="isFormlyShowAngular" />
-        Show Angular
-      </label>
-    </div>
-    <div ng-if="isFormlyShowScope">
-        <hr />
-        <!--h2>Model</!h2>
-            <pre>{{vm.model | json}}</pre-->
-        <h2>IM Specification</h2>
-        <pre>{{imFieldCode|json}}</pre>
-        <h2> IDP Specification</h2>
-        <pre>{{formSpecification|json}}</pre>
-        <div ng-if="isFormlyShowAngular">
-          <hr />
-          <h2>Formly Specification</h2>
-        <pre>{{rawFieldCode|json}}</pre>
+    <div class="col-md-6">
+      <p>
+
+          <button type="button" class="btn btn-primary" ng-click="vm.StartScratch()">Start From Scratch</button>                
+          
+          <formly-form model="vm.editor" fields="vm.editorFields">
+            <button type="submit" class="btn btn-default" ng-click="vm.loadForm(vm.editor.selectedField)">load</button>
+          </formly-form>
+
+      </p>
+      <div class="panel panel-default idp">
+        <div class="panel-heading">
+          <h3 class="panel-title">Builder</h3>
         </div>
+        <div fb-builder="default" class="leftside" ng-class="{crossmode : vm.showCrossmode}"></div>
+
+        <div class="panel-footer">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="showMapping" />
+              Show Mapping
+            </label>
+          </div>
+          <pre ng-if="isShowScope">{{forms| json}}</pre>
+        </div>
+
+      </div>
     </div>
-</div>
+    <div class="col-md-6">
+      <div fb-components class="components-panel idp">
+        
+      </div>
+    </div>
+
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" ng-click="vm.upload()">Upload</button>
+  </div>
+
+  <div style="z-index:-1;background-color:white;position:relative">
+    <div ng-if="showMapping">
+      <hr />
+      <h2>IM Specification</h2>
+      <pre>{{imFieldCode|json}}</pre>
+      <h2> IDP Specification</h2>
+      <pre>{{formSpecification|json}}</pre>
+    </div>
+  </div>

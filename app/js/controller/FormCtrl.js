@@ -110,9 +110,8 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 
   
   vm.exampleTitle = 'IDP Editor'; // add this
+  vm.showMapping = false
   
-  $scope.isFormlyShowScope = true;
-    $scope.isFormlyShowAngular = false;
     vm.RawFieldCode = function () {
       $scope.rawFieldCode = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms).anSpec;
       $scope.imFieldCode = $scope.forms;//JSON.stringify(,null, '\t')
@@ -130,9 +129,6 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 
   vm.CopyForm = function () {
     var mapping = getOIMConfig.getOIMConfig($scope.forms["default"], $builder.forms); 
-
-//      debugger
-//    vm.fields = mapping.anSpec;
     vm.model = getModel($scope.forms["default"]);
     vm.idpSpec = mapping.idpSpec
   };

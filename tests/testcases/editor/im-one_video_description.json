@@ -4,7 +4,7 @@
         {
             "component": "video_description",
             "customModel": {
-                "url":"testurl"
+                "videoUrls":["testurl","testurl2"]
             },
             "editable": true,
             "expressionProperties": "",

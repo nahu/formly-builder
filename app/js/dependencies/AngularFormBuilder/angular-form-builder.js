@@ -502,11 +502,14 @@ var crossModel = {};
                           }
                           validators.push(validator);
                       },
+                      addVideoURL:function($event, sourcevm) {
+                          sourcevm.data.model.customModel.videoUrls.push("");
+                      },
                       removeValidationOption: function($event, sourcevm, validatorIndex) {
                           sourcevm.data.model.customModel.validators.splice(validatorIndex, 1);
                       },
-                      remove: function ($event) {
-
+                      remove: function ($event, sourcevm) {
+                          debugger;
                           /*
                           The delete event of the popover.
                            */
@@ -1393,7 +1396,7 @@ var crossModel = {};
        loadPopoverSharedElements = function (component)
        {
            component.customModel.validators = [];
-           component.templateOptio
+           component.customModel.videoUrls = component.customModel.videoUrls || [];
            if (component.hasValidation) {
                component.validationOptions=[{label:'show message',action:'message'},{label:'hide element',action:'hide'},{label:'disable element',action:'disable'}];
 
@@ -1402,8 +1405,7 @@ var crossModel = {};
 
            var originalHTML = component.popoverTemplate;
            var $originalHTML = $('<div />', { html: originalHTML });
-           if (component.noFormControl)
-           {
+           if (component.noFormControl) {
                $originalHTML.find("form").children().first().prepend("<div class='form-group'><label class='control-label'>id:</label><label />{{id}}</label</div>");
            }
 
@@ -1440,7 +1442,7 @@ var crossModel = {};
 
            var validationButtonHTML = "<div id=\"popover_validators\"></div><input type='button' ng-if='hasValidation' ng-click='popover.addValidationOption($event, this)' class='btn btn-default' value='Add validation' />";
 
-           var saveButtonsHTML = "<hr /><div class='form-group'><input type='submit' ng-click='popover.save($event)' class='btn btn-primary' value='Save' /><input type='button' ng-click='popover.cancel($event)' class='btn btn-default' value='Cancel' /><input type='button' ng-click='popover.remove($event)' class='btn btn-danger' value='Delete' /></div>"
+           var saveButtonsHTML = "<hr /><div class='form-group'><input type='submit' ng-click='popover.save($event)' class='btn btn-primary' value='Save' /><input type='button' ng-click='popover.cancel($event)' class='btn btn-default' value='Cancel' /><input type='button' ng-click='popover.remove($event, this)' class='btn btn-danger' value='Delete' /></div>"
 
            $originalHTML.find("form").children(".form-group").last().after(validationLoopHTML);
 
@@ -1551,7 +1553,7 @@ var crossModel = {};
 
         this.removeFormObject = (function (_this) {
             return function (name, index) {
-
+                debugger;
                 /*
                 Remove the form object by the index.
                 @param name: The form name.

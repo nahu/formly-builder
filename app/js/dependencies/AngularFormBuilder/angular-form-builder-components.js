@@ -185,7 +185,6 @@
                                "<div class=\"form-group\">" +
                                   "<label class='control-label'>Label</label>" +
                                   "<input type='text' ng-model=\"label\"  class='form-control'/>" +
-
                                  "<label class='control-label'>Hier k&ouml;nnte Ihr Text stehen!</label>" +
                                  "<textarea class=\"form-control\" rows=\"3\" ng-model=\"customModel.url\"/>" +
                                "</div>" +
@@ -201,23 +200,28 @@
             required: false,
             options: [],
             template: "<div>" +
-                        "<label for=\"0\" class=\"control-label\">{{fb-required ? '*' : ''}}</label>" +
-                          "<div ng-model=\"customModel.url\"" + 
-                "ng-init=\"customModel.url = ''\">" +
-                                         "{{label}} " +
-                "<video  controls>" +
-                "<source src={{customModel.url}} type='video/mp4'>" +
-                "Your browser does not support the video tag." +
-                "</video>" +                                   
+                          "<div>{{label}} " +
+                                 "<video  controls>" +
+                                    "<source ng-repeat='murl in customModel.videoUrls track by $index' ng-src='{{ murl | trusted }}'>" + 
+                                   "Your browser does not support HTML5 video" +
+                               "</video>" +                                   
                          "</div>" +
                       "</div>",
-            popoverTemplate: "<form>" +
-                               "<div class=\"form-group\">" +
-                                  "<label class='control-label'>Label</label>" +
-                                  "<input type='text' ng-model=\"label\"  class='form-control'/>" +
 
-                                 "<label class='control-label'>Video URL:</label>" +
-                                 "<textarea class=\"form-control\" rows=\"1\" ng-model=\"customModel.url\"/>" +
+            popoverTemplate: "<form>" +
+                               "<div class='form-group'>" +
+                                  "<label class='control-label'>Label</label>" +
+                                  "<input type='text' ng-model='label'  class='form-control'/>" +
+                               "</div>" +
+
+                               "<div class='form-group'>" +                                 
+                                 "<label ng-repeat='vurl in customModel.videoUrls track by $index'>Video URL:" +
+                                 "<input type='text' ng-model='customModel.videoUrls[$index]' class='form-control'/>"  +
+                                 "</label>" + 
+                               "</div>" +               
+
+                               "<div class='form-group'>" +                                 
+                                  "<input type='button' ng-click='popover.addVideoURL($event, this)' class='btn btn-default' value='Add Video URL' />"+
                                "</div>" +
                              "</form>"
         });
@@ -231,21 +235,21 @@
         options: [],
         arrayToText: true,
         template: "<div> " +
-                     "<label for=\"0\" class=\"control-label\"> {{label}} </label> " +
+                     "<label for='0' class='control-label'> {{label}} </label> " +
                      "<label> " +
-                        "<input type=\"checkbox\" /> {{item}} " +
+                        "<input type='checkbox' /> {{item}} " +
                      "</label> " +
-                    "<label for=\"0\" class=\"control-label\"> {{customModel.postLabel}}</label> " +
+                    "<label for='0' class='control-label'>{{customModel.postLabel}}</label> " +
                   "</div>",
 
         popoverTemplate: "<form>" +
-                            "<div class=\"form-group\">   " +
-                               "<label class='control-label'>Label</label> <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>  " +
+                            "<div class='form-group'>   " +
+                               "<label class='control-label'>Label</label> <input type='text' ng-model='label' validator='[required]' class='form-control'/>  " +
                             "</div> " +
-                            "<div class=\"form-group\">" +
+                            "<div class='form-group'>" +
                                "<label class='control-label'>Post Label</label> " +
-                               "<input type='text' ng-model=\"customModel.postLabel\" class='form-control'/>  " +
-                            "</div>    " +
+                               "<input type='text' ng-model='customModel.postLabel' class='form-control'/>  " +
+                            "</div>" +
                          "</form>"
       });
 
