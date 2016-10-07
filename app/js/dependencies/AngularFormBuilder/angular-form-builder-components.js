@@ -98,6 +98,7 @@
         group: 'Interactive',
         label: 'Select',
         description: 'description',
+          hasValidation:true,
         placeholder: 'placeholder',
         options: ['value one', 'value two'],
         template: "<div>\
