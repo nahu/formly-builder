@@ -197,7 +197,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
       vm.idpSpec.metadata.title = vm.editor.currentFormName;
 
       vm.idpSpec.metadata.form_id = vm.idpSpec.metadata.form_id || "###REPLACE_FORM_ID###";
-
+      debugger;
 
     if(vm.editor.selectedField == -1)
     {
@@ -206,9 +206,8 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
 	url: backendURL,
 	data:vm.idpSpec
       }).then(function (response, status) {
-
-  
 	vm.editor.selectedField = parseInt(response.data.identifier);
+          vm.idpSpec.metadata.form_id = response.data.identifier;
 	alert("saved spec, id:" + response.data.identifier);
       },function (error){
 
