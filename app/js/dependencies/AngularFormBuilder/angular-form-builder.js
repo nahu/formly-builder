@@ -509,7 +509,6 @@ var crossModel = {};
                           sourcevm.data.model.customModel.validators.splice(validatorIndex, 1);
                       },
                       remove: function ($event, sourcevm) {
-                          debugger;
                           /*
                           The delete event of the popover.
                            */
@@ -1551,9 +1550,38 @@ var crossModel = {};
             };
         })(this);
 
+        this.collectContainerIDs = (function (_this) {
+            return function (id) {
+                var childIds = [];
+                var childrenOfId = _this.forms[id];
+                for (var ck in childrenOfId) {
+                    var el = childrenOfId[ck]
+                    if (el.component == "container") {
+                        childIds.push(el.id);
+                    }
+                }
+
+                var collectedIDs = [];
+                for (var k in childIds) {
+                    collectedIDs = collectedIDs.concat(_this.collectContainerIDs(childIds[k]));
+                }
+
+                return collectedIDs.concat(childIds);
+            };
+        })(this);
+
+        this.deleteRecursive = (function (_this) {
+            return function (containerID) {
+                var cids = _this.collectContainerIDs(containerID);
+                cids.push(containerID);
+                for (var k in cids) {
+                    delete _this.forms[cids[k]];
+                }
+            };
+        })(this);
+
         this.removeFormObject = (function (_this) {
             return function (name, index) {
-                debugger;
                 /*
                 Remove the form object by the index.
                 @param name: The form name.
@@ -1561,7 +1589,12 @@ var crossModel = {};
                  */
                 var formObjects;
                 formObjects = _this.forms[name];
+                var o = formObjects[0]
+                if(o.component == "container") {
+                    _this.deleteRecursive(o.id);
+                }
                 formObjects.splice(index, 1);
+
                 return _this.reindexFormObject(name);
             };
         })(this);
