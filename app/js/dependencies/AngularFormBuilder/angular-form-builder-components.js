@@ -122,7 +122,7 @@
       });
 
       $builderProvider.registerComponent('description', {
-        group: 'description',
+        group: 'Description',
         label: '',
         description: 'description',
         placeholder: 'placeholder',
@@ -143,7 +143,7 @@
       });
 
         $builderProvider.registerComponent('link_description', {
-            group: 'description',
+            group: 'Description',
             label: 'Link: ',
             description: 'description',
             placeholder: 'placeholder',
@@ -168,7 +168,7 @@
         });
 
         $builderProvider.registerComponent('image_description', {
-            group: 'description',
+            group: 'Description',
             label: 'Image',
             description: 'description',
             placeholder: 'placeholder',
@@ -194,7 +194,7 @@
 
 
         $builderProvider.registerComponent('video_description', {
-            group: 'description',
+            group: 'Description',
             label: 'Video',
             description: 'description',
             placeholder: 'placeholder',
@@ -258,7 +258,7 @@
 
 
       $builderProvider.registerComponent('container', {
-	group: 'layout',
+	group: 'Layout',
 	label: 'Container',
 	template: "<div class=\"panel panel-default\">\
 		                      <div class=\"panel-heading\">\

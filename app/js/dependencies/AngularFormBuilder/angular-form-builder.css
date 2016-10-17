@@ -7,8 +7,7 @@
 
 
 .crossmode .fb-form-object-editable {
-    border: 3px solid red !important;
-
+    border: 2px dotted red !important;
 }
 
 

@@ -35,7 +35,7 @@ function MainCtrl($http, formlyVersion, getOIMConfig,getEditorConfig, $scope,  $
     key: "selectedField",
     type: "select",
     templateOptions: {
-      label: "Insert In Me:",
+      label: "Insert Subform:",
       options: []}}
 		    ];
 
